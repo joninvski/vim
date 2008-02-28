@@ -1,3 +1,6 @@
+"Select all and copy to + buffer
+map <leader>sa :%y +<cr>
+
 "REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
 filetype plugin on
 filetype indent on
