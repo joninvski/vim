@@ -93,7 +93,7 @@ set wildmenu
 "Always show current position
 set ruler
 
-"The commandbar is 2 high
+"The commandbar is 1 line high
 set cmdheight=1
 
 "Show line number
@@ -188,6 +188,9 @@ cnoremap <C-E>    <End>
 cnoremap <C-K>    <C-U>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"#########################################
+" Plugin related
+"#########################################
 
 """"""""""""""""""""""""""""""
 " Minibuffer
@@ -230,7 +233,82 @@ highlight MBEVisibleChanged term=bold cterm=bold gui=bold guifg=Green
 let g:bufExplorerSortBy = "name"
 
 autocmd BufRead,BufNew :call UMiniBufExplorer
+
+"""""""""""""""""""""""""""""""""""
+" Stolen from http://dev.gentoo.org/~bass/configs/vimrc.html
+"
+" Adapt the status line accourding to the window
+"""""""""""""""""""""""""""""""""""
+if has("autocmd")
+       au FileType qf
+                   \ if &buftype == "quickfix" |
+                   \     setlocal statusline=%2*%-3.3n%0* |
+                   \     setlocal statusline+=\ \[Compiler\ Messages\] |
+                   \     setlocal statusline+=%=%2*\ %<%P |
+                   \ endif
+
+       fun! <SID>FixMiniBufExplorerTitle()
+           if "-MiniBufExplorer-" == bufname("%")
+                setlocal statusline=%2*%-3.3n%0*
+                setlocal statusline+=\[Buffers\]
+                setlocal statusline+=%=%2*\ %<%P
+           endif
+       endfun
+
+       au BufWinEnter *
+                   \ let oldwinnr=winnr() |
+                   \ windo call <SID>FixMiniBufExplorerTitle() |
+                   \ exec oldwinnr . " wincmd w"
+endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""
+" Showmarks
+""""""""""""""""""""""""""""""
+if has("gui_running")
+   let g:showmarks_enable=1
+else
+   let g:showmarks_enable=0
+   let loaded_showmarks=1
+endif
+
+let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
+
+if has("autocmd")
+   fun! <SID>FixShowmarksColours()
+       if has('gui')
+           hi ShowMarksHLl gui=bold guifg=#a0a0e0 guibg=#2e2e2e
+           hi ShowMarksHLu gui=none guifg=#a0a0e0 guibg=#2e2e2e
+           hi ShowMarksHLo gui=none guifg=#a0a0e0 guibg=#2e2e2e
+           hi ShowMarksHLm gui=none guifg=#a0a0e0 guibg=#2e2e2e
+           hi SignColumn   gui=none guifg=#f0f0f8 guibg=#2e2e2e
+       endif
+   endfun
+   if v:version >= 700
+       autocmd VimEnter,Syntax,ColorScheme * call <SID>FixShowmarksColours()
+   else
+       autocmd VimEnter,Syntax * call <SID>FixShowmarksColours()
+   endif
+endif
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""
+" Showmarks
+""""""""""""""""""""""""""""""
+" GIT
+nmap <leader>gita <Plug>VCSAdd
+nmap <leader>gitc <Plug>VCSCommit
+nmap <leader>gitl <Plug>VCSLog
+map <leader>gitr <Plug>VCSRevert
+nmap <leader>gitu <Plug>VCSUpdate
+nmap <leader>gitd <Plug>VCSVimDiff
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"#########################################
+" End of Plugin related
+"#########################################
+
 
 """"""""""""" From here it isn't cleaned """"""
 
