@@ -206,11 +206,10 @@ let g:miniBufExplorerMoreThanOne = 0
     "let g:miniBufExplMaxSize = 15
 
 "Still haven't discovered what it does
-    let g:miniBufExplMapWindowNavArrows = 1
-    let g:miniBufExplMapCTabSwitchBufs = 1
-    let g:miniBufExplUseSingleClick = 1
-    let g:miniBufExplMapWindowNavVim = 1
-
+    "let g:miniBufExplMapWindowNavArrows = 1
+    "let g:miniBufExplMapCTabSwitchBufs = 1
+    "let g:miniBufExplUseSingleClick = 1
+    "let g:miniBufExplMapWindowNavVim = 1
 
 let g:miniBufExplTabWrap = 1 " make tabs show complete (no broken on two lines)
 let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
@@ -338,12 +337,15 @@ if version >= 700
     map <leader>lon :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
     "Turn off spelling
     map <leader>lnon :setlocal nospell<CR>
+
     "Goto the next work with an error
-    map <leader>mn <Esc>]s
+   imap <leader>mn <Esc>]s
+
     "Correct the work under the cursor
-    map <leader>mm <Esc>z=
+    imap <leader>mm <Esc>z=
+
     "Add the current word to the dictionary
-    map <leader>ma <Esc>zg
+    imap <leader>ma <Esc>zg
 
     " limit it to just the top 10 items
     set sps=best,10
@@ -414,7 +416,6 @@ map <leader>p :cp<cr>
 "Paste toggle - when pasting something in, don't indent.
 set pastetoggle=<F12>
 
-
 "map <leader>tn :tabnew %<cr>
 "map <leader>tc :tabclose<cr>
 "map <leader>tm :tabmove
@@ -470,5 +471,3 @@ autocmd FileType perl call s:MyPerlSettings()
 "#Have to do bash
 "#Have to do vimrc
 augroup end
-
-
