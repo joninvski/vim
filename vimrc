@@ -1,9 +1,195 @@
+"""""""""""""""""""""""""""""""""""""""
+" .vimrc configuration file
+" Author João Trindade
+"""""""""""""""""""""""""""""""""""""""
+" Heavily inspired in:
+" http://amix.dk/vim/vimrc.html
+"""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Get out of VI's compatible mode..
+set nocompatible
+
+"Sets how many lines of history VIM har to remember
+set history=400
+
+"Enable filetype plugin. Required for latex.
+filetype plugin on
+filetype indent on
+
+"Set to auto read when a file is changed from the outside
+set autoread
+
+"Have the mouse enabled all the time:
+set mouse=a
+
+"Set mapleader to '\'
+let mapleader = "\\"
+let g:mapleader = "\\"
+
+"Fast editing of .vimrc
+map <leader>e :e! ~/.vimrc<cr>
+
+"Switch to current dir
+map <leader>CD :cd %:p:h<cr>
+
+"When .vimrc is edited, reload it
+autocmd! bufwritepost .vimrc source ~/.vimrc
+
 "Select all and copy to + buffer
 map <leader>sa :%y +<cr>
 
-"REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
-filetype plugin on
-filetype indent on
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Enable syntax hl
+syntax enable
+
+"By far my favourite
+color desert
+
+"Set bg to dark
+set background=dark
+
+"set fount to
+"set gfn=Bitstream\ Vera\ Sans\ Mono\ 10
+
+"set the right enconding
+set encoding=latin1
+
+"set Pattern matching highlight
+hi MatchParen guifg=#000000 guibg=#D0D090
+
+if has("gui_running")
+    set guioptions-=T
+endif
+
+"Highlight current
+if has("gui_running")
+  set cursorline
+  hi cursorline guibg=black
+endif
+
+"Highlight spaces at the end of lines
+let c_space_errors=1
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
+"""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" VIM userinterface
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"When moving vertical, start scrolling 7 lines before reaching the extremity
+set so=7
+
+"Turn on WiLd menu - command-line completion operates in an enhanced mode.
+set wildmenu
+
+"Always show current position
+set ruler
+
+"The commandbar is 2 high
+set cmdheight=1
+
+"Show line number
+set nu
+
+"Do not redraw, when running macros.. lazyredraw
+set lz
+
+"Change buffer - without saving
+set hid
+
+"Set backspace
+set backspace=eol,start,indent
+
+"Backspace and cursor keys wrap to
+set whichwrap+=<,>,h,l
+
+"Ignore case when searching
+set ignorecase
+
+"You will see results while you type
+set incsearch
+
+"Set magic on
+set magic
+"Use abreviation in the messages (like + instead of Modified)
+
+set shortmess=at
+
+"show matching bracets
+"set showmatch
+
+"How many tenths of a second to blink
+set mat=2
+
+"Highlight search things
+set hlsearch
+
+""""""""""""""""""""""""""""""
+" Statusline (the bar at the bottom)
+"""""""""""""""""""""""""""""""
+"Use statusline in every window
+set laststatus=2
+
+"Format the statusline
+set statusline=\ File:\ %F%m%r%h\ %w\ \ \ Current\ dir:\%r%{getcwd()}%h
+""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Moving around and tabs
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Map space to / and c-space to ?
+map <space> /
+map <c-space> ?
+
+
+"Use the arrows to something usefull
+map <leader><right> :bn<cr>
+map <leader><left>  :bp<cr>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" General Abbrevs
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"My usual typos
+iab wile while
+iab wich which
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" AutoComplete
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! Mosh_Tab_Or_Complete()
+    if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+        return "\<C-N>"
+    else
+        return "\<Tab>"
+endfunction
+
+:inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
+
+"Set the style of the popup menu on autocomplete
+set completeopt=menu
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Command-line config
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Bash like
+cnoremap <C-A>    <Home>
+cnoremap <C-E>    <End>
+cnoremap <C-K>    <C-U>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""" From here it isn't cleaned """"""
 
 "IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
@@ -34,6 +220,9 @@ map <leader>ei o\end{itemize}<Esc>
 "\ll para criar o pdf
 "\lv para ver o pdf
 
+"Font type and size
+set guifont=Monospace\ 10 
+
 let g:Tex_DefaultTargetFormat = "pdf"
 let g:Tex_ViewerCwindowHeight = 6
 
@@ -46,32 +235,6 @@ endif
 "Indent all lines
 map <leader>ia ggVG=
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Enable syntax hl
-syntax enable
-
-"By far my favourite
-color desert
-
-"Set bg to dark
-set background=dark
-
-"set gfn=Bitstream\ Vera\ Sans\ Mono\ 10
-set encoding=latin1
-
-"Pattern matching
-hi MatchParen guifg=#000000 guibg=#D0D090
-
-if has("gui_running")
-    set guioptions-=T
-endif
-
-"Espaços no fim e inicio da linha
-let c_space_errors=1
-highlight WhitespaceEOL ctermbg=red guibg=red
-match WhitespaceEOL /\s\+$/
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Text options
@@ -84,77 +247,6 @@ set smarttab
 set lbr
 set et
 
-""""""""""""""""""""""""""""""
-" Statusline
-"""""""""""""""""""""""""""""""
-"Always hide the statusline
-set laststatus=2
-
-function! CurDir()
-    let curdir = substitute(getcwd(), '/home/joao.trindade/', "~/", "g")
-    return curdir
-endfunction
-
-"Format the statusline
-set statusline=\ File:\ %F%m%r%h\ %w\ \ \ Current\ dir:\%r%{CurDir()}%h
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" VIM userinterface
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Number of characters from the right window border where wrapping starts.
-"set wrapmargin=1
-
-"Set 7 lines to the cursors - when moving vertical..
-set so=7
-
-"Turn on WiLd menu
-set wildmenu
-
-"Always show current position
-set ruler
-
-"The commandbar is 2 high
-set cmdheight=1
-
-"Show line number
-set nu
-
-"Do not redraw, when running macros.. lazyredraw
-"set lz
-
-"Change buffer - without saving
-set hid
-
-"Set backspace
-set backspace=eol,start,indent
-
-"Bbackspace and cursor keys wrap to
-set whichwrap+=<,>,h,l
-
-"Ignore case when searching
-set ignorecase
-"You will see results while you type
-set incsearch
-
-"Set magic on
-set magic
-
-"Short messages .. to avoid.. press a key prompt
-set shortmess=at
-
-"No sound on errors.
-" set noerrorbells
-" set novisualbell
-" set t_vb=
-
-"show matching bracets
-set showmatch
-
-"How many tenths of a second to blink
-set mat=2
-
-"Highlight search things
-set hlsearch
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin configuration
@@ -169,9 +261,6 @@ set hlsearch
     " Buffer - "hide" :hide)
     map <F9> ggVGg?
 
-    "Use the arrows to something usefull
-    map <leader><right> :bn<cr>
-    map <leader><left>  :bp<cr>
 
     let g:miniBufExplModSelTarget = 1
     let g:miniBufExplorerMoreThanOne = 0
@@ -273,22 +362,6 @@ highlight SpellErrors gui=underline ctermfg=Red guifg=Red
 	let g:explDetailedHelp=0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Moving around
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Smart way to move btw. windows
-map <M-down> <C-W>j
-map <M-up> <C-W>k
-map <M-right> <C-W>l
-map <M-left> <C-W>h
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Moving around
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Map space to / and c-space to ?
-map <space> /
-map <c-space> ?
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Filetype generic
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -306,19 +379,7 @@ map <leader>p :cp<cr>
 "Paste toggle - when pasting something in, don't indent.
 set pastetoggle=<F12>
 
-"Fast editing of .vimrc
-map <leader>e :e! ~/.vimrc<cr>
 
-"Switch to current dir
-map <leader>CD :cd %:p:h<cr>
-
-"When .vimrc is edited, reload it
-autocmd! bufwritepost .vimrc source ~/.vimrc
-
-"set cursorline
-"hi cursorline guibg=#333333
-"hi CursorColumn guibg=#333333
-"
 "map <leader>tn :tabnew %<cr>
 "map <leader>tc :tabclose<cr>
 "map <leader>tm :tabmove
@@ -376,16 +437,3 @@ autocmd FileType perl call s:MyPerlSettings()
 augroup end
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" AutoComplete
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! Mosh_Tab_Or_Complete()
-    if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-        return "\<C-N>"
-    else
-        return "\<Tab>"
-endfunction
-
-:inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
-
-":set  dictionary="/usr/dict/words"    
