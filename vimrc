@@ -130,6 +130,7 @@ set mat=2
 
 "Highlight search things
 set hlsearch
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""
 " Statusline (the bar at the bottom)
@@ -141,15 +142,12 @@ set laststatus=2
 set statusline=\ File:\ %F%m%r%h\ %w\ \ \ Current\ dir:\%r%{getcwd()}%h
 """"""""""""""""""""""""""""""""""
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Moving around and tabs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Map space to / and c-space to ?
 map <space> /
 map <c-space> ?
-
 
 "Use the arrows to something usefull
 map <leader><right> :bn<cr>
@@ -187,6 +185,51 @@ set completeopt=menu
 cnoremap <C-A>    <Home>
 cnoremap <C-E>    <End>
 cnoremap <C-K>    <C-U>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""
+" Minibuffer
+""""""""""""""""""""""""""""""
+"Show the miniBufExplorer from the start
+let g:miniBufExplorerMoreThanOne = 0
+
+"Not using because I don't use the vertival window
+    "Use a vertical windows
+    "let g:miniBufExplVSplit = 5
+
+    "Put the miniBufExplorer windows at the right
+    "let g:miniBufExplSplitBelow=1
+
+    "Maximum size of the buffer explorer window
+    "let g:miniBufExplMaxSize = 15
+
+"Still haven't discovered what it does
+    let g:miniBufExplMapWindowNavArrows = 1
+    let g:miniBufExplMapCTabSwitchBufs = 1
+    let g:miniBufExplUseSingleClick = 1
+    let g:miniBufExplMapWindowNavVim = 1
+
+
+let g:miniBufExplTabWrap = 1 " make tabs show complete (no broken on two lines)
+let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
+let g:miniBufExplUseSingleClick = 1 " If you would like to single click on tabs rather than double clicking on them to goto the selected buffer.
+
+"for buffers that have NOT CHANGED and are NOT VISIBLE.
+highlight MBENormal guibg=LightGray guifg=Black
+
+" for buffers that HAVE CHANGED and are NOT VISIBLE
+highlight MBEChanged guibg=LightGray guifg=DarkRed
+
+" buffers that have NOT CHANGED and are VISIBLE
+highlight MBEVisibleNormal term=bold cterm=bold gui=bold guibg=Gray guifg=Grey
+
+" buffers that have CHANGED and are VISIBLE
+highlight MBEVisibleChanged term=bold cterm=bold gui=bold guibg=Gray guifg=DarkRed
+
+let g:bufExplorerSortBy = "name"
+
+autocmd BufRead,BufNew :call UMiniBufExplorer
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""" From here it isn't cleaned """"""
@@ -262,13 +305,6 @@ set et
     map <F9> ggVGg?
 
 
-    let g:miniBufExplModSelTarget = 1
-    let g:miniBufExplorerMoreThanOne = 0
-    let g:miniBufExplModSelTarget = 0
-    let g:miniBufExplUseSingleClick = 1
-    let g:miniBufExplMapWindowNavVim = 1
-    let g:miniBufExplVSplit = 25
-    let g:miniBufExplSplitBelow=1
     map <F10> :WMToggle<cr>
 
    """"""""""""""""""""""""""""""
