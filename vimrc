@@ -55,8 +55,9 @@ color desert
 "Set bg to dark
 set background=dark
 
-"set fount to
+"Font type and size
 "set gfn=Bitstream\ Vera\ Sans\ Mono\ 10
+set guifont=Monospace\ 10
 
 "set the right enconding
 set encoding=latin1
@@ -216,16 +217,16 @@ let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you 
 let g:miniBufExplUseSingleClick = 1 " If you would like to single click on tabs rather than double clicking on them to goto the selected buffer.
 
 "for buffers that have NOT CHANGED and are NOT VISIBLE.
-highlight MBENormal guibg=LightGray guifg=Black
+highlight MBENormal guifg=LightBlue
 
 " for buffers that HAVE CHANGED and are NOT VISIBLE
-highlight MBEChanged guibg=LightGray guifg=DarkRed
+highlight MBEChanged guifg=Red
 
 " buffers that have NOT CHANGED and are VISIBLE
-highlight MBEVisibleNormal term=bold cterm=bold gui=bold guibg=Gray guifg=Grey
+highlight MBEVisibleNormal term=bold cterm=bold gui=bold guifg=Green
 
 " buffers that have CHANGED and are VISIBLE
-highlight MBEVisibleChanged term=bold cterm=bold gui=bold guibg=Gray guifg=DarkRed
+highlight MBEVisibleChanged term=bold cterm=bold gui=bold guifg=Green
 
 let g:bufExplorerSortBy = "name"
 
@@ -263,8 +264,6 @@ map <leader>ei o\end{itemize}<Esc>
 "\ll para criar o pdf
 "\lv para ver o pdf
 
-"Font type and size
-set guifont=Monospace\ 10 
 
 let g:Tex_DefaultTargetFormat = "pdf"
 let g:Tex_ViewerCwindowHeight = 6
