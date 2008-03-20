@@ -1,6 +1,9 @@
 """""""""""""""""""""""""""""""""""""""
 " .vimrc configuration file
-" Author João Trindade
+"
+" Author: João Trindade
+" WWW: http://joaotrindade.no-ip.org
+" Email: trindade.joao@gmail.com
 """""""""""""""""""""""""""""""""""""""
 " Heavily inspired in:
 " http://amix.dk/vim/vimrc.html
@@ -251,9 +254,6 @@ endif
 
 " Vim Spell {{{
 """"""""""""""""""""""""""""""
-"they were using white on white
-"    highlight PmenuSel ctermfg=black ctermbg=lightgray
-
 if version >= 700
 
     "Portuguese dictionary
@@ -338,10 +338,15 @@ let g:miniBufExplorerMoreThanOne = 0
 "let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplUseSingleClick = 1
 "let g:miniBufExplMapWindowNavVim = 1
+"
+" make tabs show complete (no broken on two lines)
+let g:miniBufExplTabWrap = 1
 
-let g:miniBufExplTabWrap = 1 " make tabs show complete (no broken on two lines)
-let g:miniBufExplModSelTarget = 1 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
-let g:miniBufExplUseSingleClick = 1 " If you would like to single click on tabs rather than double clicking on them to goto the selected buffer.
+" If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
+let g:miniBufExplModSelTarget = 1
+
+" If you would like to single click on tabs rather than double clicking on them to goto the selected buffer.
+let g:miniBufExplUseSingleClick = 1
 
 "for buffers that have NOT CHANGED and are NOT VISIBLE.
 highlight MBENormal guifg=LightBlue
@@ -445,11 +450,6 @@ let g:explDetailedHelp=0
 map <F10> :WMToggle<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-"######################################### End of Plugin related1}}}
-
-"From here it isn't cleaned{{{
-
-
 " Latex related {{{
 """"""""""""""""""""""""""""""""""""""
 
@@ -489,71 +489,7 @@ let g:Tex_ViewerCwindowHeight = 6
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugin configuration
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-    """"""""""""""""""""""""""""""
-    " Win Manager
-    """"""""""""""""""""""""""""""
-    "Keys
-    "<Leader>x \\Comentar | Descomendar
-    "<Leader>c \\(Comentar | Descomentar) + Vai uma lina para baixo
-    """"""""""""""""""""""""""""""
-
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " QuickFix
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "Apos fazer um make ou um grep, fazer \cw para navegar entre erros/resultados
-    map <leader>n :cn<cr>
-    map <leader>p :cp<cr>
-    "map <leader>cw :botright cw 10<cr>
-
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "  MISC
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "map <leader>tn :tabnew %<cr>
-    "map <leader>tc :tabclose<cr>
-    "map <leader>tm :tabmove
-
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "  PERL SETTINGS
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    let g:Perl_AuthorName      = 'João Paulo Pinto Trindade'
-    "let g:Perl_AuthorRef       = 'Mn'
-    let g:Perl_Email           = 'trindade.joao@gmail.com'
-    let g:Perl_Company         = 'Inesc-ID - Grupo de Redes'
-
-    "Control+F9 or <leader>rr = Runs Perl Code
-    "Alt+F9 or <leader>rv = Checks Perl Syntax
-    "<leader>cu = Function Comment
-
-    function! s:MyPerlSettings()
-        set autowrite
-        "set errorformat=%f:%l:%m
-        set formatoptions=croq
-        "set keywordprg=man -S 3
-        let perl_want_scope_in_variables = 1
-        let perl_extended_vars = 1
-        nmap <leader>rl :call Perl_Run()<CR>
-        nmap <leader>cc :call Perl_Run()<CR>
-        "noremap :call Executor()
-    endfunction
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " Load Filetypes
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "Or my favorite, load filetype specific settings automagically as the file loads:
-    augroup vimrc_filetype
-        autocmd!
-        autocmd FileType perl call s:MyPerlSettings()
-        "#Have to do latex
-        "#Have to do bash
-        "#Have to do vimrc
-    augroup end
-
-""""""}}}
+"######################################### End of Plugin related1}}}
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
