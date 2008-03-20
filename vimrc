@@ -12,7 +12,7 @@
 set nocompatible
 
 "Sets how many lines of history VIM har to remember
-set history=400
+set history=500
 
 "Enable filetype plugin. Required for latex.
 filetype plugin on
@@ -62,6 +62,7 @@ set background=dark
 
 "Font type and size
 "set gfn=Bitstream\ Vera\ Sans\ Mono\ 10
+"set guifont=Terminus\ 8
 set guifont=Monospace\ 10
 
 "set the right enconding
@@ -206,6 +207,9 @@ map <leader>CD :cd %:p:h<cr>
 
 "Select all and copy to + buffer
 map <leader>sa :%y +<cr>
+
+" Buffer - "hide" :hide)
+map <F9> mzggVGg?'z
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Text options{{{
@@ -221,6 +225,15 @@ set smarttab
 
 "linebreak
 set lbr
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Fold"{{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" if using a version 6 vim, enable folding
+if version >= 600
+    set foldenable
+    set foldmethod=marker"
+endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Plugin related {{{1
@@ -336,7 +349,7 @@ nmap <leader>gitd <Plug>VCSVimDiff
 
 "######################################### End of Plugin related1}}}
 
-""""""""""""" From here it isn't cleaned{{{
+"From here it isn't cleaned{{{
 
 "IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
@@ -371,11 +384,6 @@ map <leader>ei o\end{itemize}<Esc>
 let g:Tex_DefaultTargetFormat = "pdf"
 let g:Tex_ViewerCwindowHeight = 6
 
-" if using a version 6 vim, enable folding
-if version >= 600
-    set foldenable
-    set foldmethod=marker
-endif
 
 
 
@@ -390,8 +398,6 @@ endif
 set viminfo='10,\"100,:20,%,n~/.viminfo
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 
-    " Buffer - "hide" :hide)
-    map <F9> ggVGg?
 
 
     map <F10> :WMToggle<cr>
