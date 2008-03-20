@@ -47,6 +47,10 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=%h%m%r%w                " flags
     set titlestring+=\ -\ %{v:progname}      " program name
 endif
+
+"restore your cursor position in a file over several editing sessions.
+set viminfo='10,\"100,:20,%,n~/.viminfo
+au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Colors and Fonts{{{
@@ -210,6 +214,15 @@ map <leader>sa :%y +<cr>
 
 " Buffer - "hide" :hide)
 map <F9> mzggVGg?'z
+
+"Explore Fast
+map <leader>ee :Explore <cr>
+
+"Paste toggle - when pasting something in, don't indent.
+set pastetoggle=<F12>
+
+"Quit fast
+map <leader>q :qa <cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Text options{{{
@@ -236,6 +249,60 @@ if version >= 600
 endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+" Vim Spell {{{
+""""""""""""""""""""""""""""""
+"they were using white on white
+"    highlight PmenuSel ctermfg=black ctermbg=lightgray
+
+if version >= 700
+
+    "Portuguese dictionary
+    map <leader>lpt <Esc>:setlocal spell spelllang=pt<CR>
+
+    "English dictionary
+    map <leader>len <Esc>:setlocal spell spelllang=en_gb<CR>
+
+    " toggle spelling with F4 key
+    map <leader>lon :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
+
+    "Turn off spelling
+    map <leader>lnon :setlocal nospell<CR>
+
+    "Goto the next work with an error
+    imap <leader>mn <Esc>]s
+
+    "Correct the work under the cursor
+    imap <leader>mm <Esc>z=
+
+    "Add the current word to the dictionary
+    imap <leader>ma <Esc>zg
+
+    " limit it to just the top 10 items
+    set sps=best,10
+
+    "Where it should get the dictionary files
+    let g:spellfile_URL = 'http://ftp.vim.org/vim/runtime/spell'
+
+    "Mark bad spelled words with red
+    highlight SpellErrors gui=underline ctermfg=Red guifg=Red
+
+    setlocal spell spelllang=pt
+    setlocal nospell
+endif
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Files and backups{{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Turn backup off
+set nobackup
+
+"Don't create a backup when overwriting a file
+set nowb 
+
+set noswapfile
+set noar
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
 " Plugin related {{{1
 "#########################################
 
@@ -251,7 +318,7 @@ let g:miniBufExplorerMoreThanOne = 0
 "Put the miniBufExplorer windows at the right
 "let g:miniBufExplSplitBelow=1
 
-"Maximum size of the buffer explorer window
+"Maximum size of the mini buffer explorer window
 "let g:miniBufExplMaxSize = 15
 
 "Still haven't discovered what it does
@@ -347,6 +414,25 @@ nmap <leader>gitd <Plug>VCSVimDiff
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+" Win Manager {{{
+""""""""""""""""""""""""""""""
+
+"Split vertically
+let g:explVertical=1
+
+let g:winManagerWidth=30
+let g:defaultExplorer=0
+let g:winManagerWindowLayout = 'FileExplorer,TagsExplorer'
+
+"Hide some files
+let g:explHideFiles='^\.,\.gz$,\.exe$,\.zip$'
+
+"Hide the help thing..
+let g:explDetailedHelp=0
+
+map <F10> :WMToggle<cr>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
 "######################################### End of Plugin related1}}}
 
 "From here it isn't cleaned{{{
@@ -395,21 +481,6 @@ let g:Tex_ViewerCwindowHeight = 6
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Buffer realted
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set viminfo='10,\"100,:20,%,n~/.viminfo
-au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
-
-
-
-    map <F10> :WMToggle<cr>
-
-    """"""""""""""""""""""""""""""
-    " Win Manager
-    """"""""""""""""""""""""""""""
-    let g:winManagerWidth=35
-    let g:defaultExplorer=0
-    let g:winManagerWindowLayout = 'FileExplorer,TagsExplorer'
-    let g:explHideFiles='^\.,\.gz$,\.exe$,\.zip$'
-
 
     """"""""""""""""""""""""""""""
     " Win Manager
@@ -419,49 +490,7 @@ au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|
     "<Leader>c \\(Comentar | Descomentar) + Vai uma lina para baixo
 
     """"""""""""""""""""""""""""""
-    " Vim Spell (no longer in plugin)
-    """"""""""""""""""""""""""""""
-    "they were using white on white
-    "    highlight PmenuSel ctermfg=black ctermbg=lightgray
 
-    if version >= 700
-
-        "Texto em portugues
-        map <leader>lpt <Esc>:setlocal spell spelllang=pt<CR>
-        "Texto em Ingles
-        map <leader>len <Esc>:setlocal spell spelllang=en_gb<CR>
-        " toggle spelling with F4 key
-        map <leader>lon :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
-        "Turn off spelling
-        map <leader>lnon :setlocal nospell<CR>
-
-        "Goto the next work with an error
-        imap <leader>mn <Esc>]s
-
-        "Correct the work under the cursor
-        imap <leader>mm <Esc>z=
-
-        "Add the current word to the dictionary
-        imap <leader>ma <Esc>zg
-
-        " limit it to just the top 10 items
-        set sps=best,10
-
-        "Where it should get the dictionary files
-        let g:spellfile_URL = 'http://ftp.vim.org/vim/runtime/spell'
-
-        setlocal spell spelllang=pt
-        setlocal nospell
-    endif
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " Files and backups
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "Turn backup off
-    set nobackup
-    set nowb
-    set noswapfile
-    set noar
 
     """""""""""""""""""""""""""""""
     " Indent
@@ -476,24 +505,8 @@ au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|
     "set wrap
 
     """"""""""""""""""""""""""""""
-    " Spell related
-    """""""""""""""""""""""""""""""
-    highlight SpellErrors gui=underline ctermfg=Red guifg=Red
-
-    """"""""""""""""""""""""""""""
     " File explorer
     """"""""""""""""""""""""""""""
-    "Split vertically
-    let g:explVertical=1
-
-    "Window size
-    let g:explWinSize=35
-    let g:explSplitLeft=1
-    let g:explSplitBelow=1
-    "Hide some files
-    let g:explHideFiles='^\.,.*\.class$,.*\.swp$,.*\.pyc$,.*\.swo$,\.DS_Store$'
-    "Hide the help thing..
-    let g:explDetailedHelp=0
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " Filetype generic
@@ -510,18 +523,11 @@ au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     "  MISC
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "Paste toggle - when pasting something in, don't indent.
-    set pastetoggle=<F12>
 
     "map <leader>tn :tabnew %<cr>
     "map <leader>tc :tabclose<cr>
     "map <leader>tm :tabmove
 
-    "Explore Fast
-    map <leader>ee :Explore <cr>
-
-    "Quit fast
-    map <leader>q :qa <cr>
 
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     "  PERL SETTINGS
