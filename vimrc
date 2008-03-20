@@ -297,11 +297,23 @@ endif
 set nobackup
 
 "Don't create a backup when overwriting a file
-set nowb 
+set nowb
 
 set noswapfile
 set noar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Indent {{{
+"""""""""""""""""""""""""""""""
+"Auto indent
+set ai
+"Smart indet
+set si
+"C-style indeting
+set cindent
+"Wrap lines
+"set wrap
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Plugin related {{{1
 "#########################################
@@ -437,6 +449,10 @@ map <F10> :WMToggle<cr>
 
 "From here it isn't cleaned{{{
 
+
+" Latex related {{{
+""""""""""""""""""""""""""""""""""""""
+
 "IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
 " program to always generate a file-name.
@@ -456,31 +472,26 @@ map <buffer> <silent> ã ã
 "imap ã <Plug>Tex_MathCal
 "imap é <Plug>Traditional
 
+"Ignore some warnings
 let g:Tex_IgnoredWarnings="Font""\n"
 
-"Begin{itemize}
+"Shortcut to Begin{itemize}
 map <leader>bi o\begin{itemize}<Esc>
-"End {itemize}
+"shortcut to End {itemize}
 map <leader>ei o\end{itemize}<Esc>
 
-"\ll para criar o pdf
-"\lv para ver o pdf
-
-
+" Create PDFs
 let g:Tex_DefaultTargetFormat = "pdf"
+
 let g:Tex_ViewerCwindowHeight = 6
 
-
-
-
+"Use \ll to create the pdf
+"Use \lv to see the pdf
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Buffer realted
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """"""""""""""""""""""""""""""
     " Win Manager
@@ -488,29 +499,8 @@ let g:Tex_ViewerCwindowHeight = 6
     "Keys
     "<Leader>x \\Comentar | Descomendar
     "<Leader>c \\(Comentar | Descomentar) + Vai uma lina para baixo
-
     """"""""""""""""""""""""""""""
 
-
-    """""""""""""""""""""""""""""""
-    " Indent
-    """""""""""""""""""""""""""""""
-    "Auto indent
-    set ai
-    "Smart indet
-    set si
-    "C-style indeting
-    set cindent
-    "Wrap lines
-    "set wrap
-
-    """"""""""""""""""""""""""""""
-    " File explorer
-    """"""""""""""""""""""""""""""
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " Filetype generic
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " QuickFix
@@ -523,11 +513,9 @@ let g:Tex_ViewerCwindowHeight = 6
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     "  MISC
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
     "map <leader>tn :tabnew %<cr>
     "map <leader>tc :tabclose<cr>
     "map <leader>tm :tabmove
-
 
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     "  PERL SETTINGS
