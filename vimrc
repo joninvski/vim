@@ -303,7 +303,9 @@ set nobackup
 set nowb
 
 set noswapfile
-set noar
+
+"Autoread a file when it has been changed
+set ar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Indent {{{
