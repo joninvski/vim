@@ -55,7 +55,7 @@ if has('title') && (has('gui_running') || &title)
 endif
 
 "restore your cursor position in a file over several editing sessions.
-set viminfo='10,\"100,:20,%,n~/.viminfo
+set viminfo=!,'10,\"100,:20,%,n~/.viminfo
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
@@ -493,6 +493,11 @@ let g:Tex_ViewerCwindowHeight = 6
 "Use \ll to create the pdf
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Yank Ring {{{
+""""""""""""""""""""""""""""""
+map <leader>p :YRShow<cr>
+""""""""""""""""""""""""""""""}}}
 
 "######################################### End of Plugin related1}}}
 
