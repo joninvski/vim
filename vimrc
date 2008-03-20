@@ -8,6 +8,9 @@
 " Heavily inspired in:
 " http://amix.dk/vim/vimrc.html
 """""""""""""""""""""""""""""""""""""""
+" Latest version, always available at:
+" http://joaotrindade.no-ip.org/git/gitweb.cgi?p=vim/.git;a=summary
+"""""""""""""""""""""""""""""""""""""""
 
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
