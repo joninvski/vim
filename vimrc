@@ -6,8 +6,7 @@
 " http://amix.dk/vim/vimrc.html
 """""""""""""""""""""""""""""""""""""""
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" General
+" General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Get out of VI's compatible mode..
 set nocompatible
@@ -48,11 +47,9 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=%h%m%r%w                " flags
     set titlestring+=\ -\ %{v:progname}      " program name
 endif
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Colors and Fonts
+" Colors and Fonts{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Enable syntax hl
 syntax enable
@@ -87,12 +84,11 @@ endif
 let c_space_errors=1
 highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
-"""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""}}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" VIM userinterface
+" VIM userinterface{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"When moving vertical, start scrolling 7 lines before reaching the extremity
+"When moving vertical, start scrolling 7 lines before reaching the extremity"{{{
 set so=7
 
 "Turn on WiLd menu - command-line completion operates in an enhanced mode.
@@ -139,20 +135,19 @@ set mat=2
 
 "Highlight search things
 set hlsearch
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-""""""""""""""""""""""""""""""
-" Statusline (the bar at the bottom)
+" Statusline (the bar at the bottom){{{
 """""""""""""""""""""""""""""""
 "Use statusline in every window
 set laststatus=2
 
 "Format the statusline
 set statusline=\ File:\ %F%m%r%h\ %w\ \ \ Current\ dir:\%r%{getcwd()}%h
-""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""}}}
+"}}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Moving around and tabs
+" Moving around and tabs{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Map space to / and c-space to ?
 map <space> /
@@ -167,18 +162,16 @@ nmap <C-down> mz:m+<cr>`z
 nmap <C-up> mz:m-2<cr>`z
 vmap <C-down> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <C-up> :m'<-2<cr>`>my`<mzgv`yo`z
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" General Abbrevs
+" General Abbrevs{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "My usual typos
 iab wile while
 iab wich which
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" AutoComplete
+" AutoComplete{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! Mosh_Tab_Or_Complete()
     if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
@@ -193,20 +186,17 @@ endfunction
 
 "Set the style of the popup menu on autocomplete
 set completeopt=menu
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Command-line config
+" Command-line config{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Bash like
 cnoremap <C-A>    <Home>
 cnoremap <C-E>    <End>
 cnoremap <C-K>    <C-U>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Usefull shortcuts
+" Usefull shortcuts{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Indent all lines
 map <leader>ia mzggVG='z
@@ -216,10 +206,9 @@ map <leader>CD :cd %:p:h<cr>
 
 "Select all and copy to + buffer
 map <leader>sa :%y +<cr>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Text options
+" Text options{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "In Insert mode: Use the appropriate number of spaces to insert a <Tab>
 set expandtab
@@ -232,14 +221,12 @@ set smarttab
 
 "linebreak
 set lbr
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-"#########################################
-" Plugin related
+" Plugin related {{{1
 "#########################################
 
-""""""""""""""""""""""""""""""
-" Minibuffer
+" Minibuffer{{{
 """"""""""""""""""""""""""""""
 "Show the miniBufExplorer from the start
 let g:miniBufExplorerMoreThanOne = 0
@@ -306,10 +293,9 @@ if has("autocmd")
                 \ windo call <SID>FixMiniBufExplorerTitle() |
                 \ exec oldwinnr . " wincmd w"
 endif
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-""""""""""""""""""""""""""""""
-" Showmarks
+" Showmarks {{{
 """"""""""""""""""""""""""""""
 if has("gui_running")
     let g:showmarks_enable=1
@@ -336,26 +322,21 @@ if has("autocmd")
         autocmd VimEnter,Syntax * call <SID>FixShowmarksColours()
     endif
 endif
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+" GIT{{{
 """"""""""""""""""""""""""""""
-" Showmarks
-""""""""""""""""""""""""""""""
-" GIT
 nmap <leader>gita <Plug>VCSAdd
 nmap <leader>gitc <Plug>VCSCommit
 nmap <leader>gitl <Plug>VCSLog
 map <leader>gitr <Plug>VCSRevert
 nmap <leader>gitd <Plug>VCSVimDiff
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-"#########################################
-" End of Plugin related
-"#########################################
+"######################################### End of Plugin related1}}}
 
-
-""""""""""""" From here it isn't cleaned """"""
+""""""""""""" From here it isn't cleaned{{{
 
 "IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
@@ -572,5 +553,7 @@ au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|
         "#Have to do vimrc
     augroup end
 
-    "-----------------------------------------------------------------------
-    " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
+""""""}}}
+
+"-----------------------------------------------------------------------
+" vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
