@@ -99,7 +99,7 @@ match WhitespaceEOL /\s\+$/
 
 " VIM userinterface{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"When moving vertical, start scrolling 7 lines before reaching the extremity"{{{
+"When moving vertical, start scrolling 7 lines before reaching the extremity"
 set so=7
 
 "Turn on WiLd menu - command-line completion operates in an enhanced mode.
@@ -156,7 +156,6 @@ set laststatus=2
 "Format the statusline
 set statusline=\ File:\ %F%m%r%h\ %w\ \ \ Current\ dir:\%r%{getcwd()}%h
 """"""""""""""""""""""""""""""""""}}}
-"}}}
 
 " Moving around and tabs{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
