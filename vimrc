@@ -163,7 +163,7 @@ set statusline=\ File:\ %F%m%r%h\ %w\ \ \ Current\ dir:\%r%{getcwd()}%h
 map <space> /
 map <c-space> ?
 
-"Use the arrows to something usefull
+"Use the arrows to something useful
 map <leader><right> :bn<cr>
 map <leader><left>  :bp<cr>
 
@@ -174,7 +174,7 @@ vmap <C-down> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <C-up> :m'<-2<cr>`>my`<mzgv`yo`z
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" General Abbrevs{{{
+" General Abbreviations  {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "My usual typos
 iab wile while
@@ -206,7 +206,7 @@ cnoremap <C-E>    <End>
 cnoremap <C-K>    <C-U>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" Usefull shortcuts{{{
+" Useful shortcuts{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Indent all lines
 map <leader>ia mzggVG='z
@@ -264,20 +264,20 @@ if version >= 700
     "English dictionary
     map <leader>len <Esc>:setlocal spell spelllang=en_gb<CR>
 
-    " toggle spelling with F4 key
+    " toggle spelling with <leader>lon
     map <leader>lon :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
 
     "Turn off spelling
     map <leader>lnon :setlocal nospell<CR>
 
     "Goto the next work with an error
-    imap <leader>mn <Esc>]s
+    map <leader>ln <Esc>]s
 
     "Correct the work under the cursor
-    imap <leader>mm <Esc>z=
+    map <leader>lm <Esc>z=
 
     "Add the current word to the dictionary
-    imap <leader>ma <Esc>zg
+    map <leader>la <Esc>zg
 
     " limit it to just the top 10 items
     set sps=best,10
@@ -311,15 +311,15 @@ set ar
 """""""""""""""""""""""""""""""
 "Auto indent
 set ai
-"Smart indet
+"Smart indent
 set si
-"C-style indeting
+"C-style indenting
 set cindent
 "Wrap lines
 "set wrap
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" Plugin related {{{1
+" Plug-in related {{{1
 "#########################################
 
 " Minibuffer{{{
@@ -327,7 +327,7 @@ set cindent
 "Show the miniBufExplorer from the start
 let g:miniBufExplorerMoreThanOne = 0
 
-"Not using because I don't use the vertival window
+"Not using because I don't use the vertical window
 "Use a vertical windows
 "let g:miniBufExplVSplit = 5
 
@@ -349,7 +349,7 @@ let g:miniBufExplTabWrap = 1
 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
 let g:miniBufExplModSelTarget = 1
 
-" If you would like to single click on tabs rather than double clicking on them to goto the selected buffer.
+" If you would like to single click on tabs rather than double clicking on them to go to the selected buffer.
 let g:miniBufExplUseSingleClick = 1
 
 "for buffers that have NOT CHANGED and are NOT VISIBLE.
@@ -371,7 +371,7 @@ autocmd BufRead,BufNew :call UMiniBufExplorer
 """""""""""""""""""""""""""""""""""
 " Stolen from http://dev.gentoo.org/~bass/configs/vimrc.html
 "
-" Adapt the status line accourding to the window
+" Adapt the status line according to the window
 """""""""""""""""""""""""""""""""""
 if has("autocmd")
     au FileType qf
@@ -498,7 +498,7 @@ let g:Tex_ViewerCwindowHeight = 6
 map <leader>p :YRShow<cr>
 """"""""""""""""""""""""""""""}}}
 
-"######################################### End of Plugin related1}}}
+"######################################### End of Plug-in related 1}}}
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
