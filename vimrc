@@ -57,6 +57,9 @@ endif
 "restore your cursor position in a file over several editing sessions.
 set viminfo=!,'10,\"100,:20,%,n~/.viminfo
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+
+"Set visual bell (instead of the audible)
+set visualbell
 """""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Colors and Fonts{{{
