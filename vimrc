@@ -271,7 +271,7 @@ if version >= 700
     map <leader>lon :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
 
     "Turn off spelling
-    map <leader>lnon :setlocal nospell<CR>
+    map <leader>loff :setlocal nospell<CR>
 
     "Goto the next work with an error
     map <leader>ln <Esc>]s
