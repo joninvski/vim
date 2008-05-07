@@ -369,7 +369,7 @@ highlight MBEVisibleChanged term=bold cterm=bold gui=bold guifg=Green
 
 let g:bufExplorerSortBy = "name"
 
-autocmd BufRead,BufNew :call UMiniBufExplorer
+"autocmd BufRead,BufNew :call UMiniBufExplorer
 
 """""""""""""""""""""""""""""""""""
 " Stolen from http://dev.gentoo.org/~bass/configs/vimrc.html
@@ -392,10 +392,10 @@ if has("autocmd")
         endif
     endfun
 
-    au BufWinEnter *
-                \ let oldwinnr=winnr() |
-                \ windo call <SID>FixMiniBufExplorerTitle() |
-                \ exec oldwinnr . " wincmd w"
+"    au BufWinEnter *
+"                \ let oldwinnr=winnr() |
+"                \ windo call <SID>FixMiniBufExplorerTitle() |
+"                \ exec oldwinnr . " wincmd w"
 endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
