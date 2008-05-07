@@ -197,8 +197,16 @@ endfunction
 
 :inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
 
+
 "Set the style of the popup menu on autocomplete
 set completeopt=menu
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Snippets{{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"A basic snippet can save you a lot of typing. Define a word trigger and on
+"insertion it will be expanded to the full snippet.
+let g:snippetsEmu_key = "<S-Tab>" "Use snippets with Shift+Tab
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Command-line config{{{
