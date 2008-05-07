@@ -100,6 +100,13 @@ highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
 """""""""""""""""""""""""""""""""""""""""""}}}
 
+" FileTypes{{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"This file is a python and django filetype needed to activate django
+"snippets
+autocmd BufNewFile,BufRead models.py setlocal ft=python.django  
+"""""""""""""""""""""""""""""""""""""""""""}}}
+
 " VIM userinterface{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "When moving vertical, start scrolling 7 lines before reaching the extremity"
@@ -199,6 +206,13 @@ endfunction
 
 "Set the style of the popup menu on autocomplete
 set completeopt=menu
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Snippets{{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"A basic snippet can save you a lot of typing. Define a word trigger and on
+"insertion it will be expanded to the full snippet.
+let g:snippetsEmu_key = "<S-Tab>" "Use snippets with Shift+Tab
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Command-line config{{{
@@ -499,6 +513,11 @@ let g:Tex_ViewerCwindowHeight = 6
 " Yank Ring {{{
 """"""""""""""""""""""""""""""
 map <leader>p :YRShow<cr>
+""""""""""""""""""""""""""""""}}}
+
+" Project{{{
+""""""""""""""""""""""""""""""
+nmap <silent> <Leader>P :Project<CR>
 """"""""""""""""""""""""""""""}}}
 
 "######################################### End of Plug-in related 1}}}
