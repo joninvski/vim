@@ -104,7 +104,10 @@ match WhitespaceEOL /\s\+$/
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "This file is a python and django filetype needed to activate django
 "snippets
-autocmd BufNewFile,BufRead models.py setlocal ft=python.django  
+autocmd BufNewFile,BufRead *.py setlocal ft=python.django
+autocmd BufNewFile,BufRead *.html setlocal ft=html.django
+autocmd BufNewFile,BufRead *.tex setlocal ft=latex.tex
+
 """""""""""""""""""""""""""""""""""""""""""}}}
 
 " VIM userinterface{{{
@@ -519,6 +522,13 @@ map <leader>p :YRShow<cr>
 """"""""""""""""""""""""""""""
 nmap <silent> <Leader>P :Project<CR>
 """"""""""""""""""""""""""""""}}}
+
+
+" CloseTag{{{
+""""""""""""""""""""""""""""""
+"Use <Control+_> to close tag
+:au Filetype html,xml,xsl source ~/.vim/macros/closetag.vim
+""""""""""""""""""""""""""""""
 
 "######################################### End of Plug-in related 1}}}
 
