@@ -272,6 +272,16 @@ if version >= 600
     set foldenable
     set foldmethod=marker"
 endif
+
+"Keys
+"  * zf create the fold, useful for manual and marker methods. Select any piece of text, [press v or shift-v, then use arrow keys], and then press zf. It will place the markers around the fold for you in marker mode; in case of manual, it will store fold location in memory. Remember f by saying this command "forms" the fold, or just remember fold :-)
+"  * zc close the fold at the cursor.
+"  * zo open the fold at the cursor.
+"  * zr  increment the fold level by one, so if all classes are folded, they will opened, but function definitions will be kept folded.
+"  * zm reverse of the above, if one or more function folds are open, they will be closed, but classes will be kept open.
+"  * zR open all folds.
+"  * zM close all folds.
+"  * zj and zk can be used to jump from one fold to another.  
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Vim Spell {{{
