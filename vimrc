@@ -106,8 +106,7 @@ match WhitespaceEOL /\s\+$/
 "snippets
 autocmd BufNewFile,BufRead *.py setlocal ft=python.django
 autocmd BufNewFile,BufRead *.html setlocal ft=html.django
-autocmd BufNewFile,BufRead *.tex setlocal ft=latex.tex
-
+autocmd BufNewFile,BufRead *.tex setlocal ft=tex
 """""""""""""""""""""""""""""""""""""""""""}}}
 
 " VIM userinterface{{{
@@ -349,6 +348,21 @@ set cindent
 "set wrap
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+" Grep {{{
+""""""""""""""""""""""""""""""""""""""
+"IMPORTANT: grep will sometimes skip displaying the file name if you
+" search in a singe file. This will confuse Latex-Suite. Set your grep
+" program to always generate a file-name.
+set grepprg=grep\ -inH\ 
+""""""""""""""""""""""""""""""""""""""}}}
+
+" Quickfix {{{
+""""""""""""""""""""""""""""""""""""""
+map <leader>n :cn<cr>
+map <leader>m :cp<cr>
+map <leader>w :cw 8<cr>
+""""""""""""""""""""""""""""""""""""""}}}
+
 " Plug-in related {{{1
 "#########################################
 
@@ -419,10 +433,10 @@ if has("autocmd")
         endif
     endfun
 
-"    au BufWinEnter *
-"                \ let oldwinnr=winnr() |
-"                \ windo call <SID>FixMiniBufExplorerTitle() |
-"                \ exec oldwinnr . " wincmd w"
+    au BufWinEnter *
+                \ let oldwinnr=winnr() |
+                \ windo call <SID>FixMiniBufExplorerTitle() |
+                \ exec oldwinnr . " wincmd w"
 endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
@@ -487,11 +501,6 @@ map <F10> :WMToggle<cr>
 " Latex related {{{
 """"""""""""""""""""""""""""""""""""""
 
-"IMPORTANT: grep will sometimes skip displaying the file name if you
-" search in a singe file. This will confuse Latex-Suite. Set your grep
-" program to always generate a file-name.
-set grepprg=grep\ -nH\ $*
-
 "To solve the propleme with vim-latexsuite has with ã and â
 imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
 imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
@@ -533,13 +542,17 @@ map <leader>p :YRShow<cr>
 nmap <silent> <Leader>P :Project<CR>
 """"""""""""""""""""""""""""""}}}
 
-
 " CloseTag{{{
 """"""""""""""""""""""""""""""
 "Use <Control+_> to close tag
 :au Filetype html,xml,xsl source ~/.vim/macros/closetag.vim
-""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""}}}
 
+" Taglist{{{
+""""""""""""""""""""""""""""""
+nnoremap <silent> <F8> :TlistToggle<CR>
+let Tlist_Use_Right_Window = 1
+""""""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 
 "-----------------------------------------------------------------------
