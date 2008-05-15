@@ -432,9 +432,7 @@ if has("autocmd")
 
     fun! <SID>FixMiniBufExplorerTitle()
         if "-MiniBufExplorer-" == bufname("%")
-            setlocal statusline=%2*%-3.3n%0*
             setlocal statusline+=\[Buffers\]
-            setlocal statusline+=%=%2*\ %<%P
         endif
     endfun
 
