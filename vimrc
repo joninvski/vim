@@ -85,7 +85,7 @@ set encoding=latin1
 hi MatchParen guifg=#000000 guibg=#D0D090
 
 if has("gui_running")
-    set guioptions-=T
+    set guioptions=m
 endif
 
 "Highlight current
@@ -107,6 +107,11 @@ match WhitespaceEOL /\s\+$/
 autocmd BufNewFile,BufRead *.py setlocal ft=python.django
 autocmd BufNewFile,BufRead *.html setlocal ft=html.django
 autocmd BufNewFile,BufRead *.tex setlocal ft=tex
+"""""""""""""""""""""""""""""""""""""""""""}}}
+
+"""" IDE Related {{{IDE Related
+" bind ctrl+space for omnicompletion (like eclipse)
+inoremap <Nul> <C-x><C-o>
 """""""""""""""""""""""""""""""""""""""""""}}}
 
 " VIM userinterface{{{
@@ -166,7 +171,7 @@ set hlsearch
 set laststatus=2
 
 "Format the statusline
-set statusline=\ File:\ %F%m%r%h\ %w\ \ \ Current\ dir:\%r%{getcwd()}%h
+set statusline=\ File:\ %F%m%r%h\ %w\ \ \ Current\ dir:\%r%{getcwd()}%h%=A
 """"""""""""""""""""""""""""""""""}}}
 
 " Moving around and tabs{{{
