@@ -109,7 +109,7 @@ autocmd BufNewFile,BufRead *.html setlocal ft=html.django
 autocmd BufNewFile,BufRead *.tex setlocal ft=tex
 """""""""""""""""""""""""""""""""""""""""""}}}
 
-"""" IDE Related {{{IDE Related
+" IDE Related{{{
 " bind ctrl+space for omnicompletion (like eclipse)
 inoremap <Nul> <C-x><C-o>
 """""""""""""""""""""""""""""""""""""""""""}}}
@@ -171,7 +171,7 @@ set hlsearch
 set laststatus=2
 
 "Format the statusline
-set statusline=\ File:\ %F%m%r%h\ %w\ \ \ Current\ dir:\%r%{getcwd()}%h%=A
+set statusline=\ File:\ %F%m%r%h\ %w\ \ \ Current\ dir:\%r%{getcwd()}%h%=\L%-5l\ \C%-4c%5p%%\ [%L\ \lines]
 """"""""""""""""""""""""""""""""""}}}
 
 " Moving around and tabs{{{
