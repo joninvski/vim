@@ -359,7 +359,7 @@ set cindent
 "IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
 " program to always generate a file-name.
-set grepprg=grep\ -inH\ 
+set grepprg=grep\ -inH\ $*
 """"""""""""""""""""""""""""""""""""""}}}
 
 " Quickfix {{{
@@ -433,7 +433,7 @@ if has("autocmd")
 
     fun! <SID>FixMiniBufExplorerTitle()
         if "-MiniBufExplorer-" == bufname("%")
-            setlocal statusline+=\[Buffers\]
+            setlocal statusline=\[Buffers\]
         endif
     endfun
 
@@ -532,6 +532,9 @@ let g:Tex_DefaultTargetFormat = "pdf"
 
 let g:Tex_ViewerCwindowHeight = 6
 
+"Ignore pdf viewer error output
+let g:Tex_ViewRule_pdf = 'xpdf 2> /dev/null'
+
 "Use \ll to create the pdf
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
@@ -556,6 +559,14 @@ nmap <silent> <Leader>P :Project<CR>
 """"""""""""""""""""""""""""""
 nnoremap <silent> <F8> :TlistToggle<CR>
 let Tlist_Use_Right_Window = 1
+""""""""""""""""""""""""""""""}}}
+
+" ScmDiff{{{
+""""""""""""""""""""""""""""""
+" Use git to do the diff with Control+D <C-D>
+if !exists("g:SCMDiffCommand")
+    let g:SCMDiffCommand = 'git'
+endif
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 
