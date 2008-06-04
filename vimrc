@@ -508,7 +508,7 @@ map <F10> :WMToggle<cr>
 "To solve the propleme with vim-latexsuite has with ã and â
 imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
 imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
-imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
+"imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
 imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
 "imap <buffer> <silent> <M-E>  <Plug>Tex_InsertItem
 "imap <buffer> <silent> <M-e>  <Plug>Tex_InsertItemOnThisLine
@@ -535,6 +535,9 @@ let g:Tex_ViewerCwindowHeight = 6
 "Ignore pdf viewer error output
 let g:Tex_ViewRule_pdf = 'xpdf 2> /dev/null'
 
+"Don't use imap expansions (To change in future)
+let g:Imap_FreezeImap = 1
+
 "Use \ll to create the pdf
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
@@ -559,6 +562,9 @@ nmap <silent> <Leader>P :Project<CR>
 """"""""""""""""""""""""""""""
 nnoremap <silent> <F8> :TlistToggle<CR>
 let Tlist_Use_Right_Window = 1
+
+"If it is a latex file
+let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
 """"""""""""""""""""""""""""""}}}
 
 " ScmDiff{{{
@@ -569,6 +575,7 @@ if !exists("g:SCMDiffCommand")
 endif
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
+
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
