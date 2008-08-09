@@ -109,11 +109,6 @@ autocmd BufNewFile,BufRead *.html setlocal ft=html.django
 autocmd BufNewFile,BufRead *.tex setlocal ft=tex
 """""""""""""""""""""""""""""""""""""""""""}}}
 
-" IDE Related{{{
-" bind ctrl+space for omnicompletion (like eclipse)
-inoremap <Nul> <C-x><C-o>
-"""""""""""""""""""""""""""""""""""""""""""}}}
-
 " VIM userinterface{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "When moving vertical, start scrolling 7 lines before reaching the extremity"
@@ -198,7 +193,7 @@ iab wile while
 iab wich which
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" AutoComplete{{{
+" AutoComplete and omni completion{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! Mosh_Tab_Or_Complete()
     if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
@@ -211,9 +206,11 @@ endfunction
 
 :inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
 
+" bind ctrl+l for omnicompletion (like eclipse)
+inoremap <c-l> <C-x><C-o>
 
 "Set the style of the popup menu on autocomplete
-set completeopt=menu
+set completeopt=preview
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Snippets{{{
