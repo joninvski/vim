@@ -100,14 +100,56 @@ highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
 """""""""""""""""""""""""""""""""""""""""""}}}
 
-" FileTypes{{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FileTypes{{{1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "This file is a python and django filetype needed to activate django
 "snippets
-autocmd BufNewFile,BufRead *.py setlocal ft=python.django
+autocmd BufNewFile,BufRead *.py setlocal ft=python
 autocmd BufNewFile,BufRead *.html setlocal ft=html.django
 autocmd BufNewFile,BufRead *.tex setlocal ft=tex
+
+" More specific for python{{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Set the python tags
+autocmd BufNewFile,BufRead *.py set tags+=$HOME/.vim/tags/python.ctags
+"Changes the error format
+autocmd BufNewFile,BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+"Compiles the python code looking for syntax error
+autocmd BufNewFile,BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+
+python << EOF
+import vim
+
+def EvaluateCurrentRange():
+    eval(compile('\n'.join(vim.current.range),'','exec'),globals())
+
+#Set breakpoints with F7
+def SetBreakpoint():
+    import re
+    nLine = int( vim.eval( 'line(".")'))
+
+    strLine = vim.current.line
+    strWhite = re.search( '^(\s*)', strLine).group(1)
+
+    vim.current.buffer.append(
+       "%(space)spdb.set_trace() %(mark)s Breakpoint %(mark)s" %
+         {'space':strWhite, 'mark': '#' * 30}, nLine - 1)
+
+    for strLine in vim.current.buffer:
+        if strLine == "import pdb":
+            break
+    else:
+        vim.current.buffer.append( 'import pdb', 0)
+        vim.command( 'normal j1')
+
+vim.command( 'map <f7> :py SetBreakpoint()<cr>')
+
+EOF
+
+"Evaluate selected lines with control-h
+autocmd BufNewFile,BufRead *.py map <C-h> :py EvaluateCurrentRange()<cr>
 """""""""""""""""""""""""""""""""""""""""""}}}
+"""""""""""""""""""""""""""""""""""""""""""1}}}
 
 " VIM userinterface{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -206,18 +248,19 @@ endfunction
 
 :inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
 
-" bind ctrl+l for omnicompletion (like eclipse)
-inoremap <c-l> <C-x><C-o>
-
 "Set the style of the popup menu on autocomplete
-set completeopt=preview
+set completeopt=menu,preview
+
+"To perform omnicompletion use alt+space (eclipse style)
+let g:SuperTabMappingForward = "<m-space>"
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Snippets{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "A basic snippet can save you a lot of typing. Define a word trigger and on
 "insertion it will be expanded to the full snippet.
-let g:snippetsEmu_key = "<S-Tab>" "Use snippets with Shift+Tab
+let g:snippetsEmu_key = "<C-l>" "Use snippets with Control-l
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Command-line config{{{
@@ -413,8 +456,6 @@ highlight MBEVisibleChanged term=bold cterm=bold gui=bold guifg=Green
 
 let g:bufExplorerSortBy = "name"
 
-"autocmd BufRead,BufNew :call UMiniBufExplorer
-
 """""""""""""""""""""""""""""""""""
 " Stolen from http://dev.gentoo.org/~bass/configs/vimrc.html
 "
@@ -560,6 +601,9 @@ nmap <silent> <Leader>P :Project<CR>
 nnoremap <silent> <F8> :TlistToggle<CR>
 let Tlist_Use_Right_Window = 1
 
+set tags+=tags;/
+set showfulltag  "Show more information while completing tags
+
 "If it is a latex file
 let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
 """"""""""""""""""""""""""""""}}}
@@ -574,5 +618,10 @@ endif
 "######################################### End of Plug-in related 1}}}
 
 
+" Experimental {{{1
+"#########################################
+"
+"
+"######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
