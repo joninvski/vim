@@ -416,6 +416,8 @@ highlight MBEVisibleChanged term=bold cterm=bold gui=bold guifg=Green
 
 let g:bufExplorerSortBy = "name"
 
+nmap <leader>db :bd<cr>
+
 "autocmd BufRead,BufNew :call UMiniBufExplorer
 
 """""""""""""""""""""""""""""""""""
