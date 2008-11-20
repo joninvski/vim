@@ -100,19 +100,56 @@ highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
 """""""""""""""""""""""""""""""""""""""""""}}}
 
-" FileTypes{{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FileTypes{{{1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "This file is a python and django filetype needed to activate django
 "snippets
-autocmd BufNewFile,BufRead *.py setlocal ft=python.django
+autocmd BufNewFile,BufRead *.py setlocal ft=python
 autocmd BufNewFile,BufRead *.html setlocal ft=html.django
 autocmd BufNewFile,BufRead *.tex setlocal ft=tex
-"""""""""""""""""""""""""""""""""""""""""""}}}
 
-" IDE Related{{{
-" bind ctrl+space for omnicompletion (like eclipse)
-inoremap <Nul> <C-x><C-o>
+" More specific for python{{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Set the python tags
+autocmd BufNewFile,BufRead *.py set tags+=$HOME/.vim/tags/python.ctags
+"Changes the error format
+autocmd BufNewFile,BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+"Compiles the python code looking for syntax error
+autocmd BufNewFile,BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+
+python << EOF
+import vim
+
+def EvaluateCurrentRange():
+    eval(compile('\n'.join(vim.current.range),'','exec'),globals())
+
+#Set breakpoints with F7
+def SetBreakpoint():
+    import re
+    nLine = int( vim.eval( 'line(".")'))
+
+    strLine = vim.current.line
+    strWhite = re.search( '^(\s*)', strLine).group(1)
+
+    vim.current.buffer.append(
+       "%(space)spdb.set_trace() %(mark)s Breakpoint %(mark)s" %
+         {'space':strWhite, 'mark': '#' * 30}, nLine - 1)
+
+    for strLine in vim.current.buffer:
+        if strLine == "import pdb":
+            break
+    else:
+        vim.current.buffer.append( 'import pdb', 0)
+        vim.command( 'normal j1')
+
+vim.command( 'map <f7> :py SetBreakpoint()<cr>')
+
+EOF
+
+"Evaluate selected lines with control-h
+autocmd BufNewFile,BufRead *.py map <C-h> :py EvaluateCurrentRange()<cr>
 """""""""""""""""""""""""""""""""""""""""""}}}
+"""""""""""""""""""""""""""""""""""""""""""1}}}
 
 " VIM userinterface{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -198,7 +235,7 @@ iab wile while
 iab wich which
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" AutoComplete{{{
+" AutoComplete and omni completion{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! Mosh_Tab_Or_Complete()
     if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
@@ -211,16 +248,19 @@ endfunction
 
 :inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
 
-
 "Set the style of the popup menu on autocomplete
-set completeopt=menu
+set completeopt=menu,preview
+
+"To perform omnicompletion use alt+space (eclipse style)
+let g:SuperTabMappingForward = "<m-space>"
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Snippets{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "A basic snippet can save you a lot of typing. Define a word trigger and on
 "insertion it will be expanded to the full snippet.
-let g:snippetsEmu_key = "<S-Tab>" "Use snippets with Shift+Tab
+let g:snippetsEmu_key = "<C-l>" "Use snippets with Control-l
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Command-line config{{{
@@ -359,7 +399,7 @@ set cindent
 "IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
 " program to always generate a file-name.
-set grepprg=grep\ -inH\ 
+set grepprg=grep\ -inH\ $*
 """"""""""""""""""""""""""""""""""""""}}}
 
 " Quickfix {{{
@@ -416,10 +456,13 @@ highlight MBEVisibleChanged term=bold cterm=bold gui=bold guifg=Green
 
 let g:bufExplorerSortBy = "name"
 
+<<<<<<< HEAD:vimrc
 nmap <leader>db :bd<cr>
 
 "autocmd BufRead,BufNew :call UMiniBufExplorer
 
+=======
+>>>>>>> 50c909ee5184e0cd28aca481fe763d90df21f665:vimrc
 """""""""""""""""""""""""""""""""""
 " Stolen from http://dev.gentoo.org/~bass/configs/vimrc.html
 "
@@ -435,7 +478,7 @@ if has("autocmd")
 
     fun! <SID>FixMiniBufExplorerTitle()
         if "-MiniBufExplorer-" == bufname("%")
-            setlocal statusline+=\[Buffers\]
+            setlocal statusline=\[Buffers\]
         endif
     endfun
 
@@ -510,7 +553,7 @@ map <F10> :WMToggle<cr>
 "To solve the propleme with vim-latexsuite has with ã and â
 imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
 imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
-imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
+"imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
 imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
 "imap <buffer> <silent> <M-E>  <Plug>Tex_InsertItem
 "imap <buffer> <silent> <M-e>  <Plug>Tex_InsertItemOnThisLine
@@ -533,6 +576,12 @@ map <leader>ei o\end{itemize}<Esc>
 let g:Tex_DefaultTargetFormat = "pdf"
 
 let g:Tex_ViewerCwindowHeight = 6
+
+"Ignore pdf viewer error output
+let g:Tex_ViewRule_pdf = 'xpdf 2> /dev/null'
+
+"Don't use imap expansions (To change in future)
+let g:Imap_FreezeImap = 1
 
 "Use \ll to create the pdf
 "Use \lv to see the pdf
@@ -558,8 +607,28 @@ nmap <silent> <Leader>P :Project<CR>
 """"""""""""""""""""""""""""""
 nnoremap <silent> <F8> :TlistToggle<CR>
 let Tlist_Use_Right_Window = 1
+
+set tags+=tags;/
+set showfulltag  "Show more information while completing tags
+
+"If it is a latex file
+let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
+""""""""""""""""""""""""""""""}}}
+
+" ScmDiff{{{
+""""""""""""""""""""""""""""""
+" Use git to do the diff with Control+D <C-D>
+if !exists("g:SCMDiffCommand")
+    let g:SCMDiffCommand = 'git'
+endif
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 
+
+" Experimental {{{1
+"#########################################
+"
+"
+"######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
