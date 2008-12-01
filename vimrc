@@ -456,6 +456,13 @@ highlight MBEVisibleChanged term=bold cterm=bold gui=bold guifg=Green
 
 let g:bufExplorerSortBy = "name"
 
+<<<<<<< HEAD:vimrc
+nmap <leader>db :bd<cr>
+
+"autocmd BufRead,BufNew :call UMiniBufExplorer
+
+=======
+>>>>>>> 50c909ee5184e0cd28aca481fe763d90df21f665:vimrc
 """""""""""""""""""""""""""""""""""
 " Stolen from http://dev.gentoo.org/~bass/configs/vimrc.html
 "
