@@ -620,8 +620,8 @@ endif
 
 " Experimental {{{1
 "#########################################
-"
-"
+au BufRead,BufNewFile *.dft set filetype=dft
+au! Syntax dft source ~/vim/syntax/dft.vim
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
