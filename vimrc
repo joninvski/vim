@@ -78,9 +78,6 @@ set background=dark
 "set guifont=Terminus\ 8
 set guifont=Monospace\ 10
 
-"set the right enconding
-set encoding=latin1
-
 "set Pattern matching highlight
 hi MatchParen guifg=#000000 guibg=#D0D090
 
@@ -188,8 +185,8 @@ set incsearch
 
 "Set magic on
 set magic
-"Use abreviation in the messages (like + instead of Modified)
 
+"Use abreviation in the messages (like + instead of Modified)
 set shortmess=at
 
 "show matching bracets
@@ -413,33 +410,11 @@ map <leader>w :cw 8<cr>
 
 " Minibuffer{{{
 """"""""""""""""""""""""""""""
-"Show the miniBufExplorer from the start
-let g:miniBufExplorerMoreThanOne = 0
-
-"Not using because I don't use the vertical window
-"Use a vertical windows
-"let g:miniBufExplVSplit = 5
-
-"Put the miniBufExplorer windows at the right
-"let g:miniBufExplSplitBelow=1
-
-"Maximum size of the mini buffer explorer window
-"let g:miniBufExplMaxSize = 15
-
-"Still haven't discovered what it does
-"let g:miniBufExplMapWindowNavArrows = 1
-"let g:miniBufExplMapCTabSwitchBufs = 1
-"let g:miniBufExplUseSingleClick = 1
-"let g:miniBufExplMapWindowNavVim = 1
-"
 " make tabs show complete (no broken on two lines)
 let g:miniBufExplTabWrap = 1
 
 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
 let g:miniBufExplModSelTarget = 1
-
-" If you would like to single click on tabs rather than double clicking on them to go to the selected buffer.
-let g:miniBufExplUseSingleClick = 1
 
 "for buffers that have NOT CHANGED and are NOT VISIBLE.
 highlight MBENormal guifg=LightBlue
@@ -455,6 +430,7 @@ highlight MBEVisibleChanged term=bold cterm=bold gui=bold guifg=Green
 
 let g:bufExplorerSortBy = "name"
 
+"Deletes a buffer
 nmap <leader>db :bd<cr>
 
 "autocmd BufRead,BufNew :call UMiniBufExplorer
@@ -487,13 +463,6 @@ endif
 
 " Showmarks {{{
 """"""""""""""""""""""""""""""
-if has("gui_running")
-    let g:showmarks_enable=1
-else
-    let g:showmarks_enable=0
-    let loaded_showmarks=1
-endif
-
 let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
 
 if has("autocmd")
@@ -546,20 +515,6 @@ map <F10> :WMToggle<cr>
 " Latex related {{{
 """"""""""""""""""""""""""""""""""""""
 
-"To solve the propleme with vim-latexsuite has with ã and â
-imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
-imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
-"imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
-imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
-"imap <buffer> <silent> <M-E>  <Plug>Tex_InsertItem
-"imap <buffer> <silent> <M-e>  <Plug>Tex_InsertItemOnThisLine
-imap <buffer> <silent> \c <Plug>Traditional
-map <buffer> <silent> é é
-map <buffer> <silent> á á
-map <buffer> <silent> ã ã
-"imap ã <Plug>Tex_MathCal
-"imap é <Plug>Traditional
-
 "Ignore some warnings
 let g:Tex_IgnoredWarnings="Font""\n"
 
@@ -576,21 +531,13 @@ let g:Tex_ViewerCwindowHeight = 6
 "Ignore pdf viewer error output
 let g:Tex_ViewRule_pdf = 'xpdf 2> /dev/null'
 
-"Don't use imap expansions (To change in future)
-let g:Imap_FreezeImap = 1
-
 "Use \ll to create the pdf
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" Yank Ring {{{
-""""""""""""""""""""""""""""""
-map <leader>p :YRShow<cr>
-""""""""""""""""""""""""""""""}}}
-
 " Project{{{
 """"""""""""""""""""""""""""""
-nmap <silent> <Leader>P :Project<CR>
+nmap <silent> <Leader>p :Project<CR>
 """"""""""""""""""""""""""""""}}}
 
 " CloseTag{{{
