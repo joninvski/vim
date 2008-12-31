@@ -17,7 +17,7 @@
 "Get out of VI's compatible mode..
 set nocompatible
 
-"Sets how many lines of history VIM har to remember
+"Sets how many lines of history VIM to remember
 set history=500
 
 "Enable filetype plugin. Required for latex.
@@ -193,7 +193,7 @@ set magic
 set shortmess=at
 
 "show matching bracets
-"set showmatch
+set showmatch
 
 "How many tenths of a second to blink
 set mat=2
@@ -252,8 +252,8 @@ endfunction
 set completeopt=menu,preview
 
 "To perform omnicompletion use alt+space (eclipse style)
-let g:SuperTabMappingForward = "<m-space>"
-let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+"let g:SuperTabMappingForward = "<m-space>" "TODO
+"let g:SuperTabDefaultCompletionType = "<C-X><C-O>" "TODO
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Snippets{{{
@@ -384,10 +384,9 @@ set ar
 
 " Indent {{{
 """""""""""""""""""""""""""""""
-"Auto indent
-set ai
-"Smart indent
-set si
+set ai "Auto indent - Automatically set the indent of a new line
+set si "Smart indent
+
 "C-style indenting
 set cindent
 "Wrap lines
