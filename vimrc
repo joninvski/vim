@@ -285,7 +285,7 @@ map <F9> mzggVGg?'z
 "Explore Fast
 map <leader>ee :Explore <cr>
 
-"Paste toggle - when pasting something in, don't indent.
+"Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
 set pastetoggle=<F12>
 
 "Quit fast
