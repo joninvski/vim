@@ -68,7 +68,9 @@ set visualbell
 syntax enable
 
 "By far my favourite
-color desert
+"color desert
+"Trying something new
+color gothic
 
 "Set bg to dark
 set background=dark
@@ -529,7 +531,7 @@ let g:Tex_DefaultTargetFormat = "pdf"
 let g:Tex_ViewerCwindowHeight = 6
 
 "Ignore pdf viewer error output
-let g:Tex_ViewRule_pdf = 'xpdf 2> /dev/null'
+let g:Tex_ViewRule_pdf = 'evince'
 
 "Use \ll to create the pdf
 "Use \lv to see the pdf
