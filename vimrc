@@ -107,6 +107,14 @@ autocmd BufNewFile,BufRead *.py setlocal ft=python
 autocmd BufNewFile,BufRead *.html setlocal ft=html.django
 autocmd BufNewFile,BufRead *.tex setlocal ft=tex
 
+function! GnuIndent()
+  setlocal cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1
+  setlocal shiftwidth=2
+  setlocal tabstop=8
+endfunction
+
+au FileType c,cpp call GnuIndent() 
+
 " More specific for python{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Set the python tags
@@ -344,7 +352,7 @@ if version >= 700
     "Turn off spelling
     map <leader>loff :setlocal nospell<CR>
 
-    "Goto the next work with an error
+    "Goto the next word with an error
     map <leader>ln <Esc>]s
 
     "Correct the work under the cursor
@@ -574,6 +582,8 @@ endif
 "#########################################
 au BufRead,BufNewFile *.dft set filetype=dft
 au! Syntax dft source ~/vim/syntax/dft.vim
+
+map <leader>tag :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
