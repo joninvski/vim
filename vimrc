@@ -79,7 +79,9 @@ set background=dark
 set guifont=Monospace\ 10
 
 "set the right enconding
-set encoding=latin1
+"set encoding=latin1
+"set encoding=utf-8
+"set encoding=utf-8
 
 "set Pattern matching highlight
 hi MatchParen guifg=#000000 guibg=#D0D090
@@ -107,6 +109,68 @@ match WhitespaceEOL /\s\+$/
 autocmd BufNewFile,BufRead *.py setlocal ft=python.django
 autocmd BufNewFile,BufRead *.html setlocal ft=html.django
 autocmd BufNewFile,BufRead *.tex setlocal ft=tex
+"""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Python Related{{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+python << EOF
+import vim
+import string
+
+def SetBreakpoint():
+    import re
+
+    nLine = int( vim.eval( 'line(".")'))
+
+    strLine = vim.current.line
+    strWhite = re.search( '^(\s*)', strLine).group(1)
+
+    vim.current.buffer.append(
+       "%(space)spdb.set_trace() %(mark)s Breakpoint %(mark)s" %
+         {'space':strWhite, 'mark': '#' * 30}, nLine - 1)
+
+    for strLine in vim.current.buffer:
+        if strLine == "import pdb":
+            break
+    else:
+        vim.current.buffer.append( 'import pdb', 0)
+        vim.command( 'normal j1')
+
+vim.command( 'map <f7> :py SetBreakpoint()<cr>')
+
+def RemoveBreakpoints():
+    import re
+
+    nCurrentLine = int( vim.eval( 'line(".")'))
+
+    nLines = []
+    nLine = 1
+    for strLine in vim.current.buffer:
+        if strLine == 'import pdb' or strLine.lstrip()[:15] == 'pdb.set_trace()':
+            nLines.append( nLine)
+        nLine += 1
+
+    nLines.reverse()
+
+    for nLine in nLines:
+        vim.command( 'normal %dG' % nLine)
+        vim.command( 'normal dd')
+        if nLine < nCurrentLine:
+            nCurrentLine -= 1
+
+    vim.command( 'normal %dG' % nCurrentLine)
+
+vim.command( 'map <s-f7> :py RemoveBreakpoints()<cr>')
+
+def RunDebugger():
+    vim.command( 'wall')
+    strFile = vim.eval( "g:mainfile")
+    vim.command( "!start python -m pdb %s" % strFile)
+
+vim.command( 'map <s-f12> :py RunDebugger()<cr>')
+EOF
+
 """""""""""""""""""""""""""""""""""""""""""}}}
 
 " IDE Related{{{
@@ -200,16 +264,16 @@ iab wich which
 
 " AutoComplete{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! Mosh_Tab_Or_Complete()
-    if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-        return "\<C-N>"
+"function! Mosh_Tab_Or_Complete()
+"    if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+"        return "\<C-N>"
 
-    else
-        return "\<Tab>"
-    endif
-endfunction
+"    else
+"        return "\<Tab>"
+"    endif
+"endfunction
 
-:inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
+":inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
 
 
 "Set the style of the popup menu on autocomplete
@@ -220,7 +284,7 @@ set completeopt=menu
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "A basic snippet can save you a lot of typing. Define a word trigger and on
 "insertion it will be expanded to the full snippet.
-let g:snippetsEmu_key = "<S-Tab>" "Use snippets with Shift+Tab
+let g:snippetsEmu_key = "<C-l>" "Use snippets with Shift+Tab
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Command-line config{{{
@@ -554,10 +618,12 @@ nmap <silent> <Leader>P :Project<CR>
 
 " Taglist{{{
 """"""""""""""""""""""""""""""
-nnoremap <silent> <F8> :TlistToggle<CR>
+nnoremap <silent> <F8> :TlistToggle<CR>:TlistAddFilesRecursive . *.py<CR>
 let Tlist_Use_Right_Window = 1
+let Tlist_Ctags_Cmd='/usr/bin/etags'
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
+"
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
