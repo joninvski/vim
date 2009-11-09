@@ -623,7 +623,17 @@ let Tlist_Use_Right_Window = 1
 let Tlist_Ctags_Cmd='/usr/bin/etags'
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
-"
+
+
+"#################################
+"Experimental
+augroup git-wip
+        autocmd!
+        autocmd BufWritePost * :silent !git wip save "WIP from vim" --editor -- "%"
+augroup END
+"##################################
+
+
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
