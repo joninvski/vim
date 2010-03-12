@@ -17,7 +17,7 @@
 "Get out of VI's compatible mode..
 set nocompatible
 
-"Sets how many lines of history VIM har to remember
+"Sets how many lines of history VIM to remember
 set history=500
 
 "Enable filetype plugin. Required for latex.
@@ -68,7 +68,9 @@ set visualbell
 syntax enable
 
 "By far my favourite
-color desert
+"color desert
+"Trying something new
+color gothic
 
 "Set bg to dark
 set background=dark
@@ -80,7 +82,6 @@ set guifont=Monospace\ 10
 
 "set the right enconding
 "set encoding=latin1
-"set encoding=utf-8
 "set encoding=utf-8
 
 "set Pattern matching highlight
@@ -102,14 +103,13 @@ highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
 """""""""""""""""""""""""""""""""""""""""""}}}
 
-" FileTypes{{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FileTypes{{{1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "This file is a python and django filetype needed to activate django
 "snippets
-autocmd BufNewFile,BufRead *.py setlocal ft=python.django
+autocmd BufNewFile,BufRead *.py setlocal ft=python
 autocmd BufNewFile,BufRead *.html setlocal ft=html.django
 autocmd BufNewFile,BufRead *.tex setlocal ft=tex
-"""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Python Related{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -176,7 +176,11 @@ EOF
 " IDE Related{{{
 " bind ctrl+space for omnicompletion (like eclipse)
 inoremap <Nul> <C-x><C-o>
+
+"Evaluate selected lines with control-h
+autocmd BufNewFile,BufRead *.py map <C-h> :py EvaluateCurrentRange()<cr>
 """""""""""""""""""""""""""""""""""""""""""}}}
+"""""""""""""""""""""""""""""""""""""""""""1}}}
 
 " VIM userinterface{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -215,12 +219,12 @@ set incsearch
 
 "Set magic on
 set magic
-"Use abreviation in the messages (like + instead of Modified)
 
+"Use abreviation in the messages (like + instead of Modified)
 set shortmess=at
 
 "show matching bracets
-"set showmatch
+set showmatch
 
 "How many tenths of a second to blink
 set mat=2
@@ -262,7 +266,7 @@ iab wile while
 iab wich which
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" AutoComplete{{{
+" AutoComplete and omni completion{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "function! Mosh_Tab_Or_Complete()
 "    if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
@@ -275,16 +279,19 @@ iab wich which
 
 ":inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
 
-
 "Set the style of the popup menu on autocomplete
-set completeopt=menu
+set completeopt=menu,preview
+
+"To perform omnicompletion use alt+space (eclipse style)
+"let g:SuperTabMappingForward = "<m-space>" "TODO
+"let g:SuperTabDefaultCompletionType = "<C-X><C-O>" "TODO
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Snippets{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "A basic snippet can save you a lot of typing. Define a word trigger and on
 "insertion it will be expanded to the full snippet.
-let g:snippetsEmu_key = "<C-l>" "Use snippets with Shift+Tab
+let g:snippetsEmu_key = "<C-l>" "Use snippets with Control-l
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Command-line config{{{
@@ -312,7 +319,7 @@ map <F9> mzggVGg?'z
 "Explore Fast
 map <leader>ee :Explore <cr>
 
-"Paste toggle - when pasting something in, don't indent.
+"Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
 set pastetoggle=<F12>
 
 "Quit fast
@@ -408,10 +415,9 @@ set ar
 
 " Indent {{{
 """""""""""""""""""""""""""""""
-"Auto indent
-set ai
-"Smart indent
-set si
+set ai "Auto indent - Automatically set the indent of a new line
+set si "Smart indent
+
 "C-style indenting
 set cindent
 "Wrap lines
@@ -423,7 +429,7 @@ set cindent
 "IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
 " program to always generate a file-name.
-set grepprg=grep\ -inH\ 
+set grepprg=grep\ -inH\ $*
 """"""""""""""""""""""""""""""""""""""}}}
 
 " Quickfix {{{
@@ -438,33 +444,11 @@ map <leader>w :cw 8<cr>
 
 " Minibuffer{{{
 """"""""""""""""""""""""""""""
-"Show the miniBufExplorer from the start
-let g:miniBufExplorerMoreThanOne = 0
-
-"Not using because I don't use the vertical window
-"Use a vertical windows
-"let g:miniBufExplVSplit = 5
-
-"Put the miniBufExplorer windows at the right
-"let g:miniBufExplSplitBelow=1
-
-"Maximum size of the mini buffer explorer window
-"let g:miniBufExplMaxSize = 15
-
-"Still haven't discovered what it does
-"let g:miniBufExplMapWindowNavArrows = 1
-"let g:miniBufExplMapCTabSwitchBufs = 1
-"let g:miniBufExplUseSingleClick = 1
-"let g:miniBufExplMapWindowNavVim = 1
-"
 " make tabs show complete (no broken on two lines)
 let g:miniBufExplTabWrap = 1
 
 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
 let g:miniBufExplModSelTarget = 1
-
-" If you would like to single click on tabs rather than double clicking on them to go to the selected buffer.
-let g:miniBufExplUseSingleClick = 1
 
 "for buffers that have NOT CHANGED and are NOT VISIBLE.
 highlight MBENormal guifg=LightBlue
@@ -479,6 +463,9 @@ highlight MBEVisibleNormal term=bold cterm=bold gui=bold guifg=Green
 highlight MBEVisibleChanged term=bold cterm=bold gui=bold guifg=Green
 
 let g:bufExplorerSortBy = "name"
+
+"Deletes a buffer
+nmap <leader>db :bd<cr>
 
 "autocmd BufRead,BufNew :call UMiniBufExplorer
 
@@ -497,7 +484,7 @@ if has("autocmd")
 
     fun! <SID>FixMiniBufExplorerTitle()
         if "-MiniBufExplorer-" == bufname("%")
-            setlocal statusline+=\[Buffers\]
+            setlocal statusline=\[Buffers\]
         endif
     endfun
 
@@ -510,13 +497,6 @@ endif
 
 " Showmarks {{{
 """"""""""""""""""""""""""""""
-if has("gui_running")
-    let g:showmarks_enable=1
-else
-    let g:showmarks_enable=0
-    let loaded_showmarks=1
-endif
-
 let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
 
 if has("autocmd")
@@ -569,20 +549,6 @@ map <F10> :WMToggle<cr>
 " Latex related {{{
 """"""""""""""""""""""""""""""""""""""
 
-"To solve the propleme with vim-latexsuite has with ã and â
-imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
-imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
-imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
-imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
-"imap <buffer> <silent> <M-E>  <Plug>Tex_InsertItem
-"imap <buffer> <silent> <M-e>  <Plug>Tex_InsertItemOnThisLine
-imap <buffer> <silent> \c <Plug>Traditional
-map <buffer> <silent> é é
-map <buffer> <silent> á á
-map <buffer> <silent> ã ã
-"imap ã <Plug>Tex_MathCal
-"imap é <Plug>Traditional
-
 "Ignore some warnings
 let g:Tex_IgnoredWarnings="Font""\n"
 
@@ -596,18 +562,16 @@ let g:Tex_DefaultTargetFormat = "pdf"
 
 let g:Tex_ViewerCwindowHeight = 6
 
+"Ignore pdf viewer error output
+let g:Tex_ViewRule_pdf = 'evince'
+
 "Use \ll to create the pdf
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" Yank Ring {{{
-""""""""""""""""""""""""""""""
-map <leader>p :YRShow<cr>
-""""""""""""""""""""""""""""""}}}
-
 " Project{{{
 """"""""""""""""""""""""""""""
-nmap <silent> <Leader>P :Project<CR>
+nmap <silent> <Leader>p :Project<CR>
 """"""""""""""""""""""""""""""}}}
 
 " CloseTag{{{
@@ -622,6 +586,20 @@ nnoremap <silent> <F8> :TlistToggle<CR>:TlistAddFilesRecursive . *.py<CR>
 map <F4> :!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 let Tlist_Use_Right_Window = 1
 let Tlist_Ctags_Cmd='/usr/bin/etags'
+
+set tags+=tags;/
+set showfulltag  "Show more information while completing tags
+
+"If it is a latex file
+let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
+""""""""""""""""""""""""""""""}}}
+
+" ScmDiff{{{
+""""""""""""""""""""""""""""""
+" Use git to do the diff with Control+D <C-D>
+if !exists("g:SCMDiffCommand")
+    let g:SCMDiffCommand = 'git'
+endif
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 
@@ -636,5 +614,10 @@ let Tlist_Ctags_Cmd='/usr/bin/etags'
 
 
 
+" Experimental {{{1
+"#########################################
+au BufRead,BufNewFile *.dft set filetype=dft
+au! Syntax dft source ~/vim/syntax/dft.vim
+"######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
