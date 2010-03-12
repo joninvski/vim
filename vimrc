@@ -137,7 +137,7 @@ def SetBreakpoint():
         vim.current.buffer.append( 'import pdb', 0)
         vim.command( 'normal j1')
 
-vim.command( 'map <f7> :py SetBreakpoint()<cr>')
+vim.command( 'map <f6> :py SetBreakpoint()<cr>')
 
 def RemoveBreakpoints():
     import re
@@ -619,6 +619,7 @@ nmap <silent> <Leader>P :Project<CR>
 " Taglist{{{
 """"""""""""""""""""""""""""""
 nnoremap <silent> <F8> :TlistToggle<CR>:TlistAddFilesRecursive . *.py<CR>
+map <F4> :!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 let Tlist_Use_Right_Window = 1
 let Tlist_Ctags_Cmd='/usr/bin/etags'
 """"""""""""""""""""""""""""""}}}
@@ -627,10 +628,10 @@ let Tlist_Ctags_Cmd='/usr/bin/etags'
 
 "#################################
 "Experimental
-augroup git-wip
-        autocmd!
-        autocmd BufWritePost * :silent !git wip save "WIP from vim" --editor -- "%"
-augroup END
+"augroup git-wip
+"        autocmd!
+"        autocmd BufWritePost * :silent !git wip save "WIP from vim" --editor -- "%"
+"augroup END
 "##################################
 
 
