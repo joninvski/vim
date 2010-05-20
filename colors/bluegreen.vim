@@ -16,7 +16,7 @@ hi clear
 if exists("syntax_on")
     syntax reset
 endif
-let g:colors_name="mine"
+let g:colors_name="bluegreen"
 
 hi Normal	guifg=White guibg=#061A3E
 

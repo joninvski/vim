@@ -70,7 +70,7 @@ syntax enable
 "By far my favourite
 "color desert
 "Trying something new
-color gothic
+color bluegreen
 
 "Set bg to dark
 set background=dark
@@ -149,7 +149,7 @@ def SetBreakpoint():
         vim.current.buffer.append( 'import pdb', 0)
         vim.command( 'normal j1')
 
-vim.command( 'map <f7> :py SetBreakpoint()<cr>')
+vim.command( 'map <F6> :py SetBreakpoint()<cr>')
 
 EOF
 
@@ -322,7 +322,8 @@ set lbr
 " if using a version 6 vim, enable folding
 if version >= 600
     set foldenable
-    set foldmethod=marker"
+"    set foldmethod=marker
+    set foldmethod=indent
 endif
 
 "Keys
@@ -473,24 +474,8 @@ endif
 
 " Showmarks {{{
 """"""""""""""""""""""""""""""
+" These are the bookmarks that show up at the left
 let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
-
-if has("autocmd")
-    fun! <SID>FixShowmarksColours()
-        if has('gui')
-            hi ShowMarksHLl gui=bold guifg=#a0a0e0 guibg=#2e2e2e
-            hi ShowMarksHLu gui=none guifg=#a0a0e0 guibg=#2e2e2e
-            hi ShowMarksHLo gui=none guifg=#a0a0e0 guibg=#2e2e2e
-            hi ShowMarksHLm gui=none guifg=#a0a0e0 guibg=#2e2e2e
-            hi SignColumn   gui=none guifg=#f0f0f8 guibg=#2e2e2e
-        endif
-    endfun
-    if v:version >= 700
-        autocmd VimEnter,Syntax,ColorScheme * call <SID>FixShowmarksColours()
-    else
-        autocmd VimEnter,Syntax * call <SID>FixShowmarksColours()
-    endif
-endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " GIT{{{
@@ -584,6 +569,10 @@ au BufRead,BufNewFile *.dft set filetype=dft
 au! Syntax dft source ~/vim/syntax/dft.vim
 
 map <leader>tag :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+
+" Seen in http://www.programmerq.net/rsttricks.html 
+" Type @h and the character u want to use for the heading: '=', '-', etc...
+let @h = "yypVr"
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
