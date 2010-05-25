@@ -77,6 +77,10 @@
 :VCSUnlock	vcscommand.txt	/*:VCSUnlock*
 :VCSUpdate	vcscommand.txt	/*:VCSUpdate*
 :VCSVimDiff	vcscommand.txt	/*:VCSVimDiff*
+AN	alternate.txt	/*AN*
+AS	alternate.txt	/*AS*
+AT	alternate.txt	/*AT*
+AV	alternate.txt	/*AV*
 Alph	latexhelp.txt	/*Alph*
 Alt-B	latex-suite.txt	/*Alt-B*
 Alt-C	latex-suite.txt	/*Alt-C*
@@ -95,6 +99,11 @@ EnhComm-Options	EnhancedCommentify.txt	/*EnhComm-Options*
 EnhComm-Support	EnhancedCommentify.txt	/*EnhComm-Support*
 EnhancedCommentify	EnhancedCommentify.txt	/*EnhancedCommentify*
 EnhancedCommentify()	EnhancedCommentify.txt	/*EnhancedCommentify()*
+IH	alternate.txt	/*IH*
+IHN	alternate.txt	/*IHN*
+IHS	alternate.txt	/*IHS*
+IHT	alternate.txt	/*IHT*
+IHV	alternate.txt	/*IHV*
 IMAP_PutTextWithMovement	latex-suite.txt	/*IMAP_PutTextWithMovement*
 Imap_DeleteEmptyPlaceHolders	latex-suite.txt	/*Imap_DeleteEmptyPlaceHolders*
 Imap_FreezeImap	latex-suite.txt	/*Imap_FreezeImap*
@@ -466,6 +475,14 @@ YRYankRange-example	yankring.txt	/*YRYankRange-example*
 ]%	matchit.txt	/*]%*
 adding-bib-options	latex-suite.txt	/*adding-bib-options*
 alph	latexhelp.txt	/*alph*
+alternate	alternate.txt	/*alternate*
+alternate-acknowledgments	alternate.txt	/*alternate-acknowledgments*
+alternate-commands	alternate.txt	/*alternate-commands*
+alternate-config	alternate.txt	/*alternate-config*
+alternate-installation	alternate.txt	/*alternate-installation*
+alternate-purpose	alternate.txt	/*alternate-purpose*
+alternate-support	alternate.txt	/*alternate-support*
+alternate.txt	alternate.txt	/*alternate.txt*
 altkey-mappings	latex-suite.txt	/*altkey-mappings*
 any-item-example	yankring.txt	/*any-item-example*
 arabic	latexhelp.txt	/*arabic*

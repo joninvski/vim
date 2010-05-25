@@ -40,9 +40,6 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 "Fast editing of .vimrc
 map <leader>e :e! ~/.vimrc<cr>
 
-"Switch to current dir
-map <leader>CD :cd %:p:h<cr>
-
 "Select all and copy to + buffer
 map <leader>sa :%y +<cr>
 
@@ -114,6 +111,13 @@ function! GnuIndent()
 endfunction
 
 au FileType c,cpp call GnuIndent() 
+au FileType c,cpp set foldmethod=syntax
+ " use indentation of previous line
+au FileType c,cpp set autoindent
+  " use intelligent indentation for C
+au FileType c,cpp set smartindent
+" intelligent comments
+au FileType c,cpp set comments=sl:/*,mb:\ *,elx:\ */
 
 " More specific for python{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
