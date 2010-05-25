@@ -104,6 +104,9 @@ autocmd BufNewFile,BufRead *.py setlocal ft=python
 autocmd BufNewFile,BufRead *.html setlocal ft=html.django
 autocmd BufNewFile,BufRead *.tex setlocal ft=tex
 
+
+" More specific for c and cpp{{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! GnuIndent()
   setlocal cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1
   setlocal shiftwidth=2
@@ -118,6 +121,7 @@ au FileType c,cpp set autoindent
 au FileType c,cpp set smartindent
 " intelligent comments
 au FileType c,cpp set comments=sl:/*,mb:\ *,elx:\ */
+"""""""""""""""""""""""""""""""""""""""""""}}}
 
 " More specific for python{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
