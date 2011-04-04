@@ -328,11 +328,8 @@ set lbr
 " Fold"{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " if using a version 6 vim, enable folding
-if version >= 600
-    set foldenable
-"    set foldmethod=marker
-    set foldmethod=indent
-endif
+set foldenable
+au FileType py,python set foldmethod=indent
 
 "Keys
 "  * zf create the fold, useful for manual and marker methods. Select any piece of text, [press v or shift-v, then use arrow keys], and then press zf. It will place the markers around the fold for you in marker mode; in case of manual, it will store fold location in memory. Remember f by saying this command "forms" the fold, or just remember fold :-)
@@ -576,7 +573,7 @@ endif
 au BufRead,BufNewFile *.dft set filetype=dft
 au! Syntax dft source ~/vim/syntax/dft.vim
 
-map <leader>tag :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+map <leader>tag :!etags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " Seen in http://www.programmerq.net/rsttricks.html 
 " Type @h and the character u want to use for the heading: '=', '-', etc...
