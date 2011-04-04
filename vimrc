@@ -412,6 +412,42 @@ set cindent
 " search in a singe file. This will confuse Latex-Suite. Set your grep
 " program to always generate a file-name.
 set grepprg=grep\ -inH\ $*
+let Grep_Skip_Dirs = 'CVS .svn .git build'
+
+" Really useful!
+"  In visual mode when you press * or # to search for the current selection
+vnoremap <silent> * :call VisualSearch('f')<CR>
+vnoremap <silent> # :call VisualSearch('b')<CR>
+
+" When you press gv you vimgrep after the selected text
+vnoremap <leader>g :call VisualSearch('gv')<CR>
+map <leader>f :vimgrep // **/*<left><left><left><left><left><left>
+
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction
+
+" From an idea by Michael Naumann
+function! VisualSearch(direction) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'b'
+        execute "normal ?" . l:pattern . "^M"
+    elseif a:direction == 'gv'
+        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+    elseif a:direction == 'f'
+        execute "normal /" . l:pattern . "^M"
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
 """"""""""""""""""""""""""""""""""""""}}}
 
 " Quickfix {{{
@@ -578,6 +614,14 @@ map <leader>tag :!etags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 " Seen in http://www.programmerq.net/rsttricks.html 
 " Type @h and the character u want to use for the heading: '=', '-', etc...
 let @h = "yypVr"
+
+" for 7.3
+set undofile
+
+let g:github_user = 'joninvski'
+let g:github_token = '4e7006503127d762722648c07d1bda00'
+
+
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
