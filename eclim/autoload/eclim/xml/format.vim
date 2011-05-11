@@ -1,36 +1,37 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 970 $
 "
 " Description: {{{
-"   see http://eclim.sourceforge.net/vim/xml/format.html
+"   see http://eclim.org/vim/xml/format.html
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2010  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
 " Script Variables {{{
-  let s:command_format = '-command xml_format -f "<file>" -w <width> -i <indent>'
+  let s:command_format =
+    \ '-command xml_format -f "<file>" -w <width> -i <indent> -m <ff>'
 " }}}
 
 " Format() {{{
-function! eclim#xml#format#Format ()
+function! eclim#xml#format#Format()
   " first save the file and validate to ensure no errors
   call eclim#util#ExecWithoutAutocmds('update')
-  call eclim#xml#Validate('', 1)
+  call eclim#xml#validate#Validate('', 1)
   if len(getloclist(0)) > 0
     call eclim#util#EchoError(
       \ 'File contains errors (:lopen), please correct before formatting.')
@@ -38,24 +39,26 @@ function! eclim#xml#format#Format ()
   endif
 
   let file = substitute(expand('%:p'), '\', '/', 'g')
+  if has('win32unix')
+    let file = eclim#cygwin#WindowsPath(file)
+  endif
 
   let command = s:command_format
   let command = substitute(command, '<file>', file, '')
   let command = substitute(command, '<width>', &textwidth, '')
   let command = substitute(command, '<indent>', &shiftwidth, '')
+  let command = substitute(command, '<ff>', &ff, '')
 
   let result = eclim#ExecuteEclim(command)
   if result != '0'
-    let saved = @"
-    silent! 1,$delete
-    call append(1, split(result, '\n'))
-    silent! 1,1delete
-    let @" = saved
+    silent! 1,$delete _
+    silent put =result
+    silent! 1,1delete _
   endif
 endfunction " }}}
 
 " Format(start, end) {{{
-"function! eclim#xml#format#Format (start, end)
+"function! eclim#xml#format#Format(start, end)
 "  if !exists('b:root')
 "    let b:root = s:GetRootLine()
 "
@@ -64,8 +67,7 @@ endfunction " }}}
 "    endif
 "  endif
 "
-"  let clnum = line('.')
-"  let ccnum = col('.')
+"  let pos = getpos('.')
 "
 "  let start = a:start
 "  let end = a:end
@@ -118,7 +120,7 @@ endfunction " }}}
 "
 "    " let vim re-indent
 "    call cursor(start, 1)
-"    normal ==
+"    normal! ==
 "  endif
 "
 "  " recurse.
@@ -129,31 +131,30 @@ endfunction " }}}
 "    unlet b:root
 "  endif
 "
-"  call cursor(clnum, ccnum)
+"  call setpos('.', pos)
 "endfunction " }}}
 
-" SelectOuterTag (count) {{{
-function! s:SelectOuterTag (count)
-  let clnum = line('.')
-  let ccnum = col('.')
+" SelectOuterTag(count) {{{
+function! s:SelectOuterTag(count)
+  let pos = getpos('.')
 
-  exec 'silent! normal v' . a:count . 'atv'
-  call cursor(clnum, ccnum)
+  exec 'silent! normal! v' . a:count . 'atv'
+  call setpos('.', pos)
 
   return s:VisualSelectionMap()
 endfunction " }}}
 
-" SelectInnerTag () {{{
-function! s:SelectInnerTag ()
-  silent! normal vit
-  normal v
+" SelectInnerTag() {{{
+function! s:SelectInnerTag()
+  silent! normal! vit
+  normal! v
   call cursor(line("'<"), col("'<"))
 
   return s:VisualSelectionMap()
 endfunction " }}}
 
-" VisualSelectionMap () {{{
-function! s:VisualSelectionMap ()
+" VisualSelectionMap() {{{
+function! s:VisualSelectionMap()
   let lstart = line("'<")
   let cstart = col("'<")
   let lend = line("'>")
@@ -173,15 +174,14 @@ function! s:VisualSelectionMap ()
 endfunction " }}}
 
 " InsertCr(line, col) {{{
-function! s:InsertCr (line, col)
+function! s:InsertCr(line, col)
   call cursor(a:line, a:col)
-  exec "normal i\<cr>\<esc>"
+  exec "normal! i\<cr>\<esc>"
 endfunction " }}}
 
 " GetRootLine() {{{
-function! s:GetRootLine ()
-  let clnum = line('.')
-  let ccnum = col('.')
+function! s:GetRootLine()
+  let pos = getpos('.')
 
   let line = 1
   call cursor(1, 1)
@@ -193,7 +193,7 @@ function! s:GetRootLine ()
     call cursor(line, 1)
   endwhile
 
-  call cursor(clnum, ccnum)
+  call setpos('.', pos)
   return line
 endfunction " }}}
 

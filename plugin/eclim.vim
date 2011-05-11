@@ -1,86 +1,53 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 1024 $
 "
 " Description: {{{
 "   Plugin which bootstraps the eclim environment.
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2010  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
-if v:version < 700 || exists("g:EclimDisabled")
-  finish
+" Command Declarations {{{
+if !exists(":EclimValidate")
+  command EclimValidate :call <SID>Validate()
 endif
-
-" EclimBaseDir() {{{
-" Gets the base directory where the eclim vim scripts are located.
-function EclimBaseDir ()
-  if !exists("g:EclimBaseDir")
-    let savewig = &wildignore
-    set wildignore=""
-    let file = findfile('plugin/eclim.vim', escape(&runtimepath, ' '))
-    let &wildignore = savewig
-
-    if file == ''
-      echoe 'Unable to determine eclim basedir.  ' .
-        \ 'Please report this issue on the eclim forums.'
-      finish
-    endif
-    let basedir = substitute(fnamemodify(file, ':p:h:h'), '\', '/', 'g')
-
-    let g:EclimBaseDir = escape(basedir, ' ')
-  endif
-
-  return g:EclimBaseDir
-endfunction " }}}
-
-" Init() {{{
-" Initializes eclim.
-function s:Init ()
-  " on windows, this eclim plugin gets called first, so force taglist to be
-  " called prior.
-  runtime! plugin/taglist.vim
-  runtime! plugin/taglisttoo.vim
-
-  " add eclim dir to runtime path.
-  exec 'set runtimepath+=' . EclimBaseDir() . '/eclim'
-
-  " need to be manually sourced
-  runtime! eclim/plugin/*.vim
-endfunction " }}}
+" }}}
 
 " Validate() {{{
 " Validates some settings and environment values required by eclim.
-function s:Validate ()
-  let errors = []
-
+" NOTE: don't add command-line continuation characters anywhere in the
+" function, just in case the user has &compatible set.
+function! s:Validate()
   " Check vim version.
   if v:version < 700
-    let version = strpart(v:version, 0, 1) . '.' . strpart(v:version, 1)
-    echom "Error: Your vim version is " . v:version . "."
-    echom "       Eclim requires version 7.xx."
+    let ver = strpart(v:version, 0, 1) . '.' . strpart(v:version, 2)
+    echom "Error: Your vim version is " . ver . "."
+    echom "       Eclim requires version 7.x.x"
     return
   endif
+
+  let errors = []
 
   " Check 'compatible' option.
   if &compatible
     call add(errors, "Error: You have 'compatible' set:")
-    call add(errors, "       Please add 'set nocompatible' to your vimrc.")
-    call add(errors, "       Type ':help 'compatible'' for more details.")
+    call add(errors, "       Eclim requires 'set nocompatible' in your vimrc.")
+    call add(errors, "       Type \":help 'compatible'\" for more details.")
   endif
 
   " Check filetype support
@@ -102,10 +69,9 @@ function s:Validate ()
       let chose = input("Please Choose (1 or 2): ")
     endwhile
     if chose != 1
-      call add(errors, "Error: Filetype detection and plugins must be enabled.")
-      call add(errors, "       Please add 'filetype plugin on' or " .
-        \ "'filetype plugin indent on' to your vimrc.")
-      call add(errors, "       Type ':help filetype-plugin-on' for more details.")
+      call add(errors, "Error: Eclim requires filetype plugins to be enabled.")
+      call add(errors, "       Please add 'filetype plugin indent on' to your vimrc.")
+      call add(errors, "       Type \":help filetype-plugin-on\" for more details.")
     endif
   endif
 
@@ -122,11 +88,78 @@ function s:Validate ()
   echohl None
 endfunction " }}}
 
-" Command Declarations {{{
-if !exists(":EclimValidate")
-  command EclimValidate :call <SID>Validate()
+" exit early if unsupported vim version, compatible is set, or eclim is
+" disabled.
+if v:version < 700 || &compatible || exists("g:EclimDisabled")
+  finish
 endif
-" }}}
+
+" EclimBaseDir() {{{
+" Gets the base directory where the eclim vim scripts are located.
+function! EclimBaseDir()
+  if !exists("g:EclimBaseDir")
+    let savewig = &wildignore
+    set wildignore=""
+    let file = findfile('plugin/eclim.vim', escape(&runtimepath, ' '))
+    let &wildignore = savewig
+
+    if file == ''
+      echoe 'Unable to determine eclim basedir.  ' .
+        \ 'Please report this issue on the eclim user mailing list.'
+      let g:EclimBaseDir = ''
+      return g:EclimBaseDir
+    endif
+    let basedir = substitute(fnamemodify(file, ':p:h:h'), '\', '/', 'g')
+
+    let g:EclimBaseDir = escape(basedir, ' ')
+  endif
+
+  return g:EclimBaseDir
+endfunction " }}}
+
+" Init() {{{
+" Initializes eclim.
+function! s:Init()
+  " add eclim dir to runtime path.
+  let basedir = EclimBaseDir()
+  if basedir == ''
+    return
+  endif
+
+  exec 'set runtimepath+=' .
+    \ basedir . '/eclim,' .
+    \ basedir . '/eclim/after'
+
+  " Alternate version which inserts the eclim path just after the currently
+  " executing runtime path element and puts the eclim/after path at the very
+  " end.
+  "let paths = split(&rtp, ',')
+  "let index = 0
+  "for path in paths
+  "  let index += 1
+  "  if tolower(path) == tolower(basedir)
+  "    break
+  "  endif
+  "endfor
+
+  "let tail = paths[index :]
+
+  "for path in tail
+  "  exec 'set runtimepath-=' . escape(path, ' ')
+  "endfor
+
+  "exec 'set runtimepath+=' .  basedir . '/eclim'
+
+  "for path in tail
+  "  exec 'set runtimepath+=' . escape(path, ' ')
+  "endfor
+
+  "exec 'set runtimepath+=' .  basedir . '/eclim/after'
+
+  " need to be manually sourced
+  runtime! eclim/plugin/*.vim
+  runtime! eclim/after/plugin/*.vim
+endfunction " }}}
 
 call <SID>Init()
 

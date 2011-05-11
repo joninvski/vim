@@ -1,24 +1,24 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 966 $
 "
 " Description: {{{
 "   Shared functions for java unit testing.
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2011  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
@@ -26,37 +26,44 @@
 let s:command_src_find = '-command java_src_find -p "<project>" -c "<classname>"'
 
 let s:entry_match{'junit'} = 'Tests run:'
-let s:entry_match{'testng'} = 'eclim testng:'
-
 let s:entry_text_replace{'junit'} = '.*[junit] '
 let s:entry_text_with{'junit'} = ''
 
+let s:entry_match{'testng'} = 'eclim testng:'
 let s:entry_text_replace{'testng'} = '.*eclim testng: .\{-}:'
 let s:entry_text_with{'testng'} = ''
 " }}}
 
-" ResolveQuickfixResults(framework) {{{
+" ResolveQuickfixResults(frameworks) {{{
 " Invoked after a :make to resolve any junit results in the quickfix entries.
-function! eclim#java#test#ResolveQuickfixResults (framework)
+function! eclim#java#test#ResolveQuickfixResults(frameworks)
+  let frameworks = type(a:frameworks) == 3 ? a:frameworks : [a:frameworks]
   let entries = getqflist()
   let newentries = []
   for entry in entries
     let filename = bufname(entry.bufnr)
     let text = entry.text
-    if entry.text =~ s:entry_match{a:framework}
-      let filename = fnamemodify(filename, ':t')
-      let text = substitute(text,
-        \ s:entry_text_replace{a:framework}, s:entry_text_with{a:framework}, '')
 
-      let project = eclim#project#GetCurrentProjectName()
-      let command = s:command_src_find
-      let command = substitute(command, '<project>', project, '')
-      let command = substitute(command, '<classname>', filename, '')
-      let filename = eclim#ExecuteEclim(command)
-      if filename == ''
-        " file not found.
-        continue
+    for framework in frameworks
+      if entry.text =~ s:entry_match{framework}
+        let filename = fnamemodify(filename, ':t')
+        let text = substitute(text,
+          \ s:entry_text_replace{framework}, s:entry_text_with{framework}, '')
+
+        let project = eclim#project#util#GetCurrentProjectName()
+        let command = s:command_src_find
+        let command = substitute(command, '<project>', project, '')
+        let command = substitute(command, '<classname>', filename, '')
+        let filename = eclim#ExecuteEclim(command)
+        if filename == ''
+          " file not found.
+          continue
+        endif
       endif
+    endfor
+
+    if !filereadable(filename)
+      continue
     endif
 
     let newentry = {
@@ -69,20 +76,30 @@ function! eclim#java#test#ResolveQuickfixResults (framework)
   endfor
 
   call setqflist(newentries, 'r')
+
+  " vim is finicky about changing the quickfix list during a QuickFixCmdPost
+  " autocmd, so force a delayed reload of the quickfix results
+  call eclim#util#DelayedCommand('call setqflist(getqflist(), "r")')
 endfunction " }}}
 
 " GetTestSrcDir(type) {{{
 " Where type is 'junit', etc.
-function eclim#java#test#GetTestSrcDir (type)
-  let path = eclim#project#GetProjectSetting("org.eclim.java." . a:type . ".src_dir")
-  let path = substitute(path, '<project>', eclim#project#GetCurrentProjectRoot(), '')
+function! eclim#java#test#GetTestSrcDir(type)
+  let setting = "org.eclim.java." . a:type . ".src_dir"
+  let path = eclim#project#util#GetProjectSetting(setting)
+  if type(path) == 0
+    return
+  endif
+
+  let root = eclim#project#util#GetCurrentProjectRoot()
+  let path = substitute(path, '<project>', root, '')
   let path = path !~ '/$' ? path . '/' : path
   return path
 endfunction " }}}
 
 " CommandCompleteTest(type, argLead, cmdLine, cursorPos) {{{
 " Custom command completion for test cases.
-function eclim#java#test#CommandCompleteTest (type, argLead, cmdLine, cursorPos)
+function! eclim#java#test#CommandCompleteTest(type, argLead, cmdLine, cursorPos)
   let cmdTail = strpart(a:cmdLine, a:cursorPos)
   let argLead = substitute(a:argLead, cmdTail . '$', '', '')
 
@@ -100,7 +117,7 @@ function eclim#java#test#CommandCompleteTest (type, argLead, cmdLine, cursorPos)
   let results = split(eclim#util#Globpath(path . argLead, '*'), '\n')
 
   call filter(results, 'v:val =~ argLead . partial')
-  call filter(results, '(isdirectory(v:val) && v:val !~ "CVS") || v:val =~ "\\.java$"')
+  call filter(results, 'isdirectory(v:val) || v:val =~ "\\.java$"')
   call map(results, 'isdirectory(v:val) ? v:val . "/" : v:val')
   call map(results, 'substitute(v:val, "\\(" . path . "\\|\\.java$\\)", "", "g")')
   call map(results, 'substitute(v:val, "\\\\", "/", "g")')

@@ -1,24 +1,24 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 1028 $
 "
 " Description: {{{
-"   see http://eclim.sourceforge.net/vim/java/complete.html
+"   see http://eclim.org/vim/java/complete.html
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2010  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
@@ -30,20 +30,27 @@
       let g:EclimJavaCompleteLayout = 'compact'
     endif
   endif
+  if !exists("g:EclimJavaCompleteCaseSensitive")
+    let g:EclimJavaCompleteCaseSensitive = !&ignorecase
+  endif
 " }}}
 
 " Script Varables {{{
   let s:complete_command =
-    \ '-filter vim -command java_complete ' .
-    \ '-p "<project>" -f "<file>" -o <offset> -l <layout>'
+    \ '-command java_complete -p "<project>" -f "<file>" ' .
+    \ '-o <offset> -e <encoding> -l <layout>'
 " }}}
 
 " CodeComplete(findstart, base) {{{
 " Handles java code completion.
-function! eclim#java#complete#CodeComplete (findstart, base)
+function! eclim#java#complete#CodeComplete(findstart, base)
   if a:findstart
     " update the file before vim makes any changes.
     call eclim#java#util#SilentUpdate()
+
+    if !eclim#project#util#IsCurrentFileInProject(0) || !filereadable(expand('%'))
+      return -1
+    endif
 
     " locate the start of the word
     let line = getline('.')
@@ -61,18 +68,19 @@ function! eclim#java#complete#CodeComplete (findstart, base)
 
     return start
   else
-    if !eclim#project#IsCurrentFileInProject()
+    if !eclim#project#util#IsCurrentFileInProject(0) || !filereadable(expand('%'))
       return []
     endif
 
-    let offset = eclim#util#GetCharacterOffset() + len(a:base)
-    let project = eclim#project#GetCurrentProjectName()
-    let filename = eclim#java#util#GetFilename()
+    let offset = eclim#util#GetOffset() + len(a:base)
+    let project = eclim#project#util#GetCurrentProjectName()
+    let file = eclim#project#util#GetProjectRelativeFilePath()
 
     let command = s:complete_command
     let command = substitute(command, '<project>', project, '')
-    let command = substitute(command, '<file>', filename, '')
+    let command = substitute(command, '<file>', file, '')
     let command = substitute(command, '<offset>', offset, '')
+    let command = substitute(command, '<encoding>', eclim#util#GetEncoding(), '')
     let command = substitute(command, '<layout>', g:EclimJavaCompleteLayout, '')
 
     let completions = []
@@ -123,6 +131,14 @@ function! eclim#java#complete#CodeComplete (findstart, base)
         let word = strpart(word, 0, strlen(word) - 1)
       endif
 
+      " if user wants case sensitivity, then filter out completions that don't
+      " match
+      if g:EclimJavaCompleteCaseSensitive && a:base != ''
+        if word !~ '^' . a:base . '\C'
+          continue
+        endif
+      endif
+
       let dict = {
           \ 'word': word,
           \ 'menu': menu,
@@ -137,16 +153,5 @@ function! eclim#java#complete#CodeComplete (findstart, base)
     return completions
   endif
 endfunction " }}}
-
-" CompletionFilter(filter) {{{
-" Filter current completions.
-"function! eclim#java#complete#CompletionFilter (filter)
-"  let start = JavaCodeComplete(1, "")
-"  while col('.') > start + 1
-"    normal <BS>
-"  endwhile
-"  echom " #### filter = " . a:filter . " start = " . start
-"  return "\<C-X>\<C-U>"
-"endfunction " }}}
 
 " vim:ft=vim:fdm=marker

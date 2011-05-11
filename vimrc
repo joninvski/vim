@@ -79,13 +79,16 @@ set background=dark
 set guifont=Monospace\ 10
 
 "set the right enconding
-set encoding=latin1
+"set encoding=latin1
+set encoding=utf-8
 
 "set Pattern matching highlight
 hi MatchParen guifg=#000000 guibg=#D0D090
 
 if has("gui_running")
     set guioptions=m
+"    set guioptions-=m " turn off menu bar
+"    set guioptions-=T " turn off toolbar
 endif
 
 "Highlight current
@@ -375,7 +378,9 @@ map <leader>w :cw 8<cr>
 " Minibuffer{{{
 """"""""""""""""""""""""""""""
 "Show the miniBufExplorer from the start
-let g:miniBufExplorerMoreThanOne = 0
+if !has("gui_running")
+    let g:miniBufExplorerMoreThanOne = 0
+endif
 
 "Not using because I don't use the vertical window
 "Use a vertical windows

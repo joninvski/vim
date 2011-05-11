@@ -1,24 +1,24 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 1296 $
 "
 " Description: {{{
-"   see http://eclim.sourceforge.net/vim/java/classpath.html
+"   see http://eclim.org/vim/java/classpath.html
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2010  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
@@ -44,20 +44,21 @@
 
 " load any xml related functionality
 runtime ftplugin/xml.vim
+runtime indent/xml.vim
 
 augroup eclim_xml
   autocmd! BufWritePost <buffer>
-  autocmd BufWritePost <buffer> call eclim#java#classpath#UpdateClasspath()
+  autocmd BufWritePost <buffer> call eclim#project#util#ProjectUpdate()
 augroup END
 
 " Command Declarations {{{
 if !exists(":NewSrcEntry")
-  command -nargs=+ -complete=customlist,eclim#common#CommandCompleteRelative -buffer
+  command -nargs=+ -complete=customlist,eclim#project#util#CommandCompleteProjectRelative -buffer
     \ NewSrcEntry :call eclim#java#classpath#NewClasspathEntry
     \     (substitute('<args>', '\', '/', 'g') , s:entry_src)
 endif
 if !exists(":NewProjectEntry")
-  command -nargs=+ -complete=customlist,eclim#project#CommandCompleteProject -buffer
+  command -nargs=+ -complete=customlist,eclim#java#util#CommandCompleteProject -buffer
     \ NewProjectEntry :call eclim#java#classpath#NewClasspathEntry('<args>', s:entry_project)
 endif
 if !exists(":NewJarEntry")
@@ -69,7 +70,7 @@ if !exists(":NewVarEntry")
   command -nargs=+ -complete=customlist,eclim#java#classpath#CommandCompleteVarPath -buffer
     \ NewVarEntry
     \ :call eclim#java#classpath#NewClasspathEntry
-    \     (substitute(fnamemodify('<args>', ':p'), '\', '/', 'g'), s:entry_var)
+    \     (substitute('<args>', '\', '/', 'g'), s:entry_var)
 endif
 if !exists(":VariableList")
   command -buffer VariableList :call eclim#java#classpath#VariableList()

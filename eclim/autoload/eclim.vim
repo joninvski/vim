@@ -1,5 +1,4 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 1196 $
 "
 " Description: {{{
 "   Plugin that integrates vim with the eclipse plugin eclim (ECLipse
@@ -10,37 +9,26 @@
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2011  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
 " Global Variables {{{
-  if !exists("g:EclimCommand")
-    let g:EclimCommand = 'eclim'
-  endif
   if !exists("g:EclimShowErrors")
     let g:EclimShowErrors = 1
-  endif
-
-  if !exists("g:EclimSystemWorkaround")
-    let g:EclimSystemWorkaround = 0
-  endif
-
-  if !exists("g:EclimHome")
-    " set via installer
-    let g:EclimHome = '/home/joao.trindade/eclipse/plugins/org.eclim_1.3.1'
   endif
 " }}}
 
@@ -49,7 +37,7 @@
     \ '-command patch_file -f <file> -r <revision> -b <basedir>'
   let s:command_patch_revisions = '-command patch_revisions -f <file>'
   let s:command_ping = '-command ping'
-  let s:command_settings = '-command settings -filter vim'
+  let s:command_settings = '-command settings'
   let s:command_settings_update = '-command settings_update -s "<settings>"'
   let s:command_shutdown = "-command shutdown"
   let s:connect= '^connect: .*$'
@@ -57,161 +45,114 @@
   " list of commands that may fail using system() call, so using a temp file
   " instead.
   let s:exec_commands = ['java_complete']
+
+  let g:eclimd_running = 1
 " }}}
 
-" ExecuteEclim(args) {{{
-" Executes eclim using the supplied argument string.
-function! eclim#ExecuteEclim (args)
+" ExecuteEclim(command, [port]) {{{
+" Executes the supplied eclim command.
+function! eclim#ExecuteEclim(command, ...)
   if exists('g:EclimDisabled')
     return
   endif
 
-  let args = a:args
+  " eclimd appears to be down, so exit early if in an autocmd
+  if !g:eclimd_running && expand('<amatch>') != ''
+    " check for file created by eclimd to signal that it is running.
+    if !eclim#EclimAvailable()
+      return
+    endif
+  endif
+
+  let g:eclimd_running = 1
+
+  let command = a:command
 
   " encode special characters
-  " http://www.cs.net/lucid/ascii.htm
-  let args = substitute(args, '*', '%2A', 'g')
-  let args = substitute(args, '\$', '%24', 'g')
-  let command = eclim#GetEclimCommand()
-  if string(command) == '0'
-    "let g:EclimDisabled = 1
-    if expand('<amatch>') == '' && exists('g:EclimErrorReason')
-      call eclim#util#EchoError(g:EclimErrorReason)
-    endif
-    return 0
-  endif
-  let command = command . ' ' . args
-
-  " for windows, need to add a trailing quote to complete the command.
-  if command =~ '^"[a-zA-Z]:'
-    let command = command . '"'
-  endif
-
-  call eclim#util#EchoDebug("eclim: executing (Ctrl-C to cancel)...")
-  call eclim#util#EchoTrace("command: " . command)
-
-  " determine whether to use system call or exec with a temp file
-  let use_exec = 0
-  if g:EclimSystemWorkaround
-    for cmd in s:exec_commands
-      if command =~ '-command\s\+' . cmd
-        let use_exec = 1
-        break
-      endif
-    endfor
-  endif
+  " http://www.w3schools.com/TAGS/ref_urlencode.asp
+  let command = substitute(command, '\*', '%2A', 'g')
+  let command = substitute(command, '\$', '%24', 'g')
+  let command = substitute(command, '<', '%3C', 'g')
+  let command = substitute(command, '>', '%3E', 'g')
 
   " execute the command.
-  if use_exec
-    let result = eclim#ExecuteTempFile(command)
-  else
-    let result = eclim#util#System(command)
-    let result = substitute(result, '\(.*\)\n$', '\1', '')
+  let port = len(a:000) > 0 ? a:000[0] : eclim#client#nailgun#GetNgPort()
+  let [retcode, result] = eclim#client#nailgun#Execute(port, command)
+  let result = substitute(result, '\n$', '', '')
+
+  " not sure this is the best place to handle this, but when using the python
+  " client, the result has a trailing ctrl-m on windows.  also account for
+  " running under cygwin vim.
+  if has('win32') || has('win64') || has('win32unix')
+    let result = substitute(result, "\<c-m>$", '', '')
   endif
 
-  call eclim#util#Echo(' ')
+  " an echo during startup causes an annoying issue with vim.
+  "call eclim#util#Echo(' ')
 
   " check for errors
   let error = ''
-  if result =~ 'Exception.*\s\+\<at\> '
+  if result =~ '^[^\n]*Exception:\?[^\n]*\n\s\+\<at\> ' ||
+   \ result =~ '^[^\n]*ResourceException(.\{-})\[[0-9]\+\]:[^\n]*\n\s\+\<at\> '
     let error = substitute(result, '\(.\{-}\)\n.*', '\1', '')
-  elseif v:shell_error
+  elseif retcode
     let error = result
   endif
 
-  if v:shell_error || error != ''
+  if retcode || error != ''
     if g:EclimShowErrors
       if error =~ s:connect
-        " eclimd is not running and we appear to not be in an autocmd
+        " eclimd is not running, disable further eclimd calls
+        let g:eclimd_running = 0
+
+        " if we are not in an autocmd, alert the user that eclimd is not
+        " running.
         if expand('<amatch>') == ''
-          call eclim#util#EchoWarning("unable to connect to eclimd - " . error)
+          call eclim#util#EchoWarning(
+            \ "unable to connect to eclimd (port: " . port . ") - " . error)
         endif
       else
-        let error = error . "\n" . 'while executing command: ' . command
-        call eclim#util#EchoError(error)
+        let error = error . "\n" .
+          \ 'while executing command (port: ' . port . '): ' . command
+        " if we are not in an autocmd, echo the error, otherwise just log it.
+        if expand('<amatch>') == ''
+          call eclim#util#EchoError(error)
+        else
+          call eclim#util#EchoDebug(error)
+        endif
       endif
     endif
-    return 0
+    return
   endif
 
   return result
 endfunction " }}}
 
-" ExecuteTempFile(command) {{{
-" Exectue the supplied command piping results to a temp file.
-function! eclim#ExecuteTempFile (command)
-  let tempfile = tempname()
-
-  let command = '!' . a:command . ' > ' . tempfile . ' 2>&1'
-  silent eclim#util#Exec(command)
-  let result = join(readfile(tempfile), "\n")
-
-  call delete(tempfile)
-  redraw!
-
-  return result
+" Disable() {{{
+" Temporarily disables communication with eclimd.
+function! eclim#Disable()
+  if !exists('g:EclimDisabled')
+    let g:EclimDisabled = 1
+  endif
 endfunction " }}}
 
-" GetEclimCommand() {{{
-" Gets the command to exexute eclim.
-function! eclim#GetEclimCommand ()
-  if !exists('g:EclimPath')
-    let eclim_home = eclim#GetEclimHome()
-    if eclim_home == '' || string(eclim_home) == '0'
-      return
-    endif
-
-    let g:EclimPath = substitute(eclim_home, '\', '/', 'g') .
-      \ '/bin/' . g:EclimCommand
-
-    if g:EclimPath =~ '^[a-zA-Z]:'
-      let g:EclimPath = g:EclimPath . '.bat'
-    endif
-
-    if !filereadable(g:EclimPath)
-      let g:EclimErrorReason = 'Could not locate file: ' . g:EclimPath
-      return
-    endif
-
-    " on windows, the command must be executed on the drive where eclipse is
-    " installed.
-    if g:EclimPath =~ '^[a-zA-Z]:'
-      let g:EclimPath =
-        \ '"' . substitute(g:EclimPath, '^\([a-zA-Z]:\).*', '\1', '') .
-        \ ' && "' . g:EclimPath . '"'
-    endif
+" Enable() {{{
+" Re-enables communication with eclimd.
+function! eclim#Enable()
+  if exists('g:EclimDisabled')
+    unlet g:EclimDisabled
   endif
-  return g:EclimPath
 endfunction " }}}
 
-" GetEclimHome() {{{
-" Gets the directory of the main eclim eclipse plugin.
-function! eclim#GetEclimHome ()
-  if !exists('g:EclimHome')
-    if !exists('$ECLIPSE_HOME')
-      let g:EclimErrorReason = 'ECLIPSE_HOME must be set.'
-      return
-    endif
-
-    let g:EclimHome = eclim#util#Glob('$ECLIPSE_HOME/plugins/org.eclim_*')
-    if g:EclimHome == ''
-      let g:EclimErrorReason =
-        \ "eclim plugin not found in eclipse plugins directory at " .
-        \ "ECLIPSE_HOME = '" .  expand('$ECLIPSE_HOME') . "'"
-      return
-    elseif g:EclimHome =~ "\n"
-      let g:EclimErrorReason =
-        \ "multiple versions of eclim plugin found in eclipse plugins directory at " .
-        \ "ECLIPSE_HOME = '" .  expand('$ECLIPSE_HOME') . "'"
-      return
-    endif
-  endif
-  return g:EclimHome
+" EclimAvailable() {{{
+function! eclim#EclimAvailable()
+  let instances = eclim#UserHome() . '/.eclim/.eclimd_instances'
+  return filereadable(instances)
 endfunction " }}}
 
 " PatchEclim(file, revision) {{{
 " Patches an eclim vim script file.
-function! eclim#PatchEclim (file, revision)
+function! eclim#PatchEclim(file, revision)
   let command = s:command_patch_file
   let command = substitute(command, '<file>', a:file, '')
   let command = substitute(command, '<revision>', a:revision, '')
@@ -223,22 +164,44 @@ function! eclim#PatchEclim (file, revision)
   endif
 endfunction " }}}
 
-" PingEclim(echo) {{{
+" PingEclim(echo, [workspace]) {{{
 " Pings the eclimd server.
 " If echo is non 0, then the result is echoed to the user.
-function! eclim#PingEclim (echo)
+function! eclim#PingEclim(echo, ...)
+  let workspace_found = 1
+  if len(a:000) > 0 && a:1 != ''
+    let workspace = substitute(a:1, '\', '/', 'g')
+    let workspace .= workspace !~ '/$' ? '/' : ''
+    if !eclim#util#ListContains(eclim#eclipse#GetAllWorkspaceDirs(), workspace)
+      let workspace_found = 0
+    endif
+    let port = eclim#client#nailgun#GetNgPort(workspace)
+  else
+    let workspace = eclim#eclipse#ChooseWorkspace()
+    let port = eclim#client#nailgun#GetNgPort(workspace)
+  endif
+
   if a:echo
-    let result = eclim#ExecuteEclim(s:command_ping)
+    if !workspace_found
+      call eclim#util#Echo('eclimd instance for workspace not found: ' . workspace)
+      return
+    endif
+
+    let result = eclim#ExecuteEclim(s:command_ping, port)
     if result != '0'
       call eclim#util#Echo(result)
     endif
   else
+    if !workspace_found
+      return
+    endif
+
     let savedErr = g:EclimShowErrors
     let savedLog = g:EclimLogLevel
     let g:EclimShowErrors = 0
     let g:EclimLogLevel = 0
 
-    let result = eclim#ExecuteEclim(s:command_ping)
+    let result = eclim#ExecuteEclim(s:command_ping, port)
 
     let g:EclimShowErrors = savedErr
     let g:EclimLogLevel = savedLog
@@ -247,25 +210,74 @@ function! eclim#PingEclim (echo)
   endif
 endfunction " }}}
 
-" SaveSettings() {{{
-function! s:SaveSettings ()
+" ParseSettingErrors() {{{
+function! eclim#ParseSettingErrors(errors)
+  let errors = []
+  for error in a:errors
+    let setting = substitute(error, '^\(.\{-}\): .*', '\1', '')
+    let message = substitute(error, '^.\{-}: \(.*\)', '\1', '')
+    let line = search('^\s*' . setting . '\s*=', 'cnw')
+    call add(errors, {
+        \ 'bufnr': bufnr('%'),
+        \ 'lnum': line > 0 ? line : 1,
+        \ 'text': message,
+        \ 'type': 'e'
+      \ })
+  endfor
+  return errors
+endfunction " }}}
+
+" SaveSettings(command, project, [port]) {{{
+function! eclim#SaveSettings(command, project, ...)
   " don't check modified since undo seems to not set the modified flag
   "if &modified
     let tempfile = substitute(tempname(), '\', '/', 'g')
     silent exec 'write! ' . escape(tempfile, ' ')
 
-    let command = substitute(s:command_settings_update, '<settings>', tempfile, '')
-    let result = eclim#ExecuteEclim(command)
-    call eclim#util#Echo(result)
+    if has('win32unix')
+      let tempfile = eclim#cygwin#WindowsPath(tempfile)
+    endif
+
+    let command = a:command
+    let command = substitute(command, '<project>', a:project, '')
+    let command = substitute(command, '<settings>', tempfile, '')
+
+    if len(a:000) > 0
+      let port = a:000[0]
+      let result = eclim#ExecuteEclim(command, port)
+    else
+      let result = eclim#ExecuteEclim(command)
+    endif
+
+    if result =~ ':'
+      call eclim#util#EchoError
+        \ ("Operation contained errors.  See location list for details.")
+      call eclim#util#SetLocationList
+        \ (eclim#ParseSettingErrors(split(result, '\n')))
+    else
+      call eclim#util#ClearLocationList()
+      call eclim#util#Echo(result)
+    endif
 
     setlocal nomodified
   "endif
 endfunction " }}}
 
-" Settings() {{{
+" Settings(workspace) {{{
 " Opens a window that can be used to edit the global settings.
-function! eclim#Settings ()
-  if eclim#util#TempWindowCommand(s:command_settings, "Eclim_Global_Settings")
+function! eclim#Settings(workspace)
+  let workspace = a:workspace
+  if workspace == ''
+    let workspace = eclim#eclipse#ChooseWorkspace()
+    if workspace == '0'
+      return
+    endif
+  endif
+
+  let port = eclim#client#nailgun#GetNgPort(workspace)
+
+  if eclim#util#TempWindowCommand(
+   \ s:command_settings, "Eclim_Global_Settings", port)
     setlocal buftype=acwrite
     setlocal filetype=jproperties
     setlocal noreadonly
@@ -275,23 +287,39 @@ function! eclim#Settings ()
 
     augroup eclim_settings
       autocmd! BufWriteCmd <buffer>
-      autocmd BufWriteCmd <buffer> call <SID>SaveSettings()
+      exec 'autocmd BufWriteCmd <buffer> ' .
+        \ 'call eclim#SaveSettings(s:command_settings_update, "", ' . port . ')'
     augroup END
   endif
 endfunction " }}}
 
 " ShutdownEclim() {{{
 " Shuts down the eclimd server.
-function! eclim#ShutdownEclim ()
-  call eclim#ExecuteEclim(s:command_shutdown)
+function! eclim#ShutdownEclim()
+  let workspace = eclim#eclipse#ChooseWorkspace()
+  if workspace != '0'
+    let port = eclim#client#nailgun#GetNgPort()
+    call eclim#ExecuteEclim(s:command_shutdown, port)
+  endif
+endfunction " }}}
+
+" UserHome() {{{
+function! eclim#UserHome()
+  let home = expand('$HOME')
+  if has('win32unix')
+    let home = eclim#cygwin#WindowsHome()
+  elseif has('win32') || has('win64')
+    let home = expand('$USERPROFILE')
+  endif
+  return substitute(home, '\', '/', 'g')
 endfunction " }}}
 
 " CommandCompleteScriptRevision(argLead, cmdLine, cursorPos) {{{
 " Custom command completion for vim script names and revision numbers.
-function! eclim#CommandCompleteScriptRevision (argLead, cmdLine, cursorPos)
+function! eclim#CommandCompleteScriptRevision(argLead, cmdLine, cursorPos)
   let cmdLine = strpart(a:cmdLine, 0, a:cursorPos)
-  let args = eclim#util#ParseArgs(cmdLine)
-  let argLead = len(args) > 1 ? args[len(args) - 1] : ""
+  let args = eclim#util#ParseCmdLine(cmdLine)
+  let argLead = cmdLine =~ '\s$' ? '' : args[len(args) - 1]
 
   " complete script name for first arg.
   if cmdLine =~ '^' . args[0] . '\s*' . escape(argLead, '.\') . '$'
@@ -310,7 +338,7 @@ function! eclim#CommandCompleteScriptRevision (argLead, cmdLine, cursorPos)
   let command = s:command_patch_revisions
   let command = substitute(command, '<file>', file, '')
 
-  let argLead = len(args) > 2 ? args[len(args) - 1] : ""
+  "let argLead = len(args) > 2 ? args[len(args) - 1] : ""
   let result = eclim#ExecuteEclim(command)
   if result != '0'
     let results =  split(result, '\n')

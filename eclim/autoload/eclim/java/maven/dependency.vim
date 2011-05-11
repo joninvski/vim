@@ -1,30 +1,30 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 921 $
 "
 " Description: {{{
-"   see http://eclim.sourceforge.net/vim/java/maven/dependency.html
+"   see http://eclim.org/vim/java/maven/dependency.html
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2010  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
 " Script Variables {{{
   let s:command_search =
-    \ '-filter vim -command maven_dependency_search ' .
+    \ '-command maven_dependency_search ' .
     \ '-p "<project>" -f "<file>" -t "<type>" -s <query>'
 
   let s:dependency_template{'maven'} =
@@ -48,15 +48,16 @@
 
 " Search(query, type) {{{
 " Searches online maven repository.
-function! eclim#java#maven#dependency#Search (query, type)
+function! eclim#java#maven#dependency#Search(query, type)
   update
 
   let filename = substitute(expand('%:p'), '\', '/', 'g')
-  let project = eclim#project#GetCurrentProjectName()
+  let project = eclim#project#util#GetCurrentProjectName()
+  let file = eclim#project#util#GetProjectRelativeFilePath()
 
   let command = s:command_search
   let command = substitute(command, '<project>', project, '')
-  let command = substitute(command, '<file>', filename, '')
+  let command = substitute(command, '<file>', file, '')
   let command = substitute(command, '<type>', a:type, '')
   let command = substitute(command, '<query>', a:query, '')
 
@@ -74,10 +75,10 @@ function! eclim#java#maven#dependency#Search (query, type)
 endfunction " }}}
 
 " AddDependency(type) {{{
-function! s:AddDependency (type)
+function! s:AddDependency(type)
   let line = getline('.')
   if line =~ '^\s\+.*(.*)$' && line !~ '^\s*//'
-    let artifact = substitute(line, '\s\+\(.*\)\.\w\+ (.*)$', '\1', '')
+    let artifact = substitute(line, '\s\+\(.*\) (.*)$', '\1', '')
     let vrsn = substitute(line, '.*(\(.*\))$', '\1', '')
     let group = getline(search('^\w\+', 'bnW'))
 
@@ -99,7 +100,7 @@ function! s:AddDependency (type)
 endfunction " }}}
 
 " InsertDependency(group, artifact, vrsn) {{{
-function! s:InsertDependency (type, group, artifact, vrsn)
+function! s:InsertDependency(type, group, artifact, vrsn)
   let depend = deepcopy(s:dependency_template{a:type})
   let depend = substitute(depend, '\${groupId}', a:group, '')
   let depend = substitute(depend, '\${artifactId}', a:artifact, '')
@@ -107,12 +108,24 @@ function! s:InsertDependency (type, group, artifact, vrsn)
   let dependency = split(depend, '\n')
 
   let lnum = search('</dependencies>', 'cnw')
+  let insertDependenciesNode = 0
   if !lnum
-    call eclim#util#EchoError('No <dependencies> node found.')
+    let lnum = search('<build>', 'cnw')
+    if !lnum
+      call eclim#util#EchoError('No <dependencies> node found.')
+      return
+    endif
+    let insertDependenciesNode = 1
   endif
 
   let indent = substitute(getline(lnum), '^\(\s*\).*', '\1', '')
   call map(dependency, 'indent . v:val')
+
+  if insertDependenciesNode
+    call append(lnum - 1, indent . '</dependencies>')
+    call append(lnum - 1, indent . '<dependencies>')
+    let lnum += 1
+  endif
 
   call append(lnum - 1, dependency)
 

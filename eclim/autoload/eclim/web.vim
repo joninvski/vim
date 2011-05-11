@@ -1,24 +1,24 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 1288 $
 "
 " Description: {{{
-"   see http://eclim.sourceforge.net/vim/common/web.html
+"   see http://eclim.org/vim/common/web.html
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2010  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
@@ -27,28 +27,33 @@ if !exists("g:EclimOpenUrlInVimPatterns")
   let g:EclimOpenUrlInVimPatterns = []
 endif
 if !exists("g:EclimOpenUrlInVimAction")
-  let g:EclimOpenUrlInVimAction = 'split'
+  let g:EclimOpenUrlInVimAction = g:EclimDefaultFileOpenAction
 endif
 " }}}
 
 " Script Variables {{{
-  let s:google = 'http://www.google.com/search?q=<query>'
-  let s:clusty = 'http://www.clusty.com/search?query=<query>'
-  let s:wikipedia = 'http://en.wikipedia.org/wiki/Special:Search?search=<query>'
-  let s:dictionary = 'http://dictionary.reference.com/search?q=<query>'
-  let s:thesaurus = 'http://thesaurus.reference.com/search?q=<query>'
+  let s:win_browsers = [
+      \ 'C:/Program Files/Opera/Opera.exe',
+      \ 'C:/Program Files/Mozilla Firefox/firefox.exe',
+      \ 'C:/Program Files/Internet Explorer/iexplore.exe'
+    \ ]
 
   let s:browsers = [
-      \ 'opera', 'firefox', 'konqueror', 'epiphany',
-      \ 'mozilla', 'netscape', 'iexplore'
+      \ 'xdg-open', 'opera', 'firefox', 'konqueror',
+      \ 'epiphany', 'mozilla', 'netscape', 'iexplore'
     \ ]
 " }}}
 
-" OpenUrl(url) {{{
+" OpenUrl(url, [no_vim, line1, line2]) {{{
 " Opens the supplied url in a web browser or opens the url under the cursor.
-function! eclim#web#OpenUrl (url)
+function! eclim#web#OpenUrl(url, ...)
   if !exists('s:browser') || s:browser == ''
     let s:browser = s:DetermineBrowser()
+
+    " slight hack for IE which doesn't like the url to be quoted.
+    if s:browser =~ 'iexplore' && !has('win32unix')
+      let s:browser = substitute(s:browser, '"', '', 'g')
+    endif
   endif
 
   if s:browser == ''
@@ -57,7 +62,17 @@ function! eclim#web#OpenUrl (url)
 
   let url = a:url
   if url == ''
-    let url = eclim#util#GrabUri()
+    if len(a:000) > 2
+      let start = a:000[1]
+      let end = a:000[2]
+      while start <= end
+        call eclim#web#OpenUrl(eclim#util#GrabUri(start, col('.')), a:000[0])
+        let start += 1
+      endwhile
+      return
+    else
+      let url = eclim#util#GrabUri()
+    endif
   endif
 
   if url == ''
@@ -78,18 +93,20 @@ function! eclim#web#OpenUrl (url)
     endif
   endif
 
-  for pattern in g:EclimOpenUrlInVimPatterns
-    if url =~ pattern
-      exec g:EclimOpenUrlInVimAction . ' ' . url
-      return
-    endif
-  endfor
+  if len(a:000) == 0 || a:000[0] == ''
+    for pattern in g:EclimOpenUrlInVimPatterns
+      if url =~ pattern
+        exec g:EclimOpenUrlInVimAction . ' ' . url
+        return
+      endif
+    endfor
+  endif
 
   let url = substitute(url, '\', '/', 'g')
-  let url = escape(url, '&%')
-  let url = escape(url, '%')
+  let url = escape(url, '&%!')
+  let url = escape(url, '%!')
   let command = escape(substitute(s:browser, '<url>', url, ''), '#')
-  silent! call eclim#util#Exec(command)
+  silent call eclim#util#Exec(command)
   redraw!
 
   if v:shell_error
@@ -99,48 +116,15 @@ function! eclim#web#OpenUrl (url)
   endif
 endfunction " }}}
 
-" Google(args, quote, visual) {{{
-function! eclim#web#Google (args, quote, visual)
-  call eclim#web#SearchEngine(s:google, a:args, a:quote, a:visual)
-endfunction " }}}
-
-" Clusty(args, quote, visual) {{{
-function! eclim#web#Clusty (args, quote, visual)
-  call eclim#web#SearchEngine(s:clusty, a:args, a:quote, a:visual)
-endfunction " }}}
-
-" Wikipedia(args, quote, visual) {{{
-function! eclim#web#Wikipedia (args, quote, visual)
-  call eclim#web#SearchEngine(s:wikipedia, a:args, a:quote, a:visual)
-endfunction " }}}
-
-" Dictionary(word) {{{
-function! eclim#web#Dictionary (word)
-  call eclim#web#WordLookup(s:dictionary, a:word)
-endfunction " }}}
-
-" Thesaurus(word) {{{
-function! eclim#web#Thesaurus (word)
-  call eclim#web#WordLookup(s:thesaurus, a:word)
-endfunction " }}}
-
-" SearchEngine(url, args, quote, visual) {{{
-function! eclim#web#SearchEngine (url, args, quote, visual)
+" SearchEngine(url, args) {{{
+" Function to use a search engine to search for a word or phrase.
+function! eclim#web#SearchEngine(url, args, line1, line2)
   let search_string = a:args
   if search_string == ''
-    if a:visual
-      echom "visual"
-      let saved = @"
-      normal gvy
-      let search_string = substitute(@", '\n', '', '')
-      let @" = saved
-    else
+    let search_string = eclim#util#GetVisualSelection(a:line1, a:line2, 0)
+    if search_string == ''
       let search_string = expand('<cword>')
     endif
-  endif
-
-  if a:quote
-    let search_string = '"' . search_string . '"'
   endif
 
   let search_string = eclim#html#util#UrlEncode(search_string)
@@ -149,8 +133,9 @@ function! eclim#web#SearchEngine (url, args, quote, visual)
   call eclim#web#OpenUrl(url)
 endfunction " }}}
 
-" WordLookup (url, word) {{{
-function! eclim#web#WordLookup (url, word)
+" WordLookup(url, word) {{{
+" Function to lookup a word on an online dictionary, thesaurus, etc.
+function! eclim#web#WordLookup(url, word)
   let word = a:word
   if word == ''
     let word = expand('<cword>')
@@ -161,8 +146,8 @@ function! eclim#web#WordLookup (url, word)
   call eclim#web#OpenUrl(url)
 endfunction " }}}
 
-" DetermineBrowser() {{{
-function! s:DetermineBrowser ()
+" s:DetermineBrowser() {{{
+function! s:DetermineBrowser()
   let browser = ''
 
   " user specified a browser, we just need to fill in any gaps if necessary.
@@ -171,7 +156,7 @@ function! s:DetermineBrowser ()
     " add "<url>" if necessary
     if browser !~ '<url>'
       let browser = substitute(browser,
-        \ '^\([[:alnum:][:blank:]-/\\_.:]\+\)\(.*\)$',
+        \ '^\([[:alnum:][:blank:]-/\\_.:"]\+\)\(.*\)$',
         \ '\1 "<url>" \2', '')
     endif
 
@@ -182,7 +167,8 @@ function! s:DetermineBrowser ()
       endif
     else
       " add '&' to run process in background if necessary.
-      if browser !~ '&\s*$'
+      if browser !~ '&\s*$' &&
+       \ browser !~ '^\(/[/a-zA-Z0-9]\+/\)\?\<\(links\|lynx\|elinks\|w3m\)\>'
         let browser = browser . ' &'
       endif
 
@@ -198,29 +184,41 @@ function! s:DetermineBrowser ()
 
   " user did not specify a browser, so attempt to find a suitable one.
   else
-    if has("win32") || has("win64")
-      " this version doesn't like .html suffixes on windows 2000
-      "if executable('rundll32')
-        "let browser = '!rundll32 url.dll,FileProtocolHandler <url>'
-      "endif
-      let browser = '!cmd /c start <url>'
-    elseif has("mac")
+    if has('win32') || has('win64') || has('win32unix')
+      " Note: this version may not like .html suffixes on windows 2000
+      if executable('rundll32')
+        let browser = 'rundll32 url.dll,FileProtocolHandler <url>'
+      endif
+      " this doesn't handle local files very well or '&' in the url.
+      "let browser = '!cmd /c start <url>'
+      if browser == ''
+        for name in s:win_browsers
+          if has('win32unix')
+            let name = eclim#cygwin#CygwinPath(name)
+          endif
+          if executable(name)
+            let browser = name
+            if has('win32unix')
+              let browser = '"' . browser . '"'
+            endif
+            break
+          endif
+        endfor
+      endif
+    elseif has('mac')
       let browser = '!open <url>'
-    endif
-
-    " no default OS method found, so loop through known browsers.
-    if browser == ''
+    else
       for name in s:browsers
         if executable(name)
           let browser = name
           break
         endif
       endfor
+    endif
 
-      if browser != ''
-        let g:EclimBrowser = browser
-        let browser = s:DetermineBrowser()
-      endif
+    if browser != ''
+      let g:EclimBrowser = browser
+      let browser = s:DetermineBrowser()
     endif
   endif
 

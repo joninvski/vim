@@ -1,35 +1,36 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 1178 $
 "
 " Description: {{{
-"   see http://eclim.sourceforge.net/vim/java/ant/complete.html
+"   see http://eclim.org/vim/java/ant/complete.html
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2010  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
 " Script Varables {{{
   let s:complete_command =
-    \ '-filter vim -command ant_complete -p "<project>" -f "<file>" -o <offset>'
+    \ '-command ant_complete -p "<project>" -f "<file>" -o <offset> -e <encoding>'
+  let s:command_targets = '-command ant_targets -p "<project>" -f "<file>"'
 " }}}
 
 " CodeComplete(findstart, base) {{{
 " Handles ant code completion.
-function! eclim#java#ant#complete#CodeComplete (findstart, base)
+function! eclim#java#ant#complete#CodeComplete(findstart, base)
   if a:findstart
     " update the file before vim makes any changes.
     call eclim#java#ant#util#SilentUpdate()
@@ -61,18 +62,19 @@ function! eclim#java#ant#complete#CodeComplete (findstart, base)
 
     return start
   else
-    let offset = eclim#util#GetCharacterOffset() + len(a:base) - 1
-    let project = eclim#project#GetCurrentProjectName()
+    let offset = eclim#util#GetOffset() + len(a:base) - 1
+    let project = eclim#project#util#GetCurrentProjectName()
     if project == ''
       return []
     endif
 
-    let filename = eclim#project#GetProjectRelativeFilePath(expand("%:p"))
+    let file = eclim#project#util#GetProjectRelativeFilePath()
 
     let command = s:complete_command
     let command = substitute(command, '<project>', project, '')
-    let command = substitute(command, '<file>', filename, '')
+    let command = substitute(command, '<file>', file, '')
     let command = substitute(command, '<offset>', offset, '')
+    let command = substitute(command, '<encoding>', eclim#util#GetEncoding(), '')
 
     let completions = []
     let results = split(eclim#ExecuteEclim(command), '\n')
@@ -108,6 +110,36 @@ function! eclim#java#ant#complete#CodeComplete (findstart, base)
 
     return completions
   endif
+endfunction " }}}
+
+" CommandCompleteTarget(argLead, cmdLine, cursorPos) {{{
+" Custom command completion for ant targets.
+function! eclim#java#ant#complete#CommandCompleteTarget(argLead, cmdLine, cursorPos)
+  let project = eclim#project#util#GetCurrentProjectName()
+  if project == ''
+    return []
+  endif
+
+  let file = eclim#java#ant#util#FindBuildFile()
+  if project != "" && file != ""
+    let file = eclim#project#util#GetProjectRelativeFilePath(file)
+    let command = s:command_targets
+    let command = substitute(command, '<project>', project, '')
+    let command = substitute(command, '<file>', file, '')
+
+    let targets = split(eclim#ExecuteEclim(command), '\n')
+    if len(targets) == 1 && targets[0] == '0'
+      return []
+    endif
+
+    let cmdTail = strpart(a:cmdLine, a:cursorPos)
+    let argLead = substitute(a:argLead, cmdTail . '$', '', '')
+    call filter(targets, 'v:val =~ "^' . argLead . '"')
+
+    return targets
+  endif
+
+  return []
 endfunction " }}}
 
 " vim:ft=vim:fdm=marker

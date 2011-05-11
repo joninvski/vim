@@ -1,60 +1,65 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 904 $
 "
 " Description: {{{
-"   see http://eclim.sourceforge.net/vim/java/impl.html
+"   see http://eclim.org/vim/java/impl.html
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2010  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
 " Script Varables {{{
   let s:command_impl =
-    \ '-filter vim -command java_impl -p "<project>" -f "<file>" -o <offset>'
+    \ '-command java_impl -p "<project>" -f "<file>" -o <offset> -e <encoding>'
   let g:JavaImplCommandInsert =
-    \ '-filter vim -command java_impl -p "<project>" -f "<file>" -t "<type>" ' .
+    \ '-command java_impl -p "<project>" -f "<file>" -t "<type>" ' .
     \ '-s "<superType>" <methods>'
   let s:cross_type_selection = "Visual selection is currently limited to methods of one super type at a time."
 " }}}
 
 " Impl() {{{
-function! eclim#java#impl#Impl ()
-  if !eclim#project#IsCurrentFileInProject()
+function! eclim#java#impl#Impl()
+  if !eclim#project#util#IsCurrentFileInProject()
     return
   endif
 
   call eclim#java#util#SilentUpdate()
 
-  let project = eclim#project#GetCurrentProjectName()
-  let filename = eclim#java#util#GetFilename()
+  let project = eclim#project#util#GetCurrentProjectName()
+  let file = eclim#project#util#GetProjectRelativeFilePath()
   let offset = eclim#util#GetCurrentElementOffset()
 
   let command = s:command_impl
   let command = substitute(command, '<project>', project, '')
-  let command = substitute(command, '<file>', filename, '')
+  let command = substitute(command, '<file>', file, '')
   let command = substitute(command, '<offset>', offset, '')
+  let command = substitute(command, '<encoding>', eclim#util#GetEncoding(), '')
 
   call eclim#java#impl#ImplWindow(command)
 endfunction " }}}
 
 " ImplWindow(command) {{{
-function! eclim#java#impl#ImplWindow (command)
-  let name = eclim#java#util#GetFilename() . "_impl"
-  if eclim#util#TempWindowCommand(a:command, name)
+function! eclim#java#impl#ImplWindow(command)
+  let name = eclim#project#util#GetProjectRelativeFilePath() . "_impl"
+  let project = eclim#project#util#GetCurrentProjectName()
+  let workspace = eclim#project#util#GetProjectWorkspace(project)
+  let port = eclim#client#nailgun#GetNgPort(workspace)
+
+  if eclim#util#TempWindowCommand(a:command, name, port)
     setlocal ft=java
     call eclim#java#impl#ImplWindowFolding()
 
@@ -68,14 +73,14 @@ function! eclim#java#impl#ImplWindow (command)
 endfunction " }}}
 
 " ImplWindowFolding() {{{
-function! eclim#java#impl#ImplWindowFolding ()
+function! eclim#java#impl#ImplWindowFolding()
   setlocal foldmethod=syntax
   setlocal foldlevel=99
 endfunction " }}}
 
 " ImplAdd(command, function) {{{
-function! eclim#java#impl#ImplAdd (command, function, visual)
-  let winnr = bufwinnr(bufnr(b:filename))
+function! eclim#java#impl#ImplAdd(command, function, visual)
+  let winnr = bufwinnr(bufnr('^' . b:filename))
   " src window is not longer open.
   if winnr == -1
     call eclim#util#EchoError(b:filename . ' no longer found in an open window.')
@@ -102,11 +107,10 @@ function! eclim#java#impl#ImplAdd (command, function, visual)
     endif
     " on a method line
     if line =~ '^\s\+'
-      let methods = substitute(line, '.*\s\(\w\+\s(.*\)', '\1', '')
+      let methods = substitute(line, '.*\s\(\w\+(.*\)', '\1', '')
       let methods = substitute(methods, '\s\w\+\(,\|)\)', '\1', 'g')
-      let methods = substitute(methods, '\s(', '(', 'g')
       let methods = substitute(methods, ',\s', ',', 'g')
-      let methods = substitute(methods, '<.\{-}>', '', 'g')
+      "let methods = substitute(methods, '<.\{-}>', '', 'g')
       let ln = search('^\w', 'bWn')
       if ln > 0
         let superType = substitute(getline(ln), '.*\s\(.*\) {', '\1', '')
@@ -118,8 +122,7 @@ function! eclim#java#impl#ImplAdd (command, function, visual)
 
   " visual mode
   else
-    let lnum = line('.')
-    let col = col('.')
+    let pos = getpos('.')
     let index = start
     while index <= end
       let line = getline(index)
@@ -128,11 +131,10 @@ function! eclim#java#impl#ImplAdd (command, function, visual)
       " on a method line
       elseif line =~ '^\s\+'
         if methods != ""
-          let methods = methods . "|"
+          let methods = methods . ",,"
         endif
-        let method = substitute(line, '.*\s\(\w\+\s(.*\)', '\1', '')
+        let method = substitute(line, '.*\s\(\w\+(.*\)', '\1', '')
         let method = substitute(method, '\s\w\+\(,\|)\)', '\1', 'g')
-        let method = substitute(method, '\s(', '(', 'g')
         let method = substitute(method, ',\s', ',', 'g')
         let method = substitute(method, '<.\{-}>', '', 'g')
         let methods = methods . method
@@ -142,7 +144,7 @@ function! eclim#java#impl#ImplAdd (command, function, visual)
           let super = substitute(getline(ln), '.*\s\(.*\) {', '\1', '')
           if superType != "" && super != superType
             call eclim#util#EchoError(s:cross_type_selection)
-            call cursor(lnum, col)
+            call setpos('.', pos)
             return
           endif
           let superType = super
@@ -152,12 +154,12 @@ function! eclim#java#impl#ImplAdd (command, function, visual)
         let super = substitute(line, '.*\s\(.*\) {', '\1', '')
         if superType != "" && super != superType
           call eclim#util#EchoError(s:cross_type_selection)
-          call cursor(lnum, col)
+          call setpos('.', pos)
           return
         endif
         let superType = super
       endif
-      call cursor(lnum, col)
+      call setpos('.', pos)
 
       let index += 1
     endwhile
@@ -179,11 +181,12 @@ function! eclim#java#impl#ImplAdd (command, function, visual)
   exec winnr . "winc w"
   call eclim#java#util#SilentUpdate()
 
-  let project = eclim#project#GetCurrentProjectName()
+  let project = eclim#project#util#GetCurrentProjectName()
+  let file = eclim#project#util#GetProjectRelativeFilePath()
 
   let command = a:command
   let command = substitute(command, '<project>', project, '')
-  let command = substitute(command, '<file>', eclim#java#util#GetFilename(), '')
+  let command = substitute(command, '<file>', file, '')
   let command = substitute(command, '<type>', type, '')
   let command = substitute(command, '<superType>', superType, '')
   if methods != ""

@@ -1,38 +1,37 @@
 " Author:  Eric Van Dewoestine
-" Version: $Revision: 967 $
 "
 " Description: {{{
-"   see http://eclim.sourceforge.net/vim/java/junit.html
+"   see http://eclim.org/vim/java/junit.html
 "
 " License:
 "
-" Copyright (c) 2005 - 2006
+" Copyright (C) 2005 - 2010  Eric Van Dewoestine
 "
-" Licensed under the Apache License, Version 2.0 (the "License");
-" you may not use this file except in compliance with the License.
-" You may obtain a copy of the License at
+" This program is free software: you can redistribute it and/or modify
+" it under the terms of the GNU General Public License as published by
+" the Free Software Foundation, either version 3 of the License, or
+" (at your option) any later version.
 "
-"      http://www.apache.org/licenses/LICENSE-2.0
+" This program is distributed in the hope that it will be useful,
+" but WITHOUT ANY WARRANTY; without even the implied warranty of
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" GNU General Public License for more details.
 "
-" Unless required by applicable law or agreed to in writing, software
-" distributed under the License is distributed on an "AS IS" BASIS,
-" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-" See the License for the specific language governing permissions and
-" limitations under the License.
+" You should have received a copy of the GNU General Public License
+" along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "
 " }}}
 
 " Script Variables {{{
-let s:command_impl =
-  \ '-filter vim -command java_junit_impl -p "<project>" -f "<file>" <base>'
+let s:command_impl = '-command java_junit_impl -p "<project>" -f "<file>" <base>'
 let s:command_insert =
-  \ '-filter vim -command java_junit_impl -p "<project>" -f "<file>" <base> ' .
-  \ '-t "<type>" -s <superType> <methods>'
+  \ '-command java_junit_impl -p "<project>" -f "<file>" <base> ' .
+  \ '-t "<type>" -s "<superType>" <methods>'
 " }}}
 
 " JUnitExecute(test) {{{
 " Execute the supplied test, or if none supplied, the current test.
-function! eclim#java#junit#JUnitExecute (test)
+function! eclim#java#junit#JUnitExecute(test)
   let test = a:test
   if test == ''
     let class = eclim#java#util#GetFullyQualifiedClassname()
@@ -41,7 +40,11 @@ function! eclim#java#junit#JUnitExecute (test)
     let class = substitute(test, '/', '\.', 'g')
   endif
 
-  let command = eclim#project#GetProjectSetting("org.eclim.java.junit.command")
+  let command = eclim#project#util#GetProjectSetting("org.eclim.java.junit.command")
+  if type(command) == 0
+    return
+  endif
+
   if command == ''
     call eclim#util#EchoWarning(
       \ "Command setting for 'junit' not set. " .
@@ -60,9 +63,9 @@ endfunction " }}}
 "   Empty string: Use the current file to determine the test result file.
 "   Class name of a test: Locate the results for class (ex. 'TestMe').
 "   The results dir relative results file name: TEST-org.foo.TestMe.xml
-function! eclim#java#junit#JUnitResult (test)
+function! eclim#java#junit#JUnitResult(test)
   let path = s:GetResultsDir()
-  if path == '' || path == '/'
+  if path == ''
     call eclim#util#EchoWarning(
       \ "Output directory setting for 'junit' not set. " .
       \ "Use :EclimSettings or :ProjectSettings to set it.")
@@ -96,7 +99,7 @@ function! eclim#java#junit#JUnitResult (test)
     exec "botright split " . found
 
     augroup temp_window
-      autocmd! BufUnload <buffer>
+      autocmd! BufWinLeave <buffer>
       call eclim#util#GoToBufferWindowRegister(filename)
     augroup END
 
@@ -108,18 +111,19 @@ endfunction " }}}
 " JUnitImpl() {{{
 " Opens a window that allows the user to choose methods to implement tests
 " for.
-function! eclim#java#junit#JUnitImpl ()
-  if !eclim#project#IsCurrentFileInProject()
+function! eclim#java#junit#JUnitImpl()
+  if !eclim#project#util#IsCurrentFileInProject()
     return
   endif
 
   call eclim#java#util#SilentUpdate()
 
-  let project = eclim#project#GetCurrentProjectName()
+  let project = eclim#project#util#GetCurrentProjectName()
+  let file = eclim#project#util#GetProjectRelativeFilePath()
 
   let command = s:command_impl
   let command = substitute(command, '<project>', project, '')
-  let command = substitute(command, '<file>', eclim#java#util#GetFilename(), '')
+  let command = substitute(command, '<file>', file, '')
   let base = substitute(expand('%:t'), 'Test', '', '')
   let base = substitute(eclim#java#util#GetPackage(), '\.', '/', 'g') . "/" . base
   if eclim#java#util#FileExists(base)
@@ -136,9 +140,13 @@ function! eclim#java#junit#JUnitImpl ()
 endfunction " }}}
 
 " JUnitImplWindow(command) {{{
-function! eclim#java#junit#JUnitImplWindow (command)
-  let name = eclim#java#util#GetFilename() . "_impl"
-  if eclim#util#TempWindowCommand(a:command, name)
+function! eclim#java#junit#JUnitImplWindow(command)
+  let name = eclim#project#util#GetProjectRelativeFilePath() . "_impl"
+  let project = eclim#project#util#GetCurrentProjectName()
+  let workspace = eclim#project#util#GetProjectWorkspace(project)
+  let port = eclim#client#nailgun#GetNgPort(workspace)
+
+  if eclim#util#TempWindowCommand(a:command, name, port)
     setlocal ft=java
     call eclim#java#impl#ImplWindowFolding()
 
@@ -148,7 +156,7 @@ function! eclim#java#junit#JUnitImplWindow (command)
 endfunction " }}}
 
 " AddTestImpl(visual) {{{
-function! s:AddTestImpl (visual)
+function! s:AddTestImpl(visual)
   let command = s:command_insert
   if b:base != ""
     let command = substitute(command, '<base>', '-b ' . b:base, '')
@@ -161,27 +169,35 @@ function! s:AddTestImpl (visual)
 endfunction " }}}
 
 " GetResultsDir() {{{
-function s:GetResultsDir ()
-  let path = eclim#project#GetProjectSetting("org.eclim.java.junit.output_dir")
-  let path = substitute(path, '<project>', eclim#project#GetCurrentProjectRoot(), '')
-  let path = path !~ '/$' ? path . '/' : path
+function s:GetResultsDir()
+  let path = eclim#project#util#GetProjectSetting("org.eclim.java.junit.output_dir")
+  if type(path) == 0
+    return
+  endif
+
+  let root = eclim#project#util#GetCurrentProjectRoot()
+  let path = substitute(path, '<project>', root, '')
+  let path = path != '' && path !~ '/$' ? path . '/' : path
+  if path != '' && has('win32unix')
+    let path = eclim#cygwin#CygwinPath(path)
+  endif
   return path
 endfunction " }}}
 
 " CommandCompleteTest(argLead, cmdLine, cursorPos) {{{
 " Custom command completion for junit test cases.
-function eclim#java#junit#CommandCompleteTest (argLead, cmdLine, cursorPos)
+function eclim#java#junit#CommandCompleteTest(argLead, cmdLine, cursorPos)
   return eclim#java#test#CommandCompleteTest('junit', a:argLead, a:cmdLine, a:cursorPos)
 endfunction " }}}
 
 " CommandCompleteResult(argLead, cmdLine, cursorPos) {{{
 " Custom command completion for test case results.
-function! eclim#java#junit#CommandCompleteResult (argLead, cmdLine, cursorPos)
+function! eclim#java#junit#CommandCompleteResult(argLead, cmdLine, cursorPos)
   let cmdTail = strpart(a:cmdLine, a:cursorPos)
   let argLead = substitute(a:argLead, cmdTail . '$', '', '')
 
   let path = s:GetResultsDir()
-  if path == '' || path == '/'
+  if path == ''
     call eclim#util#EchoWarning(
       \ "Output directory setting for 'junit' not set. " .
       \ "Use :EclimSettings or :ProjectSettings to set it.")
