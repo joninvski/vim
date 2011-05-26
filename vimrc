@@ -537,6 +537,10 @@ let g:Tex_DefaultTargetFormat = "pdf"
 
 let g:Tex_ViewerCwindowHeight = 6
 
+" View pdfs
+let g:Tex_ViewRule_pdf = "xpdf"
+
+
 "Use \ll to create the pdf
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
