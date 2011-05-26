@@ -643,7 +643,9 @@ map <leader>tag :!etags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 let @h = "yypVr"
 
 " for 7.3
-set undofile
+if version >= 730
+    set undofile
+endif
 
 let g:github_user = 'joninvski'
 let g:github_token = '4e7006503127d762722648c07d1bda00'
