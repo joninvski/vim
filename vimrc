@@ -175,7 +175,7 @@ autocmd BufNewFile,BufRead *.py map <C-h> :py EvaluateCurrentRange()<cr>
 " VIM userinterface{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "When moving vertical, start scrolling 7 lines before reaching the extremity"
-set so=7
+set so=15
 
 "Turn on WiLd menu - command-line completion operates in an enhanced mode.
 set wildmenu
@@ -549,10 +549,10 @@ let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
 " GIT{{{
 """"""""""""""""""""""""""""""
 nmap <leader>gita <Plug>VCSAdd
-nmap <leader>gitc <Plug>VCSCommit
+nmap <leader>gitc <Plug>Gcommit
 nmap <leader>gitl <Plug>VCSLog
 map <leader>gitr <Plug>VCSRevert
-nmap <leader>gitd <Plug>VCSVimDiff
+nmap <leader>gitd <Plug>Gdiff
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
