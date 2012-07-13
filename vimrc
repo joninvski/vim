@@ -12,6 +12,11 @@
 " http://joaotrindade.no-ip.org/git/gitweb.cgi?p=vim/.git;a=summary
 """""""""""""""""""""""""""""""""""""""
 
+call pathogen#infect()
+let g:syntastic_check_on_open=1
+let g:syntastic_auto_loc_list=1
+
+
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Get out of VI's compatible mode..
@@ -470,7 +475,7 @@ map <leader>w :cw 8<cr>
 """"""""""""""""""""""""""""""
 "Show the miniBufExplorer from the start
 if !has("gui_running")
-    let g:miniBufExplorerMoreThanOne = 0
+    let g:miniBufExplorerMoreThanOne = 1
 endif
 
 "Not using because I don't use the vertical window
