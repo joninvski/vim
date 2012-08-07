@@ -149,7 +149,7 @@ import vim
 def EvaluateCurrentRange():
     eval(compile('\n'.join(vim.current.range),'','exec'),globals())
 
-#Set breakpoints with F7
+#Set breakpoints with F6
 def SetBreakpoint():
     import re
     nLine = int( vim.eval( 'line(".")'))
@@ -623,6 +623,11 @@ nmap <silent> <Leader>p :Project<CR>
 """"""""""""""""""""""""""""""
 "Use <Control+_> to close tag
 :au Filetype html,xml,xsl source ~/.vim/macros/closetag.vim
+""""""""""""""""""""""""""""""}}}
+
+" NERD Tree Explorer{{{
+""""""""""""""""""""""""""""""
+nmap <silent> <F5> :NERDTree<CR>
 """"""""""""""""""""""""""""""}}}
 
 " Taglist{{{
