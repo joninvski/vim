@@ -12,11 +12,6 @@
 " http://joaotrindade.no-ip.org/git/gitweb.cgi?p=vim/.git;a=summary
 """""""""""""""""""""""""""""""""""""""
 
-call pathogen#infect()
-let g:syntastic_check_on_open=1
-let g:syntastic_auto_loc_list=1
-
-
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Get out of VI's compatible mode..
@@ -668,8 +663,11 @@ if version >= 730
     set undofile
 endif
 
-let g:github_user = 'joninvski'
-let g:github_token = '4e7006503127d762722648c07d1bda00'
+call pathogen#infect()
+let g:syntastic_check_on_open=1
+let g:syntastic_auto_loc_list=1
+
+
 
 
 "######################################### End of Experimental 1}}}
