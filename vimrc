@@ -134,6 +134,11 @@ au FileType c,cpp set smartindent
 au FileType c,cpp set comments=sl:/*,mb:\ *,elx:\ */
 """""""""""""""""""""""""""""""""""""""""""}}}
 
+" More specific for java{{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+setlocal omnifunc=javacomplete#Complete
+"""""""""""""""""""""""""""""""""""""""""""}}}
+
 " More specific for python{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Set the python tags
@@ -598,6 +603,17 @@ let g:Tex_ViewerCwindowHeight = 6
 
 " View pdfs
 let g:Tex_ViewRule_pdf = "xpdf"
+
+" Make it possible to write the é á ã (change the keys for the commands
+" mapped to these keys)
+imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
+imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
+imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
+inoremap <buffer> <silent> \c \cite{
+map <buffer> <silent> é é
+map <buffer> <silent> á á
+map <buffer> <silent> ã ã
+
 
 "Use \ll to create the pdf
 "Use \lv to see the pdf
