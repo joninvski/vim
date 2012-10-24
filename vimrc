@@ -553,11 +553,11 @@ let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
 
 " GIT{{{
 """"""""""""""""""""""""""""""
-nmap <leader>gita <Plug>VCSAdd
-nmap <leader>gitc <Plug>Gcommit
-nmap <leader>gitl <Plug>VCSLog
-map <leader>gitr <Plug>VCSRevert
-nmap <leader>gitd <Plug>Gdiff
+nmap <leader>gita :VCSAdd<cr>
+nmap <leader>gitc :Gcommit<cr>
+nmap <leader>gitl :VCSLog<cr>
+nmap <leader>gitr  :VCSRevert<cr>
+nmap <leader>gitd  :Gdiff<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
