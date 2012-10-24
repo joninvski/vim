@@ -12,6 +12,20 @@
 " http://joaotrindade.no-ip.org/git/gitweb.cgi?p=vim/.git;a=summary
 """""""""""""""""""""""""""""""""""""""
 
+call pathogen#infect()
+let g:syntastic_check_on_open= 1
+let g:syntastic_auto_loc_list= 1
+" In order to also check header files add this to your .vimrc:
+" " (this usually creates a .gch file in your source directory)
+let g:syntastic_c_check_header = 1
+
+"
+"" In order to add some custom include directories that should be added to the
+" gcc command line you can add those to the global variable
+" " g:syntastic_c_include_dirs. This list can be used like this:
+" syntastic_lib is just a sym link if the directory is somewhere weird
+let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
+
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Get out of VI's compatible mode..
@@ -90,7 +104,8 @@ if has("gui_running")
 "    set guioptions-=T " turn off toolbar
 endif
 
-"Highlight current
+"Highlight current line
+set cursorline
 if has("gui_running")
     set cursorline
     hi cursorline guibg=black
@@ -627,7 +642,10 @@ nmap <silent> <Leader>p :Project<CR>
 
 " NERD Tree Explorer{{{
 """"""""""""""""""""""""""""""
-nmap <silent> <F5> :NERDTree<CR>
+nmap <silent> <F5> :NERDTreeToggle<CR>
+
+" Lets ignore some file from showing in the NERDTree
+let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$']
 """"""""""""""""""""""""""""""}}}
 
 " Taglist{{{
