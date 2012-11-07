@@ -12,6 +12,20 @@
 " http://joaotrindade.no-ip.org/git/gitweb.cgi?p=vim/.git;a=summary
 """""""""""""""""""""""""""""""""""""""
 
+call pathogen#infect()
+let g:syntastic_check_on_open= 1
+let g:syntastic_auto_loc_list= 1
+" In order to also check header files add this to your .vimrc:
+" " (this usually creates a .gch file in your source directory)
+let g:syntastic_c_check_header = 1
+
+"
+"" In order to add some custom include directories that should be added to the
+" gcc command line you can add those to the global variable
+" " g:syntastic_c_include_dirs. This list can be used like this:
+" syntastic_lib is just a sym link if the directory is somewhere weird
+let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
+
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Get out of VI's compatible mode..
@@ -90,7 +104,8 @@ if has("gui_running")
 "    set guioptions-=T " turn off toolbar
 endif
 
-"Highlight current
+"Highlight current line
+set cursorline
 if has("gui_running")
     set cursorline
     hi cursorline guibg=black
@@ -129,6 +144,11 @@ au FileType c,cpp set smartindent
 au FileType c,cpp set comments=sl:/*,mb:\ *,elx:\ */
 """""""""""""""""""""""""""""""""""""""""""}}}
 
+" More specific for java{{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+setlocal omnifunc=javacomplete#Complete
+"""""""""""""""""""""""""""""""""""""""""""}}}
+
 " More specific for python{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Set the python tags
@@ -144,7 +164,7 @@ import vim
 def EvaluateCurrentRange():
     eval(compile('\n'.join(vim.current.range),'','exec'),globals())
 
-#Set breakpoints with F7
+#Set breakpoints with F6
 def SetBreakpoint():
     import re
     nLine = int( vim.eval( 'line(".")'))
@@ -175,7 +195,7 @@ autocmd BufNewFile,BufRead *.py map <C-h> :py EvaluateCurrentRange()<cr>
 " VIM userinterface{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "When moving vertical, start scrolling 7 lines before reaching the extremity"
-set so=7
+set so=15
 
 "Turn on WiLd menu - command-line completion operates in an enhanced mode.
 set wildmenu
@@ -470,7 +490,7 @@ map <leader>w :cw 8<cr>
 """"""""""""""""""""""""""""""
 "Show the miniBufExplorer from the start
 if !has("gui_running")
-    let g:miniBufExplorerMoreThanOne = 0
+    let g:miniBufExplorerMoreThanOne = 1
 endif
 
 "Not using because I don't use the vertical window
@@ -548,11 +568,11 @@ let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
 
 " GIT{{{
 """"""""""""""""""""""""""""""
-nmap <leader>gita <Plug>VCSAdd
-nmap <leader>gitc <Plug>VCSCommit
-nmap <leader>gitl <Plug>VCSLog
-map <leader>gitr <Plug>VCSRevert
-nmap <leader>gitd <Plug>VCSVimDiff
+nmap <leader>gita :VCSAdd<cr>
+nmap <leader>gitc :Gcommit<cr>
+nmap <leader>gitl :VCSLog<cr>
+nmap <leader>gitr  :VCSRevert<cr>
+nmap <leader>gitd  :Gdiff<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
@@ -594,6 +614,17 @@ let g:Tex_ViewerCwindowHeight = 6
 " View pdfs
 let g:Tex_ViewRule_pdf = "xpdf"
 
+" Make it possible to write the é á ã (change the keys for the commands
+" mapped to these keys)
+imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
+imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
+imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
+inoremap <buffer> <silent> \c \cite{
+map <buffer> <silent> é é
+map <buffer> <silent> á á
+map <buffer> <silent> ã ã
+
+
 "Use \ll to create the pdf
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
@@ -607,6 +638,14 @@ nmap <silent> <Leader>p :Project<CR>
 """"""""""""""""""""""""""""""
 "Use <Control+_> to close tag
 :au Filetype html,xml,xsl source ~/.vim/macros/closetag.vim
+""""""""""""""""""""""""""""""}}}
+
+" NERD Tree Explorer{{{
+""""""""""""""""""""""""""""""
+nmap <silent> <F5> :NERDTreeToggle<CR>
+
+" Lets ignore some file from showing in the NERDTree
+let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$']
 """"""""""""""""""""""""""""""}}}
 
 " Taglist{{{
@@ -647,8 +686,11 @@ if version >= 730
     set undofile
 endif
 
-let g:github_user = 'joninvski'
-let g:github_token = '4e7006503127d762722648c07d1bda00'
+call pathogen#infect()
+let g:syntastic_check_on_open=1
+let g:syntastic_auto_loc_list=1
+
+
 
 
 "######################################### End of Experimental 1}}}
