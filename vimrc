@@ -101,7 +101,7 @@ set background=dark
 set guifont=Monospace\ 10
 
 "set the right enconding
-"set encoding=latin1
+"set encoding=latin1 # Usefull for starting latex files
 set encoding=utf-8
 
 "set Pattern matching highlight
