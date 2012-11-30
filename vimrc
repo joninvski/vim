@@ -684,6 +684,23 @@ set showfulltag  "Show more information while completing tags
 "If it is a latex file
 let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
 """"""""""""""""""""""""""""""}}}
+
+" VAM
+set runtimepath+=~/.vim/bundle/vim-addon-manager
+call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree",
+            \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
+            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "vimlatex", "grep", "repeat", "buffet",
+            \ "taglist-plus", "Solarized", "SuperTab%1643", "hybrid", "Powerline",
+            \ "Tail_Bundle", "snipmate-snippets"])
+
+"call vam#ActivateAddons(["Dart", "Gundo", "Haml", "Tabular", "The_NERD_tree", "Vim_Rspec", "ZenCoding", "afterimage",
+"            \ "apidock", "bundler%3207", "commentary", "endwise", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
+"            \ "ragtag", "rails", "rake", "rfc5424", "ruby-matchit", "Syntastic", "unimpaired", "unimpaired",
+"            \ "vim-addon-mw-utils", "vim-coffee-script", "vimlatex", "vim-ruby", "vim-rvm", "grep", "xterm-color-table",
+"            \ "surround", "repeat", "buffet", "taglist-plus", "Solarized", "SuperTab%1643", "hybrid", "Powerline",
+"            \ "Tail_Bundle", "snipmate-snippets", "vim-addon-sql"])
+
+
 "######################################### End of Plug-in related 1}}}
 
 
