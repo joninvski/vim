@@ -195,7 +195,7 @@ def SetBreakpoint():
         vim.current.buffer.append( 'import pdb', 0)
         vim.command( 'normal j1')
 
-vim.command( 'map <F6> :py SetBreakpoint()<cr>')
+        #vim.command( 'map <F6> :py SetBreakpoint()<cr>')
 
 EOF
 
@@ -336,13 +336,13 @@ map <leader>CD :cd %:p:h<cr>
 map <leader>sa :%y +<cr>
 
 " Buffer - "hide" :hide)
-map <F9> mzggVGg?'z
+"map <F9> mzggVGg?'z
 
 "Explore Fast
 map <leader>ee :Explore <cr>
 
 "Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
-set pastetoggle=<F12>
+"set pastetoggle=<F12>
 
 "Quit fast
 map <leader>q :qa <cr>
@@ -579,15 +579,8 @@ endif
 let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" GIT{{{
+" Fugitive{{{
 """"""""""""""""""""""""""""""
-nmap <leader>gita :VCSAdd<cr>
-nmap <leader>gitc :Gcommit<cr>
-nmap <leader>gitl :VCSLog<cr>
-nmap <leader>gitr  :VCSRevert<cr>
-nmap <leader>gitd  :Gdiff<cr>
-
-" Fugitive
 nnoremap <leader>gd :Gdiff<cr>
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gw :Gwrite<cr>
@@ -598,7 +591,14 @@ nnoremap <leader>gci :Gcommit<cr>
 nnoremap <leader>gm :Gmove<cr>
 nnoremap <leader>gr :Gremove<cr>
 nnoremap <leader>gl :Shell git gl -18<cr>:wincmd \|<cr>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+" Gundo{{{
+""""""""""""""""""""""""""""""
+let g:gundo_debug = 1
+let g:gundo_preview_bottom = 1
+let g:gundo_tree_statusline = "Gundo"
+let g:gundo_preview_statusline = "Gundo Preview"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Win Manager {{{
@@ -617,12 +617,11 @@ let g:explHideFiles='^\.,\.gz$,\.exe$,\.zip$'
 "Hide the help thing..
 let g:explDetailedHelp=0
 
-map <F10> :WMToggle<cr>
+"map <F10> :WMToggle<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Latex related {{{
 """"""""""""""""""""""""""""""""""""""
-
 "Ignore some warnings
 let g:Tex_IgnoredWarnings="Font""\n"
 
@@ -649,6 +648,17 @@ map <buffer> <silent> é é
 map <buffer> <silent> á á
 map <buffer> <silent> ã ã
 
+" F# keys
+nmap <silent> <F2> :NERDTreeToggle<CR>
+inoremap <silent> <F2> <ESC>:NERDTreeToggle<CR>
+nmap <silent> <F3> :GundoToggle<CR>
+nmap <silent> <F4> :TlistToggle<CR>
+nmap <silent> <F5> :set invlist<CR>:set list?<CR>
+nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
+nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
+nmap <silent> <F8> \C
+map <F9> mzggVGg?'z
+set pastetoggle=<F12>
 
 "Use \ll to create the pdf
 "Use \lv to see the pdf
@@ -667,7 +677,7 @@ nmap <silent> <Leader>p :Project<CR>
 
 " NERD Tree Explorer{{{
 """"""""""""""""""""""""""""""
-nmap <silent> <F5> :NERDTreeToggle<CR>
+"nmap <silent> <F5> :NERDTreeToggle<CR>
 
 " Lets ignore some file from showing in the NERDTree
 let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$']
@@ -675,7 +685,7 @@ let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$']
 
 " Taglist{{{
 """"""""""""""""""""""""""""""
-nnoremap <silent> <F8> :TlistToggle<CR>
+"nnoremap <silent> <F8> :TlistToggle<CR>
 let Tlist_Use_Right_Window = 1
 
 set tags+=tags;/
