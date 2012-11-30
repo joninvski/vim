@@ -451,6 +451,7 @@ set cindent
 " program to always generate a file-name.
 set grepprg=grep\ -inH\ $*
 let Grep_Skip_Dirs = 'CVS .svn .git build'
+let Grep_Skip_Files = '*.bak *~ *tags *TAGS *.orig'
 
 " Really useful!
 "  In visual mode when you press * or # to search for the current selection
@@ -586,6 +587,18 @@ nmap <leader>gitl :VCSLog<cr>
 nmap <leader>gitr  :VCSRevert<cr>
 nmap <leader>gitd  :Gdiff<cr>
 
+" Fugitive
+nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gw :Gwrite<cr>
+nnoremap <leader>ga :Gadd<cr>
+nnoremap <leader>gb :Gblame<cr>
+nnoremap <leader>gco :Gcheckout<cr>
+nnoremap <leader>gci :Gcommit<cr>
+nnoremap <leader>gm :Gmove<cr>
+nnoremap <leader>gr :Gremove<cr>
+nnoremap <leader>gl :Shell git gl -18<cr>:wincmd \|<cr>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Win Manager {{{
@@ -670,14 +683,6 @@ set showfulltag  "Show more information while completing tags
 
 "If it is a latex file
 let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
-""""""""""""""""""""""""""""""}}}
-
-" ScmDiff{{{
-""""""""""""""""""""""""""""""
-" Use git to do the diff with Control+D <C-D>
-if !exists("g:SCMDiffCommand")
-    let g:SCMDiffCommand = 'git'
-endif
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 
