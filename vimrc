@@ -12,6 +12,11 @@
 " http://joaotrindade.no-ip.org/git/gitweb.cgi?p=vim/.git;a=summary
 """""""""""""""""""""""""""""""""""""""
 
+" IMPORTANT: Uncomment one of the following lines to force
+" using 256 colors (or 88 colors) if your terminal supports it,
+" but does not automatically use 256 colors by default.
+set t_Co=256
+
 call pathogen#infect()
 let g:syntastic_check_on_open= 1
 let g:syntastic_auto_loc_list= 1
