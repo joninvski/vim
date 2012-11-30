@@ -12,6 +12,11 @@
 " http://joaotrindade.no-ip.org/git/gitweb.cgi?p=vim/.git;a=summary
 """""""""""""""""""""""""""""""""""""""
 
+" IMPORTANT: Uncomment one of the following lines to force
+" using 256 colors (or 88 colors) if your terminal supports it,
+" but does not automatically use 256 colors by default.
+set t_Co=256
+
 call pathogen#infect()
 let g:syntastic_check_on_open= 1
 let g:syntastic_auto_loc_list= 1
@@ -81,7 +86,11 @@ syntax enable
 "By far my favourite
 "color desert
 "Trying something new
-color bluegreen
+"color bluegreen
+"Good option
+color xoria256
+"color molokai
+"color hemisu
 
 "Set bg to dark
 set background=dark
@@ -92,16 +101,19 @@ set background=dark
 set guifont=Monospace\ 10
 
 "set the right enconding
-"set encoding=latin1
+"set encoding=latin1 # Usefull for starting latex files
 set encoding=utf-8
 
 "set Pattern matching highlight
 hi MatchParen guifg=#000000 guibg=#D0D090
 
 if has("gui_running")
-    set guioptions=m
+"    set guioptions=m
 "    set guioptions-=m " turn off menu bar
 "    set guioptions-=T " turn off toolbar
+    set guioptions=a
+    set guioptions+=m
+    set guicursor=a:blinkon0
 endif
 
 "Highlight current line
@@ -183,7 +195,7 @@ def SetBreakpoint():
         vim.current.buffer.append( 'import pdb', 0)
         vim.command( 'normal j1')
 
-vim.command( 'map <F6> :py SetBreakpoint()<cr>')
+        #vim.command( 'map <F6> :py SetBreakpoint()<cr>')
 
 EOF
 
@@ -278,23 +290,12 @@ iab wich which
 
 " AutoComplete and omni completion{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! Mosh_Tab_Or_Complete()
-    if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-        return "\<C-N>"
+"" supertab
+let g:SuperTabCrMapping = 0
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
 
-    else
-        return "\<Tab>"
-    endif
-endfunction
-
-:inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
-
-"Set the style of the popup menu on autocomplete
-set completeopt=menu,preview
-
-"To perform omnicompletion use alt+space (eclipse style)
-"let g:SuperTabMappingForward = "<m-space>" "TODO
-"let g:SuperTabDefaultCompletionType = "<C-X><C-O>" "TODO
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Snippets{{{
@@ -324,13 +325,13 @@ map <leader>CD :cd %:p:h<cr>
 map <leader>sa :%y +<cr>
 
 " Buffer - "hide" :hide)
-map <F9> mzggVGg?'z
+"map <F9> mzggVGg?'z
 
 "Explore Fast
 map <leader>ee :Explore <cr>
 
 "Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
-set pastetoggle=<F12>
+"set pastetoggle=<F12>
 
 "Quit fast
 map <leader>q :qa <cr>
@@ -439,6 +440,9 @@ set cindent
 " program to always generate a file-name.
 set grepprg=grep\ -inH\ $*
 let Grep_Skip_Dirs = 'CVS .svn .git build'
+let Grep_Skip_Files = '*.bak *~ *tags *TAGS *.orig'
+map <C-f> :Rgrep<CR>
+au FileType qf nmap <buffer> <cr> <cr><c-w><c-p>
 
 " Really useful!
 "  In visual mode when you press * or # to search for the current selection
@@ -493,22 +497,9 @@ if !has("gui_running")
     let g:miniBufExplorerMoreThanOne = 1
 endif
 
-"Not using because I don't use the vertical window
-"Use a vertical windows
-"let g:miniBufExplVSplit = 5
-
-"Put the miniBufExplorer windows at the right
-"let g:miniBufExplSplitBelow=1
-
 "Maximum size of the mini buffer explorer window
-"let g:miniBufExplMaxSize = 15
+let g:miniBufExplMaxSize = 10
 
-"Still haven't discovered what it does
-"let g:miniBufExplMapWindowNavArrows = 1
-"let g:miniBufExplMapCTabSwitchBufs = 1
-"let g:miniBufExplUseSingleClick = 1
-"let g:miniBufExplMapWindowNavVim = 1
-"
 " make tabs show complete (no broken on two lines)
 let g:miniBufExplTabWrap = 1
 
@@ -532,32 +523,6 @@ let g:bufExplorerSortBy = "name"
 "Deletes a buffer
 nmap <leader>db :bd<cr>
 
-"autocmd BufRead,BufNew :call UMiniBufExplorer
-
-"""""""""""""""""""""""""""""""""""
-" Stolen from http://dev.gentoo.org/~bass/configs/vimrc.html
-"
-" Adapt the status line according to the window
-"""""""""""""""""""""""""""""""""""
-if has("autocmd")
-    au FileType qf
-                \ if &buftype == "quickfix" |
-                \     setlocal statusline=%2*%-3.3n%0* |
-                \     setlocal statusline+=\ \[Compiler\ Messages\] |
-                \     setlocal statusline+=%=%2*\ %<%P |
-                \ endif
-
-    fun! <SID>FixMiniBufExplorerTitle()
-        if "-MiniBufExplorer-" == bufname("%")
-            setlocal statusline=\[Buffers\]
-        endif
-    endfun
-
-    au BufWinEnter *
-                \ let oldwinnr=winnr() |
-                \ windo call <SID>FixMiniBufExplorerTitle() |
-                \ exec oldwinnr . " wincmd w"
-endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Showmarks {{{
@@ -566,19 +531,30 @@ endif
 let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" GIT{{{
+" Fugitive{{{
 """"""""""""""""""""""""""""""
-nmap <leader>gita :VCSAdd<cr>
-nmap <leader>gitc :Gcommit<cr>
-nmap <leader>gitl :VCSLog<cr>
-nmap <leader>gitr  :VCSRevert<cr>
-nmap <leader>gitd  :Gdiff<cr>
+nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gw :Gwrite<cr>
+nnoremap <leader>ga :Gadd<cr>
+nnoremap <leader>gb :Gblame<cr>
+nnoremap <leader>gco :Gcheckout<cr>
+nnoremap <leader>gci :Gcommit<cr>
+nnoremap <leader>gm :Gmove<cr>
+nnoremap <leader>gr :Gremove<cr>
+nnoremap <leader>gl :Shell git gl -18<cr>:wincmd \|<cr>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+" Gundo{{{
+""""""""""""""""""""""""""""""
+let g:gundo_debug = 1
+let g:gundo_preview_bottom = 1
+let g:gundo_tree_statusline = "Gundo"
+let g:gundo_preview_statusline = "Gundo Preview"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Win Manager {{{
 """"""""""""""""""""""""""""""
-
 "Split vertically
 let g:explVertical=1
 
@@ -592,12 +568,11 @@ let g:explHideFiles='^\.,\.gz$,\.exe$,\.zip$'
 "Hide the help thing..
 let g:explDetailedHelp=0
 
-map <F10> :WMToggle<cr>
+"map <F10> :WMToggle<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Latex related {{{
 """"""""""""""""""""""""""""""""""""""
-
 "Ignore some warnings
 let g:Tex_IgnoredWarnings="Font""\n"
 
@@ -624,6 +599,17 @@ map <buffer> <silent> é é
 map <buffer> <silent> á á
 map <buffer> <silent> ã ã
 
+" F# keys
+nmap <silent> <F2> :NERDTreeToggle<CR>
+inoremap <silent> <F2> <ESC>:NERDTreeToggle<CR>
+nmap <silent> <F3> :GundoToggle<CR>
+nmap <silent> <F4> :TlistToggle<CR>
+nmap <silent> <F5> :set invlist<CR>:set list?<CR>
+nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
+nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
+nmap <silent> <F8> \C
+map <F9> mzggVGg?'z
+set pastetoggle=<F12>
 
 "Use \ll to create the pdf
 "Use \lv to see the pdf
@@ -642,15 +628,30 @@ nmap <silent> <Leader>p :Project<CR>
 
 " NERD Tree Explorer{{{
 """"""""""""""""""""""""""""""
-nmap <silent> <F5> :NERDTreeToggle<CR>
-
 " Lets ignore some file from showing in the NERDTree
 let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$']
+
+"The_NERD_tree
+augroup ps_nerdtree
+    au!
+    au Filetype nerdtree setlocal nolist
+    "au Filetype nerdtree nnoremap <buffer> K :q<cr>
+augroup END
+
+let NERDTreeHighlightCursorline = 1
+let NERDTreeIgnore = ['.vim$', '\~$', '.*\.pyc$', '.*.pid', '.*\.o$']
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDChristmasTree = 1
+let NERDTreeChDirMode = 2
+let NERDTreeMapJumpFirstChild = 'gK'
 """"""""""""""""""""""""""""""}}}
 
 " Taglist{{{
 """"""""""""""""""""""""""""""
-nnoremap <silent> <F8> :TlistToggle<CR>
+let Tlist_Show_Menu=0
+nnoremap <C-]> g<C-]>
+
 let Tlist_Use_Right_Window = 1
 
 set tags+=tags;/
@@ -660,13 +661,22 @@ set showfulltag  "Show more information while completing tags
 let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
 """"""""""""""""""""""""""""""}}}
 
-" ScmDiff{{{
-""""""""""""""""""""""""""""""
-" Use git to do the diff with Control+D <C-D>
-if !exists("g:SCMDiffCommand")
-    let g:SCMDiffCommand = 'git'
-endif
-""""""""""""""""""""""""""""""}}}
+" VAM
+set runtimepath+=~/.vim/bundle/vim-addon-manager
+call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree",
+            \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
+            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
+            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "LaTeX-Suite_aka_Vim-LaTeX", "hybrid", "Powerline",
+            \ "Tail_Bundle", "snipmate-snippets"])
+
+"call vam#ActivateAddons(["Dart", "Gundo", "Haml", "Tabular", "The_NERD_tree", "Vim_Rspec", "ZenCoding", "afterimage",
+"            \ "apidock", "bundler%3207", "commentary", "endwise", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
+"            \ "ragtag", "rails", "rake", "rfc5424", "ruby-matchit", "Syntastic", "unimpaired", "unimpaired",
+"            \ "vim-addon-mw-utils", "vim-coffee-script", "vimlatex", "vim-ruby", "vim-rvm", "grep", "xterm-color-table",
+"            \ "surround", "repeat", "buffet", "taglist-plus", "Solarized", "SuperTab%1643", "hybrid", "Powerline",
+"            \ "Tail_Bundle", "snipmate-snippets", "vim-addon-sql"])
+
+
 "######################################### End of Plug-in related 1}}}
 
 
