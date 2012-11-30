@@ -290,23 +290,12 @@ iab wich which
 
 " AutoComplete and omni completion{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! Mosh_Tab_Or_Complete()
-    if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-        return "\<C-N>"
+"" supertab
+let g:SuperTabCrMapping = 0
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
 
-    else
-        return "\<Tab>"
-    endif
-endfunction
-
-:inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
-
-"Set the style of the popup menu on autocomplete
-set completeopt=menu,preview
-
-"To perform omnicompletion use alt+space (eclipse style)
-"let g:SuperTabMappingForward = "<m-space>" "TODO
-"let g:SuperTabDefaultCompletionType = "<C-X><C-O>" "TODO
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Snippets{{{
@@ -452,6 +441,8 @@ set cindent
 set grepprg=grep\ -inH\ $*
 let Grep_Skip_Dirs = 'CVS .svn .git build'
 let Grep_Skip_Files = '*.bak *~ *tags *TAGS *.orig'
+map <C-f> :Rgrep<CR>
+au FileType qf nmap <buffer> <cr> <cr><c-w><c-p>
 
 " Really useful!
 "  In visual mode when you press * or # to search for the current selection
@@ -677,15 +668,30 @@ nmap <silent> <Leader>p :Project<CR>
 
 " NERD Tree Explorer{{{
 """"""""""""""""""""""""""""""
-"nmap <silent> <F5> :NERDTreeToggle<CR>
-
 " Lets ignore some file from showing in the NERDTree
 let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$']
+
+"The_NERD_tree
+augroup ps_nerdtree
+    au!
+    au Filetype nerdtree setlocal nolist
+    "au Filetype nerdtree nnoremap <buffer> K :q<cr>
+augroup END
+
+let NERDTreeHighlightCursorline = 1
+let NERDTreeIgnore = ['.vim$', '\~$', '.*\.pyc$', '.*.pid', '.*\.o$']
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDChristmasTree = 1
+let NERDTreeChDirMode = 2
+let NERDTreeMapJumpFirstChild = 'gK'
 """"""""""""""""""""""""""""""}}}
 
 " Taglist{{{
 """"""""""""""""""""""""""""""
-"nnoremap <silent> <F8> :TlistToggle<CR>
+let Tlist_Show_Menu=0
+nnoremap <C-]> g<C-]>
+
 let Tlist_Use_Right_Window = 1
 
 set tags+=tags;/
