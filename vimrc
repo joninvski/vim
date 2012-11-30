@@ -497,22 +497,9 @@ if !has("gui_running")
     let g:miniBufExplorerMoreThanOne = 1
 endif
 
-"Not using because I don't use the vertical window
-"Use a vertical windows
-"let g:miniBufExplVSplit = 5
-
-"Put the miniBufExplorer windows at the right
-"let g:miniBufExplSplitBelow=1
-
 "Maximum size of the mini buffer explorer window
-"let g:miniBufExplMaxSize = 15
+let g:miniBufExplMaxSize = 10
 
-"Still haven't discovered what it does
-"let g:miniBufExplMapWindowNavArrows = 1
-"let g:miniBufExplMapCTabSwitchBufs = 1
-"let g:miniBufExplUseSingleClick = 1
-"let g:miniBufExplMapWindowNavVim = 1
-"
 " make tabs show complete (no broken on two lines)
 let g:miniBufExplTabWrap = 1
 
@@ -536,32 +523,6 @@ let g:bufExplorerSortBy = "name"
 "Deletes a buffer
 nmap <leader>db :bd<cr>
 
-"autocmd BufRead,BufNew :call UMiniBufExplorer
-
-"""""""""""""""""""""""""""""""""""
-" Stolen from http://dev.gentoo.org/~bass/configs/vimrc.html
-"
-" Adapt the status line according to the window
-"""""""""""""""""""""""""""""""""""
-if has("autocmd")
-    au FileType qf
-                \ if &buftype == "quickfix" |
-                \     setlocal statusline=%2*%-3.3n%0* |
-                \     setlocal statusline+=\ \[Compiler\ Messages\] |
-                \     setlocal statusline+=%=%2*\ %<%P |
-                \ endif
-
-    fun! <SID>FixMiniBufExplorerTitle()
-        if "-MiniBufExplorer-" == bufname("%")
-            setlocal statusline=\[Buffers\]
-        endif
-    endfun
-
-    au BufWinEnter *
-                \ let oldwinnr=winnr() |
-                \ windo call <SID>FixMiniBufExplorerTitle() |
-                \ exec oldwinnr . " wincmd w"
-endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Showmarks {{{
@@ -594,7 +555,6 @@ let g:gundo_preview_statusline = "Gundo Preview"
 
 " Win Manager {{{
 """"""""""""""""""""""""""""""
-
 "Split vertically
 let g:explVertical=1
 
@@ -705,8 +665,8 @@ let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
 set runtimepath+=~/.vim/bundle/vim-addon-manager
 call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
-            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "vimlatex", "grep", "repeat", "buffet",
-            \ "taglist-plus", "Solarized", "SuperTab%1643", "hybrid", "Powerline",
+            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
+            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "LaTeX-Suite_aka_Vim-LaTeX", "hybrid", "Powerline",
             \ "Tail_Bundle", "snipmate-snippets"])
 
 "call vam#ActivateAddons(["Dart", "Gundo", "Haml", "Tabular", "The_NERD_tree", "Vim_Rspec", "ZenCoding", "afterimage",
