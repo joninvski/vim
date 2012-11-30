@@ -81,7 +81,11 @@ syntax enable
 "By far my favourite
 "color desert
 "Trying something new
-color bluegreen
+"color bluegreen
+"Good option
+color xoria256
+"color molokai
+"color hemisu
 
 "Set bg to dark
 set background=dark
@@ -99,9 +103,12 @@ set encoding=utf-8
 hi MatchParen guifg=#000000 guibg=#D0D090
 
 if has("gui_running")
-    set guioptions=m
+"    set guioptions=m
 "    set guioptions-=m " turn off menu bar
 "    set guioptions-=T " turn off toolbar
+    set guioptions=a
+    set guioptions+=m
+    set guicursor=a:blinkon0
 endif
 
 "Highlight current line
