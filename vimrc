@@ -676,6 +676,12 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "LaTeX-Suite_aka_Vim-LaTeX", "hybrid", "Powerline",
             \ "Tail_Bundle", "snipmate-snippets", "Command-T"])
 
+" To remove follow these steps:
+" Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
+" Restart Vim and remove plugin directory using >
+"   :UninstallNotLoadedAddons {pluginname}
+" or rm -fr those directories manually.
+
 "call vam#ActivateAddons(["Dart", "Gundo", "Haml", "Tabular", "The_NERD_tree", "Vim_Rspec", "ZenCoding", "afterimage",
 "            \ "apidock", "bundler%3207", "commentary", "endwise", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
 "            \ "ragtag", "rails", "rake", "rfc5424", "ruby-matchit", "Syntastic", "unimpaired", "unimpaired",
