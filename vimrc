@@ -536,7 +536,7 @@ let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
 nnoremap <leader>gitd :Gdiff<cr>
 nnoremap <leader>gits :Gstatus<cr>
 nnoremap <leader>gitw :Gwrite<cr>
-nnoremap <leader>gita :Gadd<cr>
+nnoremap <leader>gita :Gwrite<cr>
 nnoremap <leader>gitb :Gblame<cr>
 "nnoremap <leader>gco :Gcheckout<cr>
 nnoremap <leader>gitc :Gcommit<cr>
