@@ -9,7 +9,7 @@
 " http://amix.dk/vim/vimrc.html
 """""""""""""""""""""""""""""""""""""""
 " Latest version, always available at:
-" http://joaotrindade.no-ip.org/git/gitweb.cgi?p=vim/.git;a=summary
+" https://github.com/joninvski/vim
 """""""""""""""""""""""""""""""""""""""
 
 " IMPORTANT: Uncomment one of the following lines to force

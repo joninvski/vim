@@ -1,3 +1,5 @@
 all:
-	ln -s vim .vim
-	ln -s vim/vimrc .vimrc
+	ln -fs vim .vim
+	ln -fs vim/vimrc .vimrc
+	git submodule init
+	git submodule update
