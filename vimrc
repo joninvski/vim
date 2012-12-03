@@ -440,7 +440,7 @@ set cindent
 " program to always generate a file-name.
 set grepprg=grep\ -inH\ $*
 let Grep_Skip_Dirs = 'CVS .svn .git build'
-let Grep_Skip_Files = '*.bak *~ *tags *TAGS *.orig'
+let Grep_Skip_Files = '*.bak *~ *tags *TAGS *.orig syntastic_lib/*'
 map <C-f> :Rgrep<CR>
 au FileType qf nmap <buffer> <cr> <cr><c-w><c-p>
 
@@ -533,15 +533,15 @@ let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
 
 " Fugitive{{{
 """"""""""""""""""""""""""""""
-nnoremap <leader>gd :Gdiff<cr>
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gw :Gwrite<cr>
-nnoremap <leader>ga :Gadd<cr>
-nnoremap <leader>gb :Gblame<cr>
-nnoremap <leader>gco :Gcheckout<cr>
-nnoremap <leader>gci :Gcommit<cr>
-nnoremap <leader>gm :Gmove<cr>
-nnoremap <leader>gr :Gremove<cr>
+nnoremap <leader>gitd :Gdiff<cr>
+nnoremap <leader>gits :Gstatus<cr>
+nnoremap <leader>gitw :Gwrite<cr>
+nnoremap <leader>gita :Gwrite<cr>
+nnoremap <leader>gitb :Gblame<cr>
+"nnoremap <leader>gco :Gcheckout<cr>
+nnoremap <leader>gitc :Gcommit<cr>
+"nnoremap <leader>gm :Gmove<cr>
+nnoremap <leader>gitr :Gremove<cr>
 nnoremap <leader>gl :Shell git gl -18<cr>:wincmd \|<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
@@ -661,13 +661,26 @@ set showfulltag  "Show more information while completing tags
 let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
 """"""""""""""""""""""""""""""}}}
 
+" Command-T {{{
+""""""""""""""""""""""""""""""
+noremap <leader>o <Esc>:CommandT<CR>
+noremap <leader>O <Esc>:CommandTFlush<CR>
+noremap <leader>p <Esc>:CommandTBuffer<CR>
+""""""""""""""""""""""""""""""}}}
+
 " VAM
 set runtimepath+=~/.vim/bundle/vim-addon-manager
 call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "LaTeX-Suite_aka_Vim-LaTeX", "hybrid", "Powerline",
-            \ "Tail_Bundle", "snipmate-snippets"])
+            \ "Tail_Bundle", "snipmate-snippets", "Command-T", "DoxygenToolkit", "a"])
+
+" To remove follow these steps:
+" Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
+" Restart Vim and remove plugin directory using >
+"   :UninstallNotLoadedAddons {pluginname}
+" or rm -fr those directories manually.
 
 "call vam#ActivateAddons(["Dart", "Gundo", "Haml", "Tabular", "The_NERD_tree", "Vim_Rspec", "ZenCoding", "afterimage",
 "            \ "apidock", "bundler%3207", "commentary", "endwise", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
@@ -685,7 +698,7 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree",
 au BufRead,BufNewFile *.dft set filetype=dft
 au! Syntax dft source ~/vim/syntax/dft.vim
 
-map <leader>tag :!etags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+map <leader>tag :!etags -R --exclude=syntastic_lib --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " Seen in http://www.programmerq.net/rsttricks.html 
 " Type @h and the character u want to use for the heading: '=', '-', etc...
