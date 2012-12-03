@@ -533,15 +533,15 @@ let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
 
 " Fugitive{{{
 """"""""""""""""""""""""""""""
-nnoremap <leader>gd :Gdiff<cr>
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gw :Gwrite<cr>
-nnoremap <leader>ga :Gadd<cr>
-nnoremap <leader>gb :Gblame<cr>
-nnoremap <leader>gco :Gcheckout<cr>
-nnoremap <leader>gci :Gcommit<cr>
-nnoremap <leader>gm :Gmove<cr>
-nnoremap <leader>gr :Gremove<cr>
+nnoremap <leader>gitd :Gdiff<cr>
+nnoremap <leader>gits :Gstatus<cr>
+nnoremap <leader>gitw :Gwrite<cr>
+nnoremap <leader>gita :Gadd<cr>
+nnoremap <leader>gitb :Gblame<cr>
+"nnoremap <leader>gco :Gcheckout<cr>
+nnoremap <leader>gitc :Gcommit<cr>
+"nnoremap <leader>gm :Gmove<cr>
+nnoremap <leader>gitr :Gremove<cr>
 nnoremap <leader>gl :Shell git gl -18<cr>:wincmd \|<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
@@ -674,7 +674,7 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "LaTeX-Suite_aka_Vim-LaTeX", "hybrid", "Powerline",
-            \ "Tail_Bundle", "snipmate-snippets", "Command-T", "Syntastic", "The_NERD_tree"])
+            \ "Tail_Bundle", "snipmate-snippets", "Command-T"])
 
 " To remove follow these steps:
 " Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
