@@ -298,13 +298,6 @@ let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" Snippets{{{
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"A basic snippet can save you a lot of typing. Define a word trigger and on
-"insertion it will be expanded to the full snippet.
-let g:snippetsEmu_key = "<C-l>" "Use snippets with Control-l
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-
 " Command-line config{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Bash like
@@ -366,7 +359,7 @@ au FileType py,python set foldmethod=indent
 "  * zm reverse of the above, if one or more function folds are open, they will be closed, but classes will be kept open.
 "  * zR open all folds.
 "  * zM close all folds.
-"  * zj and zk can be used to jump from one fold to another.  
+"  * zj and zk can be used to jump from one fold to another.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Vim Spell {{{
@@ -670,11 +663,11 @@ noremap <leader>p <Esc>:CommandTBuffer<CR>
 
 " VAM
 set runtimepath+=~/.vim/bundle/vim-addon-manager
-call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "pathogen",
+call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "pathogen", "UltiSnips",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "LaTeX-Suite_aka_Vim-LaTeX", "hybrid", "Powerline",
-            \ "Tail_Bundle", "snipmate-snippets", "Command-T", "DoxygenToolkit", "a"])
+            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a"])
 
 " To remove follow these steps:
 " Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
