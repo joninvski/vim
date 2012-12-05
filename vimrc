@@ -7,6 +7,9 @@
 """""""""""""""""""""""""""""""""""""""
 " Heavily inspired in:
 " http://amix.dk/vim/vimrc.html
+"
+" Thanks for bartekd for suggesting vim-addon-manager
+" https://github.com/bartekd/vim-configuration
 """""""""""""""""""""""""""""""""""""""
 " Latest version, always available at:
 " https://github.com/joninvski/vim
@@ -389,13 +392,18 @@ endif
 
 " Files and backups{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" hide buffers when not displayed
+set hidden
+set backup                     " Enable creation of backup file.
+set backupdir=~/.vim/backup    " Where backups will go.
+set directory=~/.vim/tmp       " Where temporary files will go.
+set noswapfile
+
 "Turn backup off
-set nobackup
+"set nobackup
 
 "Don't create a backup when overwriting a file
-set nowb
-
-set noswapfile
+"set nowb
 
 "Autoread a file when it has been changed
 set ar
