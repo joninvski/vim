@@ -17,20 +17,6 @@
 " but does not automatically use 256 colors by default.
 set t_Co=256
 
-call pathogen#infect()
-let g:syntastic_check_on_open= 1
-let g:syntastic_auto_loc_list= 1
-" In order to also check header files add this to your .vimrc:
-" " (this usually creates a .gch file in your source directory)
-let g:syntastic_c_check_header = 1
-
-"
-"" In order to add some custom include directories that should be added to the
-" gcc command line you can add those to the global variable
-" " g:syntastic_c_include_dirs. This list can be used like this:
-" syntastic_lib is just a sym link if the directory is somewhere weird
-let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
-
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Get out of VI's compatible mode..
@@ -667,7 +653,7 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSni
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "LaTeX-Suite_aka_Vim-LaTeX", "hybrid", "Powerline",
-            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "minibufexpl"])
+            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "minibufexpl", "pathogen"])
 
 " To remove follow these steps:
 " Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
@@ -703,8 +689,19 @@ if version >= 730
 endif
 
 call pathogen#infect()
-let g:syntastic_check_on_open=1
-let g:syntastic_auto_loc_list=1
+
+let g:syntastic_check_on_open= 1
+let g:syntastic_auto_loc_list= 1
+" In order to also check header files add this to your .vimrc:
+" " (this usually creates a .gch file in your source directory)
+let g:syntastic_c_check_header = 1
+
+"
+"" In order to add some custom include directories that should be added to the
+" gcc command line you can add those to the global variable
+" " g:syntastic_c_include_dirs. This list can be used like this:
+" syntastic_lib is just a sym link if the directory is somewhere weird
+let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
 
 
 
