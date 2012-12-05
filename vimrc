@@ -9,7 +9,7 @@
 " http://amix.dk/vim/vimrc.html
 """""""""""""""""""""""""""""""""""""""
 " Latest version, always available at:
-" http://joaotrindade.no-ip.org/git/gitweb.cgi?p=vim/.git;a=summary
+" https://github.com/joninvski/vim
 """""""""""""""""""""""""""""""""""""""
 
 " IMPORTANT: Uncomment one of the following lines to force
@@ -298,13 +298,6 @@ let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" Snippets{{{
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"A basic snippet can save you a lot of typing. Define a word trigger and on
-"insertion it will be expanded to the full snippet.
-let g:snippetsEmu_key = "<C-l>" "Use snippets with Control-l
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-
 " Command-line config{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Bash like
@@ -366,7 +359,7 @@ au FileType py,python set foldmethod=indent
 "  * zm reverse of the above, if one or more function folds are open, they will be closed, but classes will be kept open.
 "  * zR open all folds.
 "  * zM close all folds.
-"  * zj and zk can be used to jump from one fold to another.  
+"  * zj and zk can be used to jump from one fold to another.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Vim Spell {{{
