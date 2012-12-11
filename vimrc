@@ -2,7 +2,7 @@
 " .vimrc configuration file
 "
 " Author: João Trindade
-" WWW: http://joaotrindade.no-ip.org
+" WWW: http://thisblog.runsfreesoftware.com
 " Email: trindade.joao@gmail.com
 """""""""""""""""""""""""""""""""""""""
 " Heavily inspired in:
@@ -34,6 +34,9 @@ filetype indent on
 
 "Set to auto read when a file is changed from the outside
 set autoread
+
+"Fix syntax breaks
+syntax sync minlines=5000
 
 "Have the mouse enabled all the time:
 set mouse=a
@@ -135,7 +138,7 @@ function! GnuIndent()
   setlocal tabstop=8
 endfunction
 
-au FileType c,cpp call GnuIndent() 
+au FileType c,cpp call GnuIndent()
 au FileType c,cpp set foldmethod=syntax
  " use indentation of previous line
 au FileType c,cpp set autoindent
@@ -337,7 +340,10 @@ set lbr
 " Fold"{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " if using a version 6 vim, enable folding
-set foldenable
+set nofoldenable
+au FileType tex set foldenable
+au FileType vim set foldenable
+au FileType vim set foldmethod=marker
 au FileType py,python set foldmethod=indent
 
 "Keys
@@ -678,7 +684,6 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSni
 
 
 "######################################### End of Plug-in related 1}}}
-
 
 " Experimental {{{1
 "#########################################
