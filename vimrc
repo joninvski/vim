@@ -688,6 +688,12 @@ if version >= 730
     set undofile
 endif
 
+" Comments the whole line
+noremap <leader>x :TComment<CR>
+
+" Comments to the right of the cursor and goes to the end
+noremap <leader>c :TCommentRight<CR>$
+
 call pathogen#infect()
 
 let g:syntastic_check_on_open= 1
