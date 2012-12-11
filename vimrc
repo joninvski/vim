@@ -481,17 +481,17 @@ map <leader>w :cw 8<cr>
 """"""""""""""""""""""""""""""
 "Show the miniBufExplorer from the start
 if !has("gui_running")
-    let g:miniBufExplorerMoreThanOne = 1
+    " let g:miniBufExplorerMoreThanOne = 1
 endif
 
 "Maximum size of the mini buffer explorer window
-let g:miniBufExplMaxSize = 10
+" let g:miniBufExplMaxSize = 10
 
 " make tabs show complete (no broken on two lines)
-let g:miniBufExplTabWrap = 1
+" let g:miniBufExplTabWrap = 1
 
 " If you use other explorers like TagList you can (As of 6.2.8) set it at 1:
-let g:miniBufExplModSelTarget = 1
+" let g:miniBufExplModSelTarget = 1
 
 "for buffers that have NOT CHANGED and are NOT VISIBLE.
 highlight MBENormal guifg=LightBlue
@@ -661,7 +661,7 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSni
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "LaTeX-Suite_aka_Vim-LaTeX", "hybrid", "Powerline",
-            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "minibufexpl", "pathogen"])
+            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "minibufexplorer", "pathogen"])
 
 " To remove follow these steps:
 " Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
