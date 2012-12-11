@@ -20,6 +20,21 @@
 " but does not automatically use 256 colors by default.
 set t_Co=256
 
+"""""""""""""""
+" F# keys (top keyboard keys)
+"""""""""""""""
+nmap <silent> <F2> :NERDTreeToggle<CR>
+nmap <silent> <F3> :GundoToggle<CR>
+nmap <silent> <F4> :TlistToggle<CR>
+nmap <silent> <F5> :set invlist<CR>:set list?<CR>
+nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
+nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
+nmap <silent> <F8> \C
+map <F9> mzggVGg?'z
+set pastetoggle=<F12>
+"""""""""""""""
+
+
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Get out of VI's compatible mode..
@@ -260,8 +275,8 @@ map <space> /
 map <c-space> ?
 
 "Use the arrows to something useful
-map <leader><right> :bn<cr>
-map <leader><left>  :bp<cr>
+map <leader><right> :bnext<cr>
+map <leader><left>  :bprev<cr>
 
 "Move a line of text using control
 nmap <C-down> mz:m+<cr>`z
@@ -586,18 +601,6 @@ map <buffer> <silent> é é
 map <buffer> <silent> á á
 map <buffer> <silent> ã ã
 
-" F# keys
-nmap <silent> <F2> :NERDTreeToggle<CR>
-inoremap <silent> <F2> <ESC>:NERDTreeToggle<CR>
-nmap <silent> <F3> :GundoToggle<CR>
-nmap <silent> <F4> :TlistToggle<CR>
-nmap <silent> <F5> :set invlist<CR>:set list?<CR>
-nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
-nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
-nmap <silent> <F8> \C
-map <F9> mzggVGg?'z
-set pastetoggle=<F12>
-
 "Use \ll to create the pdf
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
@@ -716,9 +719,6 @@ let g:syntastic_c_check_header = 1
 " " g:syntastic_c_include_dirs. This list can be used like this:
 " syntastic_lib is just a sym link if the directory is somewhere weird
 let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
-
-
-
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
