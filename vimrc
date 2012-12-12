@@ -664,7 +664,8 @@ noremap <leader>O <Esc>:CommandTFlush<CR>
 noremap <leader>p <Esc>:CommandTBuffer<CR>
 """"""""""""""""""""""""""""""}}}
 
-" VAM
+" Vim Addon Manager (VAM) {{{
+"#########################################
 set runtimepath+=~/.vim/bundle/vim-addon-manager
 call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "tComment",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
@@ -684,6 +685,7 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSni
 "            \ "vim-addon-mw-utils", "vim-coffee-script", "vimlatex", "vim-ruby", "vim-rvm", "grep", "xterm-color-table",
 "            \ "surround", "repeat", "buffet", "taglist-plus", "Solarized", "SuperTab%1643", "hybrid", "Powerline",
 "            \ "Tail_Bundle", "snipmate-snippets", "vim-addon-sql"])
+""""""""""""""""""""""""""""""}}}
 
 
 "######################################### End of Plug-in related 1}}}
