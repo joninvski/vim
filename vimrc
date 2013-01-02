@@ -298,6 +298,8 @@ imap <up> <nop>
 imap <down> <nop>
 imap <left> <nop>
 imap <right> <nop>
+" Jk in insert mode is now esc
+inoremap jk <esc>
 
 " Up and down (k and j) move through wrapped lines
 noremap j gj
@@ -448,17 +450,24 @@ set backup                          " Enable creation of backup file.
 set noswapfile                      " No need for a swap file
 set backupdir=~/.vim/backup//       " Where backups will go.
 set directory=~/.vim/tmp//          " Where temporary files will go.
-set undodir=~/.vim/tmp/undo//       " undo files
 
 " Make those folders automatically if they don't already exist.
-if !isdirectory(expand(&undodir))
-    call mkdir(expand(&undodir), "p")
-endif
 if !isdirectory(expand(&backupdir))
     call mkdir(expand(&backupdir), "p")
 endif
 if !isdirectory(expand(&directory))
     call mkdir(expand(&directory), "p")
+endif
+
+if version >= 730
+    set undodir=~/.vim/tmp/undo//       " undo files
+    set undofile
+    set undolevels = 1000               " maximum number of changes that can be undone
+    set undoreload = 10000              " maximum number lines to save for undo on a buffer reload
+
+    if !isdirectory(expand(&undodir))
+        call mkdir(expand(&undodir), "p")
+    endif
 endif
 
 
