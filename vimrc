@@ -714,6 +714,12 @@ noremap <leader>O <Esc>:CommandTFlush<CR>
 noremap <leader>p <Esc>:CommandTBuffer<CR>
 """"""""""""""""""""""""""""""}}}
 
+" UltiSnips {{{
+""""""""""""""""""""""""""""""
+"Use :call UltiSnips_ListSnippets() to list available snippets
+"Should be control+tab but isn't working
+""""""""""""""""""""""""""""""}}}
+
 " Vim Addon Manager (VAM) {{{
 "#########################################
 set runtimepath+=~/.vim/bundle/vim-addon-manager
