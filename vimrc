@@ -98,6 +98,7 @@ syntax enable
 color xoria256
 "color molokai
 "color hemisu
+" color badwolf
 
 "Set bg to dark
 set background=dark
@@ -286,6 +287,26 @@ nmap <C-down> mz:m+<cr>`z
 nmap <C-up> mz:m-2<cr>`z
 vmap <C-down> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <C-up> :m'<-2<cr>`>my`<mzgv`yo`z
+
+"Me being brave
+" disable arrow keys
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+
+" Up and down (k and j) move through wrapped lines
+noremap j gj
+noremap k gk
+" Up and down (gk and gj) move through true lines
+" (as opossed to wrapped " lines)
+noremap gj j
+noremap gk k
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " General Abbreviations  {{{
@@ -297,6 +318,12 @@ iab wich which
 
 " AutoComplete and omni completion{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Better Completion
+set complete=.,w,b,u,t
+set completeopt=longest,menuone,preview
+
+
 "" supertab
 let g:SuperTabCrMapping = 0
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
@@ -337,6 +364,7 @@ map <leader>ee :Explore <cr>
 map <leader>q :qa <cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+
 " Text options{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "In Insert mode: Use the appropriate number of spaces to insert a <Tab>
@@ -362,6 +390,7 @@ au FileType vim set foldmethod=marker
 au FileType py,python set foldmethod=indent
 
 "Keys
+"  * za toggles folds
 "  * zf create the fold, useful for manual and marker methods. Select any piece of text, [press v or shift-v, then use arrow keys], and then press zf. It will place the markers around the fold for you in marker mode; in case of manual, it will store fold location in memory. Remember f by saying this command "forms" the fold, or just remember fold :-)
 "  * zc close the fold at the cursor.
 "  * zo open the fold at the cursor.
@@ -415,16 +444,23 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " hide buffers when not displayed
 set hidden
-set backup                     " Enable creation of backup file.
-set backupdir=~/.vim/backup    " Where backups will go.
-set directory=~/.vim/tmp       " Where temporary files will go.
-set noswapfile
+set backup                          " Enable creation of backup file.
+set noswapfile                      " No need for a swap file
+set backupdir=~/.vim/backup//       " Where backups will go.
+set directory=~/.vim/tmp//          " Where temporary files will go.
+set undodir=~/.vim/tmp/undo//       " undo files
 
-"Turn backup off
-"set nobackup
+" Make those folders automatically if they don't already exist.
+if !isdirectory(expand(&undodir))
+    call mkdir(expand(&undodir), "p")
+endif
+if !isdirectory(expand(&backupdir))
+    call mkdir(expand(&backupdir), "p")
+endif
+if !isdirectory(expand(&directory))
+    call mkdir(expand(&directory), "p")
+endif
 
-"Don't create a backup when overwriting a file
-"set nowb
 
 "Autoread a file when it has been changed
 set ar
@@ -643,6 +679,11 @@ let NERDTreeChDirMode = 2
 let NERDTreeMapJumpFirstChild = 'gK'
 """"""""""""""""""""""""""""""}}}
 
+" Yankring {{{
+""""""""""""""""""""""""""""""
+" Hit p to past and then Control+p and Control+N to cycle through registers
+""""""""""""""""""""""""""""""}}}
+
 " Taglist{{{
 """"""""""""""""""""""""""""""
 let Tlist_Show_Menu=0
@@ -671,7 +712,7 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSni
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "LaTeX-Suite_aka_Vim-LaTeX", "hybrid", "Powerline",
-            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen"])
+            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
 
 " To remove follow these steps:
 " Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
