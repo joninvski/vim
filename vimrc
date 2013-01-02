@@ -20,6 +20,21 @@
 " but does not automatically use 256 colors by default.
 set t_Co=256
 
+"""""""""""""""
+" F# keys (top keyboard keys)
+"""""""""""""""
+nmap <silent> <F2> :NERDTreeToggle<CR>
+nmap <silent> <F3> :GundoToggle<CR>
+nmap <silent> <F4> :TlistToggle<CR>
+nmap <silent> <F5> :set invlist<CR>:set list?<CR>
+nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
+nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
+nmap <silent> <F8> \C
+map <F9> mzggVGg?'z
+set pastetoggle=<F12>
+"""""""""""""""
+
+
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Get out of VI's compatible mode..
@@ -83,6 +98,7 @@ syntax enable
 color xoria256
 "color molokai
 "color hemisu
+" color badwolf
 
 "Set bg to dark
 set background=dark
@@ -263,14 +279,34 @@ map <space> /
 map <c-space> ?
 
 "Use the arrows to something useful
-map <leader><right> :bn<cr>
-map <leader><left>  :bp<cr>
+map <leader><right> :bnext<cr>
+map <leader><left>  :bprev<cr>
 
 "Move a line of text using control
 nmap <C-down> mz:m+<cr>`z
 nmap <C-up> mz:m-2<cr>`z
 vmap <C-down> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <C-up> :m'<-2<cr>`>my`<mzgv`yo`z
+
+"Me being brave
+" disable arrow keys
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+
+" Up and down (k and j) move through wrapped lines
+noremap j gj
+noremap k gk
+" Up and down (gk and gj) move through true lines
+" (as opossed to wrapped " lines)
+noremap gj j
+noremap gk k
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " General Abbreviations  {{{
@@ -282,6 +318,12 @@ iab wich which
 
 " AutoComplete and omni completion{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Better Completion
+set complete=.,w,b,u,t
+set completeopt=longest,menuone,preview
+
+
 "" supertab
 let g:SuperTabCrMapping = 0
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
@@ -322,6 +364,7 @@ map <leader>ee :Explore <cr>
 map <leader>q :qa <cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+
 " Text options{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "In Insert mode: Use the appropriate number of spaces to insert a <Tab>
@@ -347,6 +390,7 @@ au FileType vim set foldmethod=marker
 au FileType py,python set foldmethod=indent
 
 "Keys
+"  * za toggles folds
 "  * zf create the fold, useful for manual and marker methods. Select any piece of text, [press v or shift-v, then use arrow keys], and then press zf. It will place the markers around the fold for you in marker mode; in case of manual, it will store fold location in memory. Remember f by saying this command "forms" the fold, or just remember fold :-)
 "  * zc close the fold at the cursor.
 "  * zo open the fold at the cursor.
@@ -400,16 +444,23 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " hide buffers when not displayed
 set hidden
-set backup                     " Enable creation of backup file.
-set backupdir=~/.vim/backup    " Where backups will go.
-set directory=~/.vim/tmp       " Where temporary files will go.
-set noswapfile
+set backup                          " Enable creation of backup file.
+set noswapfile                      " No need for a swap file
+set backupdir=~/.vim/backup//       " Where backups will go.
+set directory=~/.vim/tmp//          " Where temporary files will go.
+set undodir=~/.vim/tmp/undo//       " undo files
 
-"Turn backup off
-"set nobackup
+" Make those folders automatically if they don't already exist.
+if !isdirectory(expand(&undodir))
+    call mkdir(expand(&undodir), "p")
+endif
+if !isdirectory(expand(&backupdir))
+    call mkdir(expand(&backupdir), "p")
+endif
+if !isdirectory(expand(&directory))
+    call mkdir(expand(&directory), "p")
+endif
 
-"Don't create a backup when overwriting a file
-"set nowb
 
 "Autoread a file when it has been changed
 set ar
@@ -592,18 +643,6 @@ map <buffer> <silent> é é
 map <buffer> <silent> á á
 map <buffer> <silent> ã ã
 
-" F# keys
-nmap <silent> <F2> :NERDTreeToggle<CR>
-inoremap <silent> <F2> <ESC>:NERDTreeToggle<CR>
-nmap <silent> <F3> :GundoToggle<CR>
-nmap <silent> <F4> :TlistToggle<CR>
-nmap <silent> <F5> :set invlist<CR>:set list?<CR>
-nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
-nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
-nmap <silent> <F8> \C
-map <F9> mzggVGg?'z
-set pastetoggle=<F12>
-
 "Use \ll to create the pdf
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
@@ -640,6 +679,11 @@ let NERDTreeChDirMode = 2
 let NERDTreeMapJumpFirstChild = 'gK'
 """"""""""""""""""""""""""""""}}}
 
+" Yankring {{{
+""""""""""""""""""""""""""""""
+" Hit p to past and then Control+p and Control+N to cycle through registers
+""""""""""""""""""""""""""""""}}}
+
 " Taglist{{{
 """"""""""""""""""""""""""""""
 let Tlist_Show_Menu=0
@@ -661,13 +705,14 @@ noremap <leader>O <Esc>:CommandTFlush<CR>
 noremap <leader>p <Esc>:CommandTBuffer<CR>
 """"""""""""""""""""""""""""""}}}
 
-" VAM
+" Vim Addon Manager (VAM) {{{
+"#########################################
 set runtimepath+=~/.vim/bundle/vim-addon-manager
 call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "tComment",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "LaTeX-Suite_aka_Vim-LaTeX", "hybrid", "Powerline",
-            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen"])
+            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
 
 " To remove follow these steps:
 " Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
@@ -681,6 +726,7 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSni
 "            \ "vim-addon-mw-utils", "vim-coffee-script", "vimlatex", "vim-ruby", "vim-rvm", "grep", "xterm-color-table",
 "            \ "surround", "repeat", "buffet", "taglist-plus", "Solarized", "SuperTab%1643", "hybrid", "Powerline",
 "            \ "Tail_Bundle", "snipmate-snippets", "vim-addon-sql"])
+""""""""""""""""""""""""""""""}}}
 
 
 "######################################### End of Plug-in related 1}}}
@@ -721,9 +767,6 @@ let g:syntastic_c_check_header = 1
 " " g:syntastic_c_include_dirs. This list can be used like this:
 " syntastic_lib is just a sym link if the directory is somewhere weird
 let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
-
-
-
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
