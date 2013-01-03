@@ -790,6 +790,9 @@ let g:syntastic_c_check_header = 1
 " syntastic_lib is just a sym link if the directory is somewhere weird
 let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
 
+" <esc> no longer escapes to normal mode
+inoremap <esc> <nop>
+
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
