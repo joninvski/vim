@@ -30,7 +30,11 @@ nmap <silent> <F5> :set invlist<CR>:set list?<CR>
 nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
 nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
 nmap <silent> <F8> \C
+
+" Buffer - "hide" :hide)
 map <F9> mzggVGg?'z
+
+" Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
 set pastetoggle=<F12>
 """""""""""""""
 
@@ -279,8 +283,10 @@ map <space> /
 map <c-space> ?
 
 "Use the arrows to something useful
-map <leader><right> :bnext<cr>
-map <leader><left>  :bprev<cr>
+nnoremap <leader><right> :bnext<cr>
+nnoremap <leader><left>  :bprev<cr>
+nnoremap <leader>l :bnext<cr>
+nnoremap <leader>h  :bprev<cr>
 
 "Move a line of text using control
 nmap <C-down> mz:m+<cr>`z
@@ -298,6 +304,10 @@ imap <up> <nop>
 imap <down> <nop>
 imap <left> <nop>
 imap <right> <nop>
+" jk in insert mode is now esc
+inoremap jk <esc>
+" jk in command mode is now esc
+cnoremap jk <esc>
 
 " Up and down (k and j) move through wrapped lines
 noremap j gj
@@ -350,25 +360,22 @@ cnoremap <C-K>    <C-U>
 " Useful shortcuts{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Indent all lines
-map <leader>ia mzggVG='z
+nnoremap <leader>ia mzggVG='z
 
 "Switch to current dir
-map <leader>CD :cd %:p:h<cr>
+nnoremap <leader>CD :cd %:p:h<cr>
 
 "Select all and copy to + buffer
-map <leader>sa :%y +<cr>
-
-" Buffer - "hide" :hide)
-"map <F9> mzggVGg?'z
+nnoremap <leader>sa :%y +<cr>
 
 "Explore Fast
-map <leader>ee :Explore <cr>
-
-"Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
-"set pastetoggle=<F12>
+noremap <leader>ee :Explore <cr>
 
 "Quit fast
-map <leader>q :qa <cr>
+noremap <leader>q :qa <cr>
+
+" Create etags for quick reference with control+5
+map <leader>tag :!etags -R --exclude=syntastic_lib --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 
@@ -397,7 +404,7 @@ au FileType vim set foldmethod=marker
 au FileType py,python set foldmethod=indent
 
 "Keys
-"  * za toggles folds
+"  * za toggles current fold on/off
 "  * zf create the fold, useful for manual and marker methods. Select any piece of text, [press v or shift-v, then use arrow keys], and then press zf. It will place the markers around the fold for you in marker mode; in case of manual, it will store fold location in memory. Remember f by saying this command "forms" the fold, or just remember fold :-)
 "  * zc close the fold at the cursor.
 "  * zo open the fold at the cursor.
@@ -455,17 +462,24 @@ set backup                          " Enable creation of backup file.
 set noswapfile                      " No need for a swap file
 set backupdir=~/.vim/backup//       " Where backups will go.
 set directory=~/.vim/tmp//          " Where temporary files will go.
-set undodir=~/.vim/tmp/undo//       " undo files
 
 " Make those folders automatically if they don't already exist.
-if !isdirectory(expand(&undodir))
-    call mkdir(expand(&undodir), "p")
-endif
 if !isdirectory(expand(&backupdir))
     call mkdir(expand(&backupdir), "p")
 endif
 if !isdirectory(expand(&directory))
     call mkdir(expand(&directory), "p")
+endif
+
+if version >= 730
+    set undodir=~/.vim/tmp/undo//       " undo files
+    set undofile
+    set undolevels = 1000               " maximum number of changes that can be undone
+    set undoreload = 10000              " maximum number lines to save for undo on a buffer reload
+
+    if !isdirectory(expand(&undodir))
+        call mkdir(expand(&undodir), "p")
+    endif
 endif
 
 
@@ -533,15 +547,15 @@ endfunction
 
 " Quickfix {{{
 """"""""""""""""""""""""""""""""""""""
-map <leader>n :cn<cr>
-map <leader>m :cp<cr>
-map <leader>w :cw 8<cr>
+noremap <leader>n :cn<cr>
+noremap <leader>m :cp<cr>
+noremap <leader>w :cw 8<cr>
 """"""""""""""""""""""""""""""""""""""}}}
 
 " Plug-in related {{{1
 "#########################################
 
-" Minibuffer{{{
+" Minibuffer{{{ TO REMOVE no longer used
 """"""""""""""""""""""""""""""
 "Show the miniBufExplorer from the start
 if !has("gui_running")
@@ -710,6 +724,15 @@ let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
 noremap <leader>o <Esc>:CommandT<CR>
 noremap <leader>O <Esc>:CommandTFlush<CR>
 noremap <leader>p <Esc>:CommandTBuffer<CR>
+
+let g:CommandTSelectNextMap = ['<C-n>', '<C-j>', '<up>', '<space>']
+let g:CommandTSelectPrevMap = ['<C-p>', '<C-k>', '<down>', ',']
+""""""""""""""""""""""""""""""}}}
+
+" UltiSnips {{{
+""""""""""""""""""""""""""""""
+"Use :call UltiSnips_ListSnippets() to list available snippets
+"Should be control+tab but isn't working
 """"""""""""""""""""""""""""""}}}
 
 " Vim Addon Manager (VAM) {{{
@@ -743,7 +766,6 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSni
 au BufRead,BufNewFile *.dft set filetype=dft
 au! Syntax dft source ~/vim/syntax/dft.vim
 
-map <leader>tag :!etags -R --exclude=syntastic_lib --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " Seen in http://www.programmerq.net/rsttricks.html 
 " Type @h and the character u want to use for the heading: '=', '-', etc...
@@ -754,9 +776,9 @@ if version >= 730
     set undofile
 endif
 
+" TODO - Put in plugins
 " Comments the whole line
 noremap <leader>x :TComment<CR>
-
 " Comments to the right of the cursor and goes to the end
 noremap <leader>c :TCommentRight<CR>$
 
@@ -774,6 +796,9 @@ let g:syntastic_c_check_header = 1
 " " g:syntastic_c_include_dirs. This list can be used like this:
 " syntastic_lib is just a sym link if the directory is somewhere weird
 let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
+
+" <esc> no longer escapes to normal mode
+inoremap <esc> <nop>
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
