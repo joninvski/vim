@@ -307,6 +307,13 @@ noremap k gk
 noremap gj j
 noremap gk k
 
+" Move to the end of the line
+nnoremap L $
+vnoremap L $
+" Move to the beginning of the line
+nnoremap H ^
+vnoremap H ^
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " General Abbreviations  {{{
