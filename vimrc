@@ -1,7 +1,7 @@
 """""""""""""""""""""""""""""""""""""""
 " .vimrc configuration file
 "
-" Author: Jo„o Trindade
+" Author: Jo√£o Trindade
 " WWW: http://thisblog.runsfreesoftware.com
 " Email: trindade.joao@gmail.com
 """""""""""""""""""""""""""""""""""""""
@@ -94,18 +94,20 @@ set visualbell
 "Enable syntax hl
 syntax enable
 
-"By far my favourite
+"Set bg to dark
+" set background=dark
+
+"By far my favourite in the old days
 "color desert
 "Trying something new
 "color bluegreen
 "Good option
-color xoria256
+colorscheme xoria256
 "color molokai
 "color hemisu
-" color badwolf
+"color badwolf
+"color nazca
 
-"Set bg to dark
-set background=dark
 
 "Font type and size
 "set gfn=Bitstream\ Vera\ Sans\ Mono\ 10
@@ -664,15 +666,15 @@ let g:Tex_ViewerCwindowHeight = 6
 " View pdfs
 let g:Tex_ViewRule_pdf = "xpdf"
 
-" Make it possible to write the È · „ (change the keys for the commands
+" Make it possible to write the √© √° √£ (change the keys for the commands
 " mapped to these keys)
 imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
 imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
 imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
 inoremap <buffer> <silent> \c \cite{
-map <buffer> <silent> È È
-map <buffer> <silent> · ·
-map <buffer> <silent> „ „
+map <buffer> <silent> √© √©
+map <buffer> <silent> √° √°
+map <buffer> <silent> √£ √£
 
 "Use \ll to create the pdf
 "Use \lv to see the pdf
@@ -751,7 +753,7 @@ set runtimepath+=~/.vim/bundle/vim-addon-manager
 call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "tComment",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
-            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline",
+            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "Nazca",
             \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
 
 " To remove follow these steps:
@@ -774,7 +776,6 @@ call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSni
 " Experimental {{{1
 "#########################################
 
-
 " Seen in http://www.programmerq.net/rsttricks.html 
 " Type @h and the character u want to use for the heading: '=', '-', etc...
 let @h = "yypVr"
@@ -790,15 +791,16 @@ noremap <leader>x :TComment<CR>
 " Comments to the right of the cursor and goes to the end
 noremap <leader>c :TCommentRight<CR>$
 
+" Not sure if I need it
 call pathogen#infect()
 
+" Puto syntastic in plugins section
 let g:syntastic_check_on_open= 1
 let g:syntastic_auto_loc_list= 1
 " In order to also check header files add this to your .vimrc:
 " " (this usually creates a .gch file in your source directory)
 let g:syntastic_c_check_header = 1
 
-"
 "" In order to add some custom include directories that should be added to the
 " gcc command line you can add those to the global variable
 " " g:syntastic_c_include_dirs. This list can be used like this:
@@ -807,6 +809,7 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 
 " <esc> no longer escapes to normal mode
 inoremap <esc> <nop>
+vnoremap <esc> <nop> " Use shift+v to exit visual mode
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
