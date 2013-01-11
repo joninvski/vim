@@ -1,7 +1,7 @@
 """""""""""""""""""""""""""""""""""""""
 " .vimrc configuration file
 "
-" Author: João Trindade
+" Author: JoÃ£o Trindade
 " WWW: http://thisblog.runsfreesoftware.com
 " Email: trindade.joao@gmail.com
 """""""""""""""""""""""""""""""""""""""
@@ -593,7 +593,7 @@ nmap <leader>db :bd<cr>
 " Showmarks {{{
 """"""""""""""""""""""""""""""
 " These are the bookmarks that show up at the left
-let g:showmarks_include="abcdefghijklmnopqrstuvwxyz"
+let g:showmarks_marks="abcdefghijklmnopqrstuvwxyz"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Fugitive{{{
@@ -654,15 +654,15 @@ let g:Tex_ViewerCwindowHeight = 6
 " View pdfs
 let g:Tex_ViewRule_pdf = "xpdf"
 
-" Make it possible to write the é á ã (change the keys for the commands
+" Make it possible to write the Ã© Ã¡ Ã£ (change the keys for the commands
 " mapped to these keys)
 imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
 imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
 imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
 inoremap <buffer> <silent> \c \cite{
-map <buffer> <silent> é é
-map <buffer> <silent> á á
-map <buffer> <silent> ã ã
+map <buffer> <silent> Ã© Ã©
+map <buffer> <silent> Ã¡ Ã¡
+map <buffer> <silent> Ã£ Ã£
 
 "Use \ll to create the pdf
 "Use \lv to see the pdf
@@ -741,7 +741,7 @@ set runtimepath+=~/.vim/bundle/vim-addon-manager
 call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "tComment",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
-            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline",
+            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "EasyMotion",
             \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
 
 " To remove follow these steps:
@@ -799,6 +799,11 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 
 " <esc> no longer escapes to normal mode
 inoremap <esc> <nop>
+
+" Use the same symbols as TextMate for tabstops and EOLs
+" http://vimcasts.org/episodes/show-invisibles/
+set listchars=tab:â–¸\ ,eol:Â¬
+
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
