@@ -233,6 +233,7 @@ set ruler
 set cmdheight=1
 
 "Show line number
+"Don't forget you can go to line X with :X or XG
 set nu
 
 "Do not redraw, when running macros.. lazyredraw
@@ -768,6 +769,47 @@ let g:syntastic_c_check_header = 1
 " syntastic_lib is just a sym link if the directory is somewhere weird
 let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
 """"""""""""""""""""""""""""""}}}
+
+" Surround {{{
+""""""""""""""""""""""""""""""
+" from: http://www.catonmat.net/blog/vim-plugins-surround-vim/
+"
+" Examples of deleting surroundings (ds):
+" Text              Command    New Text
+" ---------------   -------    -----------
+" 'Hello World'    ds'        Hello World
+" (123+4*56)/2     ds(        123+4*56/2
+" <div>foo</div>   dst        foo
+
+" Examples of changing surroundings (cs):
+" Text              Command    New Text
+" ---------------   -------    -----------
+" "Hello world!"   cs"'       'Hello world!'
+" "Hello world!"   cs"<q>     <q>Hello world!</q>
+" foo!             csW'       'foo!'
+
+" Examples of inserting surroundings (ys):
+" Text              Command      New Text
+" ---------------   -------      -----------
+" Hello world!     ysiw)        Hello (world)!
+" foo              ysiwt<html>  <html>foo</html>
+" foo quux baz     yss"         "foo quux baz"
+"
+" Visual mode
+" -----------
+"  s - in visual mode, add a surrounding
+"  S - in visual mode, add a surrounding but place text on new line + indent it
+"
+"   * Visually Select:
+"
+"      <em>Hello</em> world!
+"
+"  * type: S<p class="important">.
+"
+"      <p class="important">
+"        <em>Hello</em> world!
+"      </p>
+""""""""""""""""""""""""""""""}}
 
 " UltiSnips {{{
 """"""""""""""""""""""""""""""
