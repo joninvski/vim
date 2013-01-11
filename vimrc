@@ -94,18 +94,20 @@ set visualbell
 "Enable syntax hl
 syntax enable
 
-"By far my favourite
+"Set bg to dark
+" set background=dark
+
+"By far my favourite in the old days
 "color desert
 "Trying something new
 "color bluegreen
 "Good option
-color xoria256
+colorscheme xoria256
 "color molokai
 "color hemisu
-" color badwolf
+"color badwolf
+"color nazca
 
-"Set bg to dark
-set background=dark
 
 "Font type and size
 "set gfn=Bitstream\ Vera\ Sans\ Mono\ 10
@@ -309,6 +311,11 @@ inoremap jk <esc>
 " jk in command mode is now esc
 cnoremap jk <esc>
 
+" <esc> no longer escapes to normal mode
+inoremap <esc> <nop>
+vnoremap <esc> <nop> " Use shift+v to exit visual mode
+
+
 " Up and down (k and j) move through wrapped lines
 noremap j gj
 noremap k gk
@@ -377,7 +384,6 @@ noremap <leader>q :qa <cr>
 " Create etags for quick reference with control+5
 map <leader>tag :!etags -R --exclude=syntastic_lib --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-
 
 " Text options{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -598,6 +604,17 @@ let g:showmarks_marks="abcdefghijklmnopqrstuvwxyz"
 
 " Fugitive{{{
 """"""""""""""""""""""""""""""
+" Check the function of :Gedit at
+" http://vimcasts.org/episodes/fugitive-vim-browsing-the-git-object-database/
+" (great command)
+"
+" You can add/unstage files at :Gstatus buffer with '-' key. To add only
+" part (patch) use the 'p' key. 'C' key commits it. Check it at:
+" http://vimcasts.org/episodes/fugitive-vim-working-with-the-git-index/
+
+" When viewing a with Gdiff use diffget or diffput to make partial
+" (patch) adds to the index file. More info at:
+" http://vimcasts.org/episodes/fugitive-vim-resolving-merge-conflicts-with-vimdiff/
 nnoremap <leader>gitd :Gdiff<cr>
 nnoremap <leader>gits :Gstatus<cr>
 nnoremap <leader>gitw :Gwrite<cr>
@@ -729,6 +746,29 @@ let g:CommandTSelectNextMap = ['<C-n>', '<C-j>', '<up>', '<space>']
 let g:CommandTSelectPrevMap = ['<C-p>', '<C-k>', '<down>', ',']
 """"""""""""""""""""""""""""""}}}
 
+" Commentary {{{
+""""""""""""""""""""""""""""""
+" Comment out lines with \\\ or \\{motion} (which is better)
+" Simple but works nicely
+""""""""""""""""""""""""""""""}}}
+
+" Syntastic
+""""""""""""""""""""""""""""""
+" Checks syntax errors when you save the file
+" In cpp you can include all .h header in syntastic_lib dir to help it
+let g:syntastic_check_on_open= 1
+let g:syntastic_auto_loc_list= 1
+" In order to also check header files add this to your .vimrc:
+" " (this usually creates a .gch file in your source directory)
+let g:syntastic_c_check_header = 1
+
+"" In order to add some custom include directories that should be added to the
+" gcc command line you can add those to the global variable
+" " g:syntastic_c_include_dirs. This list can be used like this:
+" syntastic_lib is just a sym link if the directory is somewhere weird
+let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
+""""""""""""""""""""""""""""""}}}
+
 " UltiSnips {{{
 """"""""""""""""""""""""""""""
 "Use :call UltiSnips_ListSnippets() to list available snippets
@@ -737,73 +777,32 @@ let g:CommandTSelectPrevMap = ['<C-p>', '<C-k>', '<down>', ',']
 
 " Vim Addon Manager (VAM) {{{
 "#########################################
-set runtimepath+=~/.vim/bundle/vim-addon-manager
-call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "tComment",
-            \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
-            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
-            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "EasyMotion",
-            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
-
 " To remove follow these steps:
 " Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
 " Restart Vim and remove plugin directory using >
 "   :UninstallNotLoadedAddons {pluginname}
 " or rm -fr those directories manually.
 
-"call vam#ActivateAddons(["Dart", "Gundo", "Haml", "Tabular", "The_NERD_tree", "Vim_Rspec", "ZenCoding", "afterimage",
-"            \ "apidock", "bundler%3207", "commentary", "endwise", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
-"            \ "ragtag", "rails", "rake", "rfc5424", "ruby-matchit", "Syntastic", "unimpaired", "unimpaired",
-"            \ "vim-addon-mw-utils", "vim-coffee-script", "vimlatex", "vim-ruby", "vim-rvm", "grep", "xterm-color-table",
-"            \ "surround", "repeat", "buffet", "taglist-plus", "Solarized", "SuperTab%1643", "hybrid", "Powerline",
-"            \ "Tail_Bundle", "snipmate-snippets", "vim-addon-sql"])
-""""""""""""""""""""""""""""""}}}
+set runtimepath+=~/.vim/bundle/vim-addon-manager
+call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround",
+            \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
+            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
+            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "Nazca",
+            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
 
+""""""""""""""""""""""""""""""}}}
 
 "######################################### End of Plug-in related 1}}}
 
 " Experimental {{{1
 "#########################################
-au BufRead,BufNewFile *.dft set filetype=dft
-au! Syntax dft source ~/vim/syntax/dft.vim
 
-
-" Seen in http://www.programmerq.net/rsttricks.html 
+" Seen in http://www.programmerq.net/rsttricks.html
 " Type @h and the character u want to use for the heading: '=', '-', etc...
 let @h = "yypVr"
 
-" for 7.3
-if version >= 730
-    set undofile
-endif
-
-" TODO - Put in plugins
-" Comments the whole line
-noremap <leader>x :TComment<CR>
-" Comments to the right of the cursor and goes to the end
-noremap <leader>c :TCommentRight<CR>$
-
+" Not sure if I need it
 call pathogen#infect()
-
-let g:syntastic_check_on_open= 1
-let g:syntastic_auto_loc_list= 1
-" In order to also check header files add this to your .vimrc:
-" " (this usually creates a .gch file in your source directory)
-let g:syntastic_c_check_header = 1
-
-"
-"" In order to add some custom include directories that should be added to the
-" gcc command line you can add those to the global variable
-" " g:syntastic_c_include_dirs. This list can be used like this:
-" syntastic_lib is just a sym link if the directory is somewhere weird
-let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
-
-" <esc> no longer escapes to normal mode
-inoremap <esc> <nop>
-
-" Use the same symbols as TextMate for tabstops and EOLs
-" http://vimcasts.org/episodes/show-invisibles/
-set listchars=tab:▸\ ,eol:¬
-
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
