@@ -752,7 +752,7 @@ let g:CommandTSelectPrevMap = ['<C-p>', '<C-k>', '<down>', ',']
 " Simple but works nicely
 """"""""""""""""""""""""""""""}}}
 
-" Syntastic
+" Syntastic {{{
 """"""""""""""""""""""""""""""
 " Checks syntax errors when you save the file
 " In cpp you can include all .h header in syntastic_lib dir to help it
