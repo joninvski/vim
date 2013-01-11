@@ -311,6 +311,11 @@ inoremap jk <esc>
 " jk in command mode is now esc
 cnoremap jk <esc>
 
+" <esc> no longer escapes to normal mode
+inoremap <esc> <nop>
+vnoremap <esc> <nop> " Use shift+v to exit visual mode
+
+
 " Up and down (k and j) move through wrapped lines
 noremap j gj
 noremap k gk
@@ -741,60 +746,16 @@ let g:CommandTSelectNextMap = ['<C-n>', '<C-j>', '<up>', '<space>']
 let g:CommandTSelectPrevMap = ['<C-p>', '<C-k>', '<down>', ',']
 """"""""""""""""""""""""""""""}}}
 
-" UltiSnips {{{
+" Commentary {{{
 """"""""""""""""""""""""""""""
-"Use :call UltiSnips_ListSnippets() to list available snippets
-"Should be control+tab but isn't working
+" Comment out lines with \\\ or \\{motion} (which is better)
+" Simple but works nicely
 """"""""""""""""""""""""""""""}}}
 
-" Vim Addon Manager (VAM) {{{
-"#########################################
-set runtimepath+=~/.vim/bundle/vim-addon-manager
-call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "tComment",
-            \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
-            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
-            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "Nazca",
-            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
-
-" To remove follow these steps:
-" Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
-" Restart Vim and remove plugin directory using >
-"   :UninstallNotLoadedAddons {pluginname}
-" or rm -fr those directories manually.
-
-"call vam#ActivateAddons(["Dart", "Gundo", "Haml", "Tabular", "The_NERD_tree", "Vim_Rspec", "ZenCoding", "afterimage",
-"            \ "apidock", "bundler%3207", "commentary", "endwise", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
-"            \ "ragtag", "rails", "rake", "rfc5424", "ruby-matchit", "Syntastic", "unimpaired", "unimpaired",
-"            \ "vim-addon-mw-utils", "vim-coffee-script", "vimlatex", "vim-ruby", "vim-rvm", "grep", "xterm-color-table",
-"            \ "surround", "repeat", "buffet", "taglist-plus", "Solarized", "SuperTab%1643", "hybrid", "Powerline",
-"            \ "Tail_Bundle", "snipmate-snippets", "vim-addon-sql"])
-""""""""""""""""""""""""""""""}}}
-
-
-"######################################### End of Plug-in related 1}}}
-
-" Experimental {{{1
-"#########################################
-
-" Seen in http://www.programmerq.net/rsttricks.html 
-" Type @h and the character u want to use for the heading: '=', '-', etc...
-let @h = "yypVr"
-
-" for 7.3
-if version >= 730
-    set undofile
-endif
-
-" TODO - Put in plugins
-" Comments the whole line
-noremap <leader>x :TComment<CR>
-" Comments to the right of the cursor and goes to the end
-noremap <leader>c :TCommentRight<CR>$
-
-" Not sure if I need it
-call pathogen#infect()
-
-" Puto syntastic in plugins section
+" Syntastic
+""""""""""""""""""""""""""""""
+" Checks syntax errors when you save the file
+" In cpp you can include all .h header in syntastic_lib dir to help it
 let g:syntastic_check_on_open= 1
 let g:syntastic_auto_loc_list= 1
 " In order to also check header files add this to your .vimrc:
@@ -806,10 +767,42 @@ let g:syntastic_c_check_header = 1
 " " g:syntastic_c_include_dirs. This list can be used like this:
 " syntastic_lib is just a sym link if the directory is somewhere weird
 let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
+""""""""""""""""""""""""""""""}}}
 
-" <esc> no longer escapes to normal mode
-inoremap <esc> <nop>
-vnoremap <esc> <nop> " Use shift+v to exit visual mode
+" UltiSnips {{{
+""""""""""""""""""""""""""""""
+"Use :call UltiSnips_ListSnippets() to list available snippets
+"Should be control+tab but isn't working
+""""""""""""""""""""""""""""""}}}
+
+" Vim Addon Manager (VAM) {{{
+"#########################################
+" To remove follow these steps:
+" Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
+" Restart Vim and remove plugin directory using >
+"   :UninstallNotLoadedAddons {pluginname}
+" or rm -fr those directories manually.
+
+set runtimepath+=~/.vim/bundle/vim-addon-manager
+call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround",
+            \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
+            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
+            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "Nazca",
+            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
+
+""""""""""""""""""""""""""""""}}}
+
+"######################################### End of Plug-in related 1}}}
+
+" Experimental {{{1
+"#########################################
+
+" Seen in http://www.programmerq.net/rsttricks.html
+" Type @h and the character u want to use for the heading: '=', '-', etc...
+let @h = "yypVr"
+
+" Not sure if I need it
+call pathogen#infect()
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
