@@ -388,16 +388,16 @@ map <leader>tag :!etags -R --exclude=syntastic_lib --c++-kinds=+p --fields=+iaS 
 " Text options{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "In Insert mode: Use the appropriate number of spaces to insert a <Tab>
-set expandtab
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
+set expandtab           " When expandtab is set, hitting Tab in insert mode will produce the appropriate number of spaces.
+set shiftwidth=4        " Set shiftwidth to control how many columns text is indented with the reindent operations (<< and >>) and automatic C-style indentation.
+set tabstop=4           " Set tabstop to tell vim how many columns a tab counts for.
+set softtabstop=4       " Set softtabstop to control how many columns vim uses when you hit Tab in insert mode. If softtabstop equals tabstop and expandtab is not set, vim will use tabs. When expandtab is set, vim will always use the appropriate number of spaces.
 
-"A <Tab> in front of a line inserts blanks according to 'shiftwidth'.
+" A <Tab> in front of a line inserts blanks according to 'shiftwidth'.
 set smarttab
 
 "linebreak
-set lbr
+set lbr                 " Breaks lines at words not at characters
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Fold"{{{
@@ -807,11 +807,11 @@ call pathogen#infect()
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
 
-
 " See list chars (newlines, tabs, etc)
 " Use the same symbols as TextMate for tabstops and EOLs
 " http://vimcasts.org/episodes/show-invisibles/
 set listchars=tab:▸\ ,eol:¬
+set listchars=tab:\|\<Space>
 " Shortcut to rapidly toggle `set list`
 nmap <leader>l :set list!<CR>
 
