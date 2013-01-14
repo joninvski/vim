@@ -625,7 +625,15 @@ nnoremap <leader>gitb :Gblame<cr>
 nnoremap <leader>gitc :Gcommit<cr>
 "nnoremap <leader>gm :Gmove<cr>
 nnoremap <leader>gitr :Gremove<cr>
-nnoremap <leader>gl :Shell git gl -18<cr>:wincmd \|<cr>
+" Gitlog in upper window
+nnoremap <leader>gitl :Shell git gl -18<cr>:wincmd \|<cr>
+
+"Each time you open a git object using fugitive it creates a new buffer.
+"This means that your buffer listing can quickly become swamped with
+"fugitive buffers.
+"Here’s an autocommand that prevents this from becomming an issue:
+"http://vimcasts.org/episodes/fugitive-vim-browsing-the-git-object-database/
+autocmd BufReadPost fugitive://* set bufhidden=delete
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Gundo{{{
@@ -826,7 +834,7 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 " or rm -fr those directories manually.
 
 set runtimepath+=~/.vim/bundle/vim-addon-manager
-call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround",
+call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "markdown@tpope",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "Nazca",
