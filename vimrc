@@ -29,7 +29,6 @@ nmap <silent> <F4> :TlistToggle<CR>
 nmap <silent> <F5> :set invlist<CR>:set list?<CR>
 nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
 nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
-nmap <silent> <F8> \C
 
 " Buffer - "hide" :hide)
 map <F9> mzggVGg?'z
@@ -37,7 +36,6 @@ map <F9> mzggVGg?'z
 " Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
 set pastetoggle=<F12>
 """""""""""""""
-
 
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
