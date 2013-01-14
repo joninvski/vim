@@ -29,6 +29,7 @@ nmap <silent> <F4> :TlistToggle<CR>
 nmap <silent> <F5> :set invlist<CR>:set list?<CR>
 nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
 nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
+nmap <silent> <F8> \C
 
 " Buffer - "hide" :hide)
 map <F9> mzggVGg?'z
@@ -36,6 +37,7 @@ map <F9> mzggVGg?'z
 " Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
 set pastetoggle=<F12>
 """""""""""""""
+
 
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -231,7 +233,6 @@ set ruler
 set cmdheight=1
 
 "Show line number
-"Don't forget you can go to line X with :X or XG
 set nu
 
 "Do not redraw, when running macros.. lazyredraw
@@ -588,15 +589,7 @@ nnoremap <leader>gitb :Gblame<cr>
 nnoremap <leader>gitc :Gcommit<cr>
 "nnoremap <leader>gm :Gmove<cr>
 nnoremap <leader>gitr :Gremove<cr>
-" Gitlog in upper window
-nnoremap <leader>gitl :Shell git gl -18<cr>:wincmd \|<cr>
-
-"Each time you open a git object using fugitive it creates a new buffer.
-"This means that your buffer listing can quickly become swamped with
-"fugitive buffers.
-"Here’s an autocommand that prevents this from becomming an issue:
-"http://vimcasts.org/episodes/fugitive-vim-browsing-the-git-object-database/
-autocmd BufReadPost fugitive://* set bufhidden=delete
+nnoremap <leader>gl :Shell git gl -18<cr>:wincmd \|<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Gundo{{{
@@ -741,47 +734,6 @@ let g:syntastic_c_check_header = 1
 let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'include' ]
 """"""""""""""""""""""""""""""}}}
 
-" Surround {{{
-""""""""""""""""""""""""""""""
-" from: http://www.catonmat.net/blog/vim-plugins-surround-vim/
-"
-" Examples of deleting surroundings (ds):
-" Text              Command    New Text
-" ---------------   -------    -----------
-" 'Hello World'    ds'        Hello World
-" (123+4*56)/2     ds(        123+4*56/2
-" <div>foo</div>   dst        foo
-
-" Examples of changing surroundings (cs):
-" Text              Command    New Text
-" ---------------   -------    -----------
-" "Hello world!"   cs"'       'Hello world!'
-" "Hello world!"   cs"<q>     <q>Hello world!</q>
-" foo!             csW'       'foo!'
-
-" Examples of inserting surroundings (ys):
-" Text              Command      New Text
-" ---------------   -------      -----------
-" Hello world!     ysiw)        Hello (world)!
-" foo              ysiwt<html>  <html>foo</html>
-" foo quux baz     yss"         "foo quux baz"
-"
-" Visual mode
-" -----------
-"  s - in visual mode, add a surrounding
-"  S - in visual mode, add a surrounding but place text on new line + indent it
-"
-"   * Visually Select:
-"
-"      <em>Hello</em> world!
-"
-"  * type: S<p class="important">.
-"
-"      <p class="important">
-"        <em>Hello</em> world!
-"      </p>
-""""""""""""""""""""""""""""""}}
-
 " UltiSnips {{{
 """"""""""""""""""""""""""""""
 "Use :call UltiSnips_ListSnippets() to list available snippets
@@ -797,7 +749,7 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 " or rm -fr those directories manually.
 
 set runtimepath+=~/.vim/bundle/vim-addon-manager
-call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "markdown@tpope",
+call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
             \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "Nazca",
@@ -824,6 +776,7 @@ highlight SpecialKey guifg=#4a4a59
 " Use the same symbols as TextMate for tabstops and EOLs
 " http://vimcasts.org/episodes/show-invisibles/
 set listchars=tab:▸\ ,eol:¬
+set listchars=tab:\|\<Space>
 " Shortcut to rapidly toggle `set list`
 nmap <leader>l :set list!<CR>
 
