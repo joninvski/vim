@@ -311,8 +311,9 @@ inoremap jk <esc>
 cnoremap jk <esc>
 
 " <esc> no longer escapes to normal mode
-inoremap <esc> <nop>
-vnoremap <esc> <nop> " Use shift+v to exit visual mode
+" COMMENT AS TRAINING WHEELS NO LONGER REQUIRED
+" inoremap <esc> <nop>
+" vnoremap <esc> <nop> " Use shift+v to exit visual mode
 
 
 " Up and down (k and j) move through wrapped lines
