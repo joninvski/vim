@@ -805,14 +805,14 @@ call vam#ActivateAddons([
                         \   "showmarks",
                         \   "UltiSnips",
                         \   "surround",
-                        \   "markdown@tpope"
+                        \   "markdown@tpope",
                         \   "bundler%3207",
                         \   "commentary",
                         \   "fugitive",
                         \   "git-vim",
                         \   "gitv",
                         \   "html5",
-                        \   "javascript%1747"
+                        \   "javascript%1747",
                         \   "ragtag",
                         \   "rfc5424",
                         \   "Syntastic",
@@ -820,14 +820,14 @@ call vam#ActivateAddons([
                         \   "grep",
                         \   "repeat",
                         \   "buffet",
-                        \   "ack"
+                        \   "ack",
                         \   "taglist-plus",
                         \   "Solarized",
                         \   "SuperTab%1643",
                         \   "vimlatex",
                         \   "hybrid",
                         \   "Powerline",
-                        \   "Nazca"
+                        \   "Nazca",
                         \   "Tail_Bundle",
                         \   "Command-T",
                         \   "DoxygenToolkit",
@@ -836,7 +836,7 @@ call vam#ActivateAddons([
                         \   "pathogen",
                         \   "badwolf",
                         \   "YankRing"
-                        \ ])
+                        \])
 
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
