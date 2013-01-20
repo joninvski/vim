@@ -800,35 +800,11 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 set runtimepath+=~/.vim/bundle/vim-addon-manager
 call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "markdown@tpope",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
-            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
+            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet", "ack",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "Nazca",
             \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
 
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 
-" Experimental {{{1
-"#########################################
 
-" Seen in http://www.programmerq.net/rsttricks.html
-" Type @h and the character u want to use for the heading: '=', '-', etc...
-let @h = "yypVr"
-
-" Not sure if I need it
-call pathogen#infect()
-
-"Invisible character colors
-highlight NonText guifg=#4a4a59
-highlight SpecialKey guifg=#4a4a59
-
-" See list chars (newlines, tabs, etc)
-" Use the same symbols as TextMate for tabstops and EOLs
-" http://vimcasts.org/episodes/show-invisibles/
-set listchars=tab:▸\ ,eol:¬
-" Shortcut to rapidly toggle `set list`
-nmap <leader>l :set list!<CR>
-
-
-"######################################### End of Experimental 1}}}
-"-----------------------------------------------------------------------
-" vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
