@@ -781,7 +781,7 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 "      <p class="important">
 "        <em>Hello</em> world!
 "      </p>
-""""""""""""""""""""""""""""""}}
+""""""""""""""""""""""""""""""}}}
 
 " UltiSnips {{{
 """"""""""""""""""""""""""""""
