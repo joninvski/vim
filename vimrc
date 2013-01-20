@@ -841,4 +841,28 @@ call vam#ActivateAddons([
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 
+" Experimental {{{1
+"#########################################
+" Seen in http://www.programmerq.net/rsttricks.html"
+" Type @h and the character u want to use for the heading: '=', '-', etc...
+let @h = "yypVr"
+
+" Not sure if I need it
+call pathogen#infect()
+
+"Invisible character colors
+highlight NonText guifg=#4a4a59
+highlight SpecialKey guifg=#4a4a59
+
+" See list chars (newlines, tabs, etc)
+" Use the same symbols as TextMate for tabstops and EOLs
+" http://vimcasts.org/episodes/show-invisibles/
+set listchars=tab:▸\ ,eol:¬
+" Shortcut to rapidly toggle `set list`
+nmap <leader>l :set list!<CR>
+
+
+"######################################### End of Experimental 1}}}
+"-----------------------------------------------------------------------
+" vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
 
