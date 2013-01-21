@@ -690,6 +690,9 @@ let NERDTreeMapJumpFirstChild = 'gK'
 " Yankring {{{
 """"""""""""""""""""""""""""""
 " Hit p to past and then Control+p and Control+N to cycle through registers
+"
+let g:yankring_zap_keys = 'f F / ?'
+"
 """"""""""""""""""""""""""""""}}}
 
 " Taglist{{{
@@ -795,19 +798,53 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 " or rm -fr those directories manually.
 
 set runtimepath+=~/.vim/bundle/vim-addon-manager
-call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "markdown@tpope",
-            \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
-            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet", "Conque_Shell",
-            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "Nazca",
-            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
+call vam#ActivateAddons([
+                        \   "Dart",
+                        \   "Gundo",
+                        \   "The_NERD_tree",
+                        \   "showmarks",
+                        \   "UltiSnips",
+                        \   "surround",
+                        \   "markdown@tpope",
+                        \   "bundler%3207",
+                        \   "commentary",
+                        \   "fugitive",
+                        \   "git-vim",
+                        \   "gitv",
+                        \   "html5",
+                        \   "javascript%1747",
+                        \   "ragtag",
+                        \   "rfc5424",
+                        \   "Syntastic",
+                        \   "vim-addon-mw-utils",
+                        \   "grep",
+                        \   "repeat",
+                        \   "buffet",
+                        \   "ack",
+                        \   "taglist-plus",
+                        \   "Solarized",
+                        \   "SuperTab%1643",
+                        \   "vimlatex",
+                        \   "hybrid",
+                        \   "Powerline",
+                        \   "Nazca",
+                        \   "Tail_Bundle",
+                        \   "Command-T",
+                        \   "Conque_Shell"
+                        \   "DoxygenToolkit",
+                        \   "a",
+                        \   "buftabs",
+                        \   "pathogen",
+                        \   "badwolf",
+                        \   "YankRing"
+                        \])
 
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 
 " Experimental {{{1
 "#########################################
-
-" Seen in http://www.programmerq.net/rsttricks.html
+" Seen in http://www.programmerq.net/rsttricks.html"
 " Type @h and the character u want to use for the heading: '=', '-', etc...
 let @h = "yypVr"
 
