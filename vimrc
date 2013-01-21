@@ -68,9 +68,6 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 "Fast editing of .vimrc
 map <leader>e :e! ~/.vimrc<cr>
 
-"Select all and copy to + buffer
-map <leader>sa :%y +<cr>
-
 " Nice window title
 if has('title') && (has('gui_running') || &title)
     set titlestring=
@@ -781,7 +778,7 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 "      <p class="important">
 "        <em>Hello</em> world!
 "      </p>
-""""""""""""""""""""""""""""""}}
+""""""""""""""""""""""""""""""}}}
 
 " UltiSnips {{{
 """"""""""""""""""""""""""""""
@@ -800,7 +797,7 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 set runtimepath+=~/.vim/bundle/vim-addon-manager
 call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "markdown@tpope",
             \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
-            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
+            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet", "Conque_Shell",
             \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "Nazca",
             \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
 
@@ -833,6 +830,9 @@ nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
 "Whenever i forget to use sudo vim... Now just write with 'w!!'
 cmap w!! w !sudo tee >/dev/null %
+
+
+nmap <leader>s :ConqueTermVSplit python /home/jtrindade/stackoverflow_cli_search.py
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
