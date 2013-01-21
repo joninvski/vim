@@ -830,7 +830,7 @@ call vam#ActivateAddons([
                         \   "Nazca",
                         \   "Tail_Bundle",
                         \   "Command-T",
-                        \   "Conque_Shell"
+                        \   "Conque_Shell",
                         \   "DoxygenToolkit",
                         \   "a",
                         \   "buftabs",
