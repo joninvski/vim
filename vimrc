@@ -68,9 +68,6 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 "Fast editing of .vimrc
 map <leader>e :e! ~/.vimrc<cr>
 
-"Select all and copy to + buffer
-map <leader>sa :%y +<cr>
-
 " Nice window title
 if has('title') && (has('gui_running') || &title)
     set titlestring=
@@ -648,13 +645,13 @@ let g:Tex_ViewRule_pdf = "xpdf"
 
 " Make it possible to write the é á ã (change the keys for the commands
 " mapped to these keys)
-imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
-imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
-imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
-inoremap <buffer> <silent> \c \cite{
-map <buffer> <silent> é é
-map <buffer> <silent> á á
-map <buffer> <silent> ã ã
+" imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
+" imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
+" imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
+" inoremap <buffer> <silent> \c \cite{
+" map <buffer> <silent> é é
+" map <buffer> <silent> á á
+" map <buffer> <silent> ã ã
 
 "Use \ll to create the pdf
 "Use \lv to see the pdf
@@ -835,6 +832,7 @@ call vam#ActivateAddons([
                         \   "Nazca",
                         \   "Tail_Bundle",
                         \   "Command-T",
+                        \   "Conque_Shell",
                         \   "DoxygenToolkit",
                         \   "a",
                         \   "buftabs",
@@ -867,6 +865,15 @@ highlight SpecialKey guifg=#4a4a59
 set listchars=tab:▸\ ,eol:¬
 " Shortcut to rapidly toggle `set list`
 nmap <leader>l :set list!<CR>
+
+" strip all trailing whitespace in the current file
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+"Whenever i forget to use sudo vim... Now just write with 'w!!'
+cmap w!! w !sudo tee >/dev/null %
+
+
+nmap <leader>s :ConqueTermVSplit python /home/jtrindade/stackoverflow_cli_search.py
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
