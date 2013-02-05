@@ -46,8 +46,8 @@ set nocompatible
 set history=500
 
 "Enable filetype plugin. Required for latex.
-filetype plugin on
 filetype indent on
+filetype plugin on
 
 "Set to auto read when a file is changed from the outside
 set autoread
@@ -366,6 +366,8 @@ cnoremap <C-K>    <C-U>
 "Indent all lines
 nnoremap <leader>ia gg=G``
 
+nnoremap <leader>io gggq`z<esc>
+
 "Switch to current dir
 nnoremap <leader>CD :cd %:p:h<cr>
 
@@ -495,8 +497,8 @@ set ar
 set ai "Auto indent - Automatically set the indent of a new line
 set si "Smart indent
 
-"C-style indenting
-set cindent
+" "C-style indenting
+" set cindent
 "Wrap lines
 "set wrap
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
@@ -836,6 +838,8 @@ call vam#ActivateAddons([
                         \   "buftabs",
                         \   "pathogen",
                         \   "badwolf",
+                        \   "lua%4344",
+                        \   "Indent_Guides",
                         \   "YankRing"
                         \])
 
