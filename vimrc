@@ -840,6 +840,7 @@ call vam#ActivateAddons([
                         \   "badwolf",
                         \   "lua%4344",
                         \   "Indent_Guides",
+                        \   "Tabular",
                         \   "YankRing"
                         \])
 
