@@ -107,7 +107,7 @@ colorscheme xoria256
 "Font type and size
 "set gfn=Bitstream\ Vera\ Sans\ Mono\ 10
 "set guifont=Terminus\ 8
-set guifont=Monospace\ 10
+set guifont=Monospace\ 8
 
 "set the right enconding
 "set encoding=latin1 # Usefull for starting latex files
