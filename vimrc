@@ -46,8 +46,8 @@ set nocompatible
 set history=500
 
 "Enable filetype plugin. Required for latex.
-filetype plugin on
 filetype indent on
+filetype plugin on
 
 "Set to auto read when a file is changed from the outside
 set autoread
@@ -67,9 +67,6 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 
 "Fast editing of .vimrc
 map <leader>e :e! ~/.vimrc<cr>
-
-"Select all and copy to + buffer
-map <leader>sa :%y +<cr>
 
 " Nice window title
 if has('title') && (has('gui_running') || &title)
@@ -110,7 +107,7 @@ colorscheme xoria256
 "Font type and size
 "set gfn=Bitstream\ Vera\ Sans\ Mono\ 10
 "set guifont=Terminus\ 8
-set guifont=Monospace\ 10
+set guifont=Monospace\ 8
 
 "set the right enconding
 "set encoding=latin1 # Usefull for starting latex files
@@ -311,8 +308,9 @@ inoremap jk <esc>
 cnoremap jk <esc>
 
 " <esc> no longer escapes to normal mode
-inoremap <esc> <nop>
-vnoremap <esc> <nop> " Use shift+v to exit visual mode
+" COMMENT AS TRAINING WHEELS NO LONGER REQUIRED
+" inoremap <esc> <nop>
+" vnoremap <esc> <nop> " Use shift+v to exit visual mode
 
 
 " Up and down (k and j) move through wrapped lines
@@ -367,6 +365,8 @@ cnoremap <C-K>    <C-U>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Indent all lines
 nnoremap <leader>ia gg=G``
+
+nnoremap <leader>io gggq`z<esc>
 
 "Switch to current dir
 nnoremap <leader>CD :cd %:p:h<cr>
@@ -497,8 +497,8 @@ set ar
 set ai "Auto indent - Automatically set the indent of a new line
 set si "Smart indent
 
-"C-style indenting
-set cindent
+" "C-style indenting
+" set cindent
 "Wrap lines
 "set wrap
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
@@ -645,13 +645,13 @@ let g:Tex_ViewRule_pdf = "xpdf"
 
 " Make it possible to write the é á ã (change the keys for the commands
 " mapped to these keys)
-imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
-imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
-imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
-inoremap <buffer> <silent> \c \cite{
-map <buffer> <silent> é é
-map <buffer> <silent> á á
-map <buffer> <silent> ã ã
+" imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
+" imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
+" imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
+" inoremap <buffer> <silent> \c \cite{
+" map <buffer> <silent> é é
+" map <buffer> <silent> á á
+" map <buffer> <silent> ã ã
 
 "Use \ll to create the pdf
 "Use \lv to see the pdf
@@ -692,6 +692,9 @@ let NERDTreeMapJumpFirstChild = 'gK'
 " Yankring {{{
 """"""""""""""""""""""""""""""
 " Hit p to past and then Control+p and Control+N to cycle through registers
+"
+let g:yankring_zap_keys = 'f F / ?'
+"
 """"""""""""""""""""""""""""""}}}
 
 " Taglist{{{
@@ -780,7 +783,7 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 "      <p class="important">
 "        <em>Hello</em> world!
 "      </p>
-""""""""""""""""""""""""""""""}}
+""""""""""""""""""""""""""""""}}}
 
 " UltiSnips {{{
 """"""""""""""""""""""""""""""
@@ -797,19 +800,56 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 " or rm -fr those directories manually.
 
 set runtimepath+=~/.vim/bundle/vim-addon-manager
-call vam#ActivateAddons(["Dart", "Gundo", "The_NERD_tree", "showmarks", "UltiSnips", "surround", "markdown@tpope",
-            \ "bundler%3207", "commentary", "fugitive", "git-vim", "gitv", "html5", "javascript%1747",
-            \ "ragtag", "rfc5424", "Syntastic", "vim-addon-mw-utils", "grep", "repeat", "buffet",
-            \ "taglist-plus", "Solarized", "SuperTab%1643", "vimlatex", "hybrid", "Powerline", "Nazca",
-            \ "Tail_Bundle", "Command-T", "DoxygenToolkit", "a", "buftabs", "pathogen", "badwolf", "YankRing"])
+call vam#ActivateAddons([
+                        \   "a",
+                        \   "ack",
+                        \   "badwolf",
+                        \   "buffet",
+                        \   "buftabs",
+                        \   "bundler%3207",
+                        \   "Command-T",
+                        \   "commentary",
+                        \   "Conque_Shell",
+                        \   "Dart",
+                        \   "DoxygenToolkit",
+                        \   "fugitive",
+                        \   "git-vim",
+                        \   "gitv",
+                        \   "grep",
+                        \   "Gundo",
+                        \   "html5",
+                        \   "hybrid",
+                        \   "Indent_Guides",
+                        \   "javascript%1747",
+                        \   "lua%4344",
+                        \   "markdown@tpope",
+                        \   "Nazca",
+                        \   "pathogen",
+                        \   "Powerline",
+                        \   "ragtag",
+                        \   "repeat",
+                        \   "rfc5424",
+                        \   "showmarks",
+                        \   "Solarized",
+                        \   "SuperTab%1643",
+                        \   "surround",
+                        \   "Syntastic",
+                        \   "Tabular",
+                        \   "taglist-plus",
+                        \   "Tail_Bundle",
+                        \   "The_NERD_tree",
+                        \   "UltiSnips",
+                        \   "vim-addon-mw-utils",
+                        \   "vimlatex",
+                        \   "YankRing"
+                        \])
 
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 
 " Experimental {{{1
 "#########################################
-
-" Seen in http://www.programmerq.net/rsttricks.html
+" Seen in http://www.programmerq.net/rsttricks.html"
 " Type @h and the character u want to use for the heading: '=', '-', etc...
 let @h = "yypVr"
 
@@ -825,8 +865,16 @@ highlight SpecialKey guifg=#4a4a59
 " http://vimcasts.org/episodes/show-invisibles/
 set listchars=tab:▸\ ,eol:¬
 " Shortcut to rapidly toggle `set list`
-nmap <leader>li :set list!<CR>
+nmap <leader>, :set list!<CR>
 
+" strip all trailing whitespace in the current file
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+"Whenever i forget to use sudo vim... Now just write with 'w!!'
+cmap w!! w !sudo tee >/dev/null %
+
+
+nmap <leader>stack :ConqueTermVSplit python /home/jtrindade/.vim/stackoverflow_cli_search.py
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
