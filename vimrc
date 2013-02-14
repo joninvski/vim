@@ -107,7 +107,7 @@ colorscheme xoria256
 "Font type and size
 "set gfn=Bitstream\ Vera\ Sans\ Mono\ 10
 "set guifont=Terminus\ 8
-set guifont=Monospace\ 10
+set guifont=Monospace\ 8
 
 "set the right enconding
 "set encoding=latin1 # Usefull for starting latex files
@@ -801,45 +801,46 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 
 set runtimepath+=~/.vim/bundle/vim-addon-manager
 call vam#ActivateAddons([
-                        \   "Dart",
-                        \   "Gundo",
-                        \   "The_NERD_tree",
-                        \   "showmarks",
-                        \   "UltiSnips",
-                        \   "surround",
-                        \   "markdown@tpope",
+                        \   "a",
+                        \   "ack",
+                        \   "badwolf",
+                        \   "buffet",
+                        \   "buftabs",
                         \   "bundler%3207",
+                        \   "Command-T",
                         \   "commentary",
+                        \   "Conque_Shell",
+                        \   "Dart",
+                        \   "DoxygenToolkit",
                         \   "fugitive",
                         \   "git-vim",
                         \   "gitv",
-                        \   "html5",
-                        \   "javascript%1747",
-                        \   "ragtag",
-                        \   "rfc5424",
-                        \   "Syntastic",
-                        \   "vim-addon-mw-utils",
                         \   "grep",
+                        \   "Gundo",
+                        \   "html5",
+                        \   "hybrid",
+                        \   "Indent_Guides",
+                        \   "javascript%1747",
+                        \   "lua%4344",
+                        \   "markdown@tpope",
+                        \   "Nazca",
+                        \   "pathogen",
+                        \   "Powerline",
+                        \   "ragtag",
                         \   "repeat",
-                        \   "buffet",
-                        \   "ack",
-                        \   "taglist-plus",
+                        \   "rfc5424",
+                        \   "showmarks",
                         \   "Solarized",
                         \   "SuperTab%1643",
-                        \   "vimlatex",
-                        \   "hybrid",
-                        \   "Powerline",
-                        \   "Nazca",
+                        \   "surround",
+                        \   "Syntastic",
+                        \   "Tabular",
+                        \   "taglist-plus",
                         \   "Tail_Bundle",
-                        \   "Command-T",
-                        \   "Conque_Shell",
-                        \   "DoxygenToolkit",
-                        \   "a",
-                        \   "buftabs",
-                        \   "pathogen",
-                        \   "badwolf",
-                        \   "lua%4344",
-                        \   "Indent_Guides",
+                        \   "The_NERD_tree",
+                        \   "UltiSnips",
+                        \   "vim-addon-mw-utils",
+                        \   "vimlatex",
                         \   "YankRing"
                         \])
 
@@ -864,7 +865,7 @@ highlight SpecialKey guifg=#4a4a59
 " http://vimcasts.org/episodes/show-invisibles/
 set listchars=tab:▸\ ,eol:¬
 " Shortcut to rapidly toggle `set list`
-nmap <leader>l :set list!<CR>
+nmap <leader>, :set list!<CR>
 
 " strip all trailing whitespace in the current file
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
