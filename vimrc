@@ -825,7 +825,7 @@ highlight SpecialKey guifg=#4a4a59
 " http://vimcasts.org/episodes/show-invisibles/
 set listchars=tab:▸\ ,eol:¬
 " Shortcut to rapidly toggle `set list`
-nmap <leader>l :set list!<CR>
+nmap <leader>li :set list!<CR>
 
 
 "######################################### End of Experimental 1}}}
