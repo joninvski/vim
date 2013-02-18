@@ -841,6 +841,7 @@ call vam#ActivateAddons([
                         \   "UltiSnips",
                         \   "vim-addon-mw-utils",
                         \   "vimlatex",
+                        \   "vim-scala",
                         \   "YankRing"
                         \])
 
