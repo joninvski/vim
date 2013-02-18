@@ -875,7 +875,7 @@ nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 cmap w!! w !sudo tee >/dev/null %
 
 
-nmap <leader>s :ConqueTermVSplit python /home/jtrindade/stackoverflow_cli_search.py
+nmap <leader>stack :ConqueTermVSplit python /home/jtrindade/.vim/stackoverflow_cli_search.py
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
