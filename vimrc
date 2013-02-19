@@ -861,6 +861,7 @@ fun! SetupVAM()
               \   "ragtag",
               \   "repeat",
               \   "rfc5424",
+              \   "github:joninvski/simplelatex",
               \   "showmarks",
               \   "Solarized",
               \   "SuperTab%1643",
