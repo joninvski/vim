@@ -799,52 +799,86 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 "   :UninstallNotLoadedAddons {pluginname}
 " or rm -fr those directories manually.
 
-set runtimepath+=~/.vim/bundle/vim-addon-manager
-call vam#ActivateAddons([
-                        \   "a",
-                        \   "ack",
-                        \   "badwolf",
-                        \   "buffet",
-                        \   "buftabs",
-                        \   "bundler%3207",
-                        \   "Command-T",
-                        \   "commentary",
-                        \   "Conque_Shell",
-                        \   "Dart",
-                        \   "DoxygenToolkit",
-                        \   "fugitive",
-                        \   "git-vim",
-                        \   "gitv",
-                        \   "grep",
-                        \   "Gundo",
-                        \   "html5",
-                        \   "hybrid",
-                        \   "Indent_Guides",
-                        \   "javascript%1747",
-                        \   "lua%4344",
-                        \   "markdown@tpope",
-                        \   "Nazca",
-                        \   "pathogen",
-                        \   "Powerline",
-                        \   "ragtag",
-                        \   "repeat",
-                        \   "rfc5424",
-                        \   "showmarks",
-                        \   "Solarized",
-                        \   "SuperTab%1643",
-                        \   "surround",
-                        \   "Syntastic",
-                        \   "Tabular",
-                        \   "taglist-plus",
-                        \   "Tail_Bundle",
-                        \   "The_NERD_tree",
-                        \   "UltiSnips",
-                        \   "vim-addon-mw-utils",
-                        \   "vimlatex",
-                        \   "vim-scala",
-                        \   "YankRing"
-                        \])
+" set runtimepath+=~/.vim/vim-addon-manager
+" put this line first in ~/.vimrc
+set nocompatible | filetype indent plugin on | syn on
 
+fun! EnsureVamIsOnDisk(plugin_root_dir)
+  let vam_autoload_dir = a:plugin_root_dir.'/vim-addon-manager/autoload'
+  if isdirectory(vam_autoload_dir)
+    return 1
+  else
+    if 1 == confirm("Clone VAM into ".a:plugin_root_dir."?","&Y\n&N")
+      call mkdir(a:plugin_root_dir, 'p')
+      execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '.
+                  \       shellescape(a:plugin_root_dir, 1).'/vim-addon-manager'
+      " VAM runs helptags automatically when you install or update
+      " plugins
+      exec 'helptags '.fnameescape(a:plugin_root_dir.'/vim-addon-manager/doc')
+    endif
+    return isdirectory(vam_autoload_dir)
+  endif
+endfun
+
+fun! SetupVAM()
+  " VAM install location:
+  let c = get(g:, 'vim_addon_manager', {})
+  let g:vim_addon_manager = c
+  let c.plugin_root_dir = expand('$HOME/.vim/vim-addons')
+  if !EnsureVamIsOnDisk(c.plugin_root_dir)
+    echohl ErrorMsg | echomsg "No VAM found!" | echohl NONE
+    return
+  endif
+  let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
+
+  " Tell VAM which plugins to fetch & load:
+  call vam#ActivateAddons([
+              \   "a",
+              \   "ack",
+              \   "badwolf",
+              \   "buffet",
+              \   "buftabs",
+              \   "bundler%3207",
+              \   "Command-T",
+              \   "commentary",
+              \   "Conque_Shell",
+              \   "Dart",
+              \   "DoxygenToolkit",
+              \   "fugitive",
+              \   "git-vim",
+              \   "gitv",
+              \   "grep",
+              \   "Gundo",
+              \   "html5",
+              \   "hybrid",
+              \   "Indent_Guides",
+              \   "javascript%1747",
+              \   "lua%4344",
+              \   "markdown@tpope",
+              \   "Nazca",
+              \   "pathogen",
+              \   "powerline",
+              \   "ragtag",
+              \   "repeat",
+              \   "rfc5424",
+              \   "showmarks",
+              \   "Solarized",
+              \   "SuperTab%1643",
+              \   "surround",
+              \   "Syntastic",
+              \   "Tabular",
+              \   "taglist-plus",
+              \   "Tail_Bundle",
+              \   "The_NERD_tree",
+              \   "UltiSnips",
+              \   "vim-addon-mw-utils",
+              \   "vimlatex",
+              \   "vim-scala",
+              \   "YankRing"
+              \], {'auto_install' : 1})
+endfun
+
+call SetupVAM()
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 
