@@ -657,11 +657,6 @@ let g:Tex_ViewRule_pdf = "xpdf"
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" Project{{{
-""""""""""""""""""""""""""""""
-nmap <silent> <Leader>p :Project<CR>
-""""""""""""""""""""""""""""""}}}
-
 " CloseTag{{{
 """"""""""""""""""""""""""""""
 "Use <Control+_> to close tag
@@ -709,16 +704,6 @@ set showfulltag  "Show more information while completing tags
 
 "If it is a latex file
 let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
-""""""""""""""""""""""""""""""}}}
-
-" Command-T {{{
-""""""""""""""""""""""""""""""
-noremap <leader>o <Esc>:CommandT<CR>
-noremap <leader>O <Esc>:CommandTFlush<CR>
-noremap <leader>p <Esc>:CommandTBuffer<CR>
-
-let g:CommandTSelectNextMap = ['<C-n>', '<C-j>', '<up>', '<space>']
-let g:CommandTSelectPrevMap = ['<C-p>', '<C-k>', '<down>', ',']
 """"""""""""""""""""""""""""""}}}
 
 " Commentary {{{
@@ -839,7 +824,7 @@ fun! SetupVAM()
               \   "buffet",
               \   "buftabs",
               \   "bundler%3207",
-              \   "Command-T",
+              \   "ctrlp",
               \   "commentary",
               \   "Conque_Shell",
               \   "Dart",
@@ -874,7 +859,7 @@ fun! SetupVAM()
               \   "UltiSnips",
               \   "vim-addon-mw-utils",
               \   "vimlatex",
-              \   "vim-scala",
+              \   "github:joninvski/vim-scala",
               \   "YankRing"
               \], {'auto_install' : 1})
 endfun
@@ -911,6 +896,11 @@ cmap w!! w !sudo tee >/dev/null %
 
 
 nmap <leader>stack :ConqueTermVSplit python /home/jtrindade/.vim/stackoverflow_cli_search.py
+
+let g:ctrlp_map = '<leader>o'
+nnoremap <leader>p :CtrlPTag<cr>
+let g:ctrlp_extensions = ['tag']
+
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
