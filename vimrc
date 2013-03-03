@@ -42,6 +42,11 @@ set pastetoggle=<F12>
 "Get out of VI's compatible mode..
 set nocompatible
 
+" See list chars (newlines, tabs, etc) (key f5 to turn on off)
+" Use the same symbols as TextMate for tabstops and EOLs
+" http://vimcasts.org/episodes/show-invisibles/
+set listchars=tab:▸\ ,eol:¬
+
 "Sets how many lines of history VIM to remember
 set history=500
 
@@ -882,12 +887,6 @@ call pathogen#infect()
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
 
-" See list chars (newlines, tabs, etc)
-" Use the same symbols as TextMate for tabstops and EOLs
-" http://vimcasts.org/episodes/show-invisibles/
-set listchars=tab:▸\ ,eol:¬
-" Shortcut to rapidly toggle `set list`
-nmap <leader>, :set list!<CR>
 
 " strip all trailing whitespace in the current file
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
@@ -901,7 +900,7 @@ nmap <leader>stack :ConqueTermVSplit python /home/jtrindade/.vim/stackoverflow_c
 let g:ctrlp_map = '<leader>o'
 nnoremap <leader>p :CtrlPTag<cr>
 let g:ctrlp_extensions = ['tag']
-
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.class
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
