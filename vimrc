@@ -167,9 +167,9 @@ au FileType c,cpp set comments=sl:/*,mb:\ *,elx:\ */
 
 " More specific for java{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-setlocal omnifunc=javacomplete#Complete
+:" Only do this part when compiled with support for autocommands. 
+autocmd Filetype java setlocal omnifunc=javacomplete#Complete 
 """""""""""""""""""""""""""""""""""""""""""}}}
-
 " More specific for python{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Set the python tags
@@ -838,6 +838,7 @@ fun! SetupVAM()
               \   "hybrid",
               \   "Indent_Guides",
               \   "javascript%1747",
+              \   "javacomplete",
               \   "lua%4344",
               \   "markdown@tpope",
               \   "Nazca",
