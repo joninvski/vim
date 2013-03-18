@@ -173,7 +173,7 @@ au FileType c,cpp set comments=sl:/*,mb:\ *,elx:\ */
 " More specific for java{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :" Only do this part when compiled with support for autocommands. 
-autocmd Filetype java setlocal omnifunc=javacomplete#Complete 
+" autocmd Filetype java setlocal omnifunc=javacomplete#Complete 
 """""""""""""""""""""""""""""""""""""""""""}}}
 " More specific for python{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -491,10 +491,6 @@ if version >= 730
         call mkdir(expand(&undodir), "p")
     endif
 endif
-
-
-"Autoread a file when it has been changed
-set ar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Indent {{{
@@ -662,12 +658,6 @@ let g:Tex_ViewRule_pdf = "xpdf"
 "Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" CloseTag{{{
-""""""""""""""""""""""""""""""
-"Use <Control+_> to close tag
-:au Filetype html,xml,xsl source ~/.vim/macros/closetag.vim
-""""""""""""""""""""""""""""""}}}
-
 " NERD Tree Explorer{{{
 """"""""""""""""""""""""""""""
 " Lets ignore some file from showing in the NERDTree
@@ -721,11 +711,16 @@ let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
 """"""""""""""""""""""""""""""
 " Checks syntax errors when you save the file
 " In cpp you can include all .h header in syntastic_lib dir to help it
-let g:syntastic_check_on_open= 1
-let g:syntastic_auto_loc_list= 1
+let g:syntastic_check_on_open= 0
+
+" When set to 2 the error window will be automatically closed when no errors are detected, but not opened automatically
+let g:syntastic_auto_loc_list= 2
 " In order to also check header files add this to your .vimrc:
 " " (this usually creates a .gch file in your source directory)
 let g:syntastic_c_check_header = 1
+
+" If enabled, syntastic will error message associated with the current line to the command window.
+let g:syntastic_echo_current_error = 0
 
 "" In order to add some custom include directories that should be added to the
 " gcc command line you can add those to the global variable
@@ -843,7 +838,6 @@ fun! SetupVAM()
               \   "hybrid",
               \   "Indent_Guides",
               \   "javascript%1747",
-              \   "javacomplete",
               \   "lua%4344",
               \   "markdown@tpope",
               \   "Nazca",
@@ -887,6 +881,8 @@ call pathogen#infect()
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
 
+set guioptions-=m " turn off menu bar
+set guioptions-=T " turn off toolbar
 
 " strip all trailing whitespace in the current file
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
@@ -900,7 +896,10 @@ nmap <leader>stack :ConqueTermVSplit python /home/jtrindade/.vim/stackoverflow_c
 let g:ctrlp_map = '<leader>o'
 nnoremap <leader>p :CtrlPTag<cr>
 let g:ctrlp_extensions = ['tag']
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.class
+
+let g:ctrlp_by_filename = 1 " Set to 1 to search by filename (as opposed to full path) Change with Control-D
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.class,*/doc/*,*/target/*
+let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from current directory
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
