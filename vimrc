@@ -173,8 +173,7 @@ au FileType c,cpp set comments=sl:/*,mb:\ *,elx:\ */
 
 " More specific for java{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-:" Only do this part when compiled with support for autocommands. 
-" autocmd Filetype java setlocal omnifunc=javacomplete#Complete 
+" Nothing for now
 """""""""""""""""""""""""""""""""""""""""""}}}
 " More specific for python{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -269,6 +268,9 @@ set mat=2
 
 "Highlight search things
 set hlsearch
+
+" Set files to ignore in searches
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.class,*/doc/*,*/target/*
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Statusline (the bar at the bottom){{{
@@ -471,8 +473,8 @@ endif
 set hidden
 set backup                          " Enable creation of backup file.
 set noswapfile                      " No need for a swap file
-set backupdir=~/.vim/backup//       " Where backups will go.
-set directory=~/.vim/tmp//          " Where temporary files will go.
+set backupdir=~/.vim/backup/        " Where backups will go.
+set directory=~/.vim/tmp/           " Where temporary files will go.
 
 " Make those folders automatically if they don't already exist.
 if !isdirectory(expand(&backupdir))
@@ -492,6 +494,9 @@ if version >= 730
         call mkdir(expand(&undodir), "p")
     endif
 endif
+
+"Autoread a file when it has been changed
+set ar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Indent {{{
@@ -830,6 +835,7 @@ fun! SetupVAM()
               \   "commentary",
               \   "Conque_Shell",
               \   "Dart",
+              \   "delimitMate",
               \   "DoxygenToolkit",
               \   "fugitive",
               \   "git-vim",
@@ -895,6 +901,7 @@ cmap w!! w !sudo tee >/dev/null %
 
 nmap <leader>stack :ConqueTermVSplit python /home/jtrindade/.vim/stackoverflow_cli_search.py
 
+" ControlP related
 let g:ctrlp_map = '<leader>o'
 nnoremap <leader>p :CtrlPTag<cr>
 let g:ctrlp_extensions = ['tag']
