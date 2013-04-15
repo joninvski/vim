@@ -900,7 +900,11 @@ nnoremap <leader>p :CtrlPTag<cr>
 let g:ctrlp_extensions = ['tag']
 
 let g:ctrlp_by_filename = 1 " Set to 1 to search by filename (as opposed to full path) Change with Control-D
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.class,*/doc/*,*/target/*,*.png,*.jpg
+set wildignore+=*/tmp/*,*.so,*.swp,*.pyc,*.class,*/target/*
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn|doc)$',
+  \ 'file': '\v\.(exe|so|dll|jpg|png|gif|zip)$',
+  \ 'link': 'syntastic_lib'}
 let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from current directory
 
 
