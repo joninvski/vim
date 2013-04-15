@@ -29,6 +29,7 @@ nmap <silent> <F4> :TlistToggle<CR>
 nmap <silent> <F5> :set invlist<CR>:set list?<CR>
 nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
 nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
+nmap <silent> <F8> :call BufferList()<CR>
 
 " Buffer - "hide" :hide)
 map <F9> mzggVGg?'z
@@ -821,6 +822,7 @@ fun! SetupVAM()
               \   "a",
               \   "ack",
               \   "badwolf",
+              \   "bufferlist",
               \   "buffet",
               \   "buftabs",
               \   "bundler%3207",
@@ -900,6 +902,10 @@ let g:ctrlp_extensions = ['tag']
 let g:ctrlp_by_filename = 1 " Set to 1 to search by filename (as opposed to full path) Change with Control-D
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.class,*/doc/*,*/target/*,*.png,*.jpg
 let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from current directory
+
+
+hi BufferSelected term=reverse ctermfg=white ctermbg=red cterm=bold
+hi BufferNormal term=NONE ctermfg=black ctermbg=black cterm=NONE
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
