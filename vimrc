@@ -916,7 +916,7 @@ let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from c
 
 
 hi BufferSelected term=reverse ctermfg=white ctermbg=red cterm=bold
-hi BufferNormal term=NONE ctermfg=black ctermbg=black cterm=NONE
+hi BufferNormal term=NONE ctermfg=grey ctermbg=black cterm=NONE
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
