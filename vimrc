@@ -469,30 +469,23 @@ endif
 
 " Files and backups{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Make those folders automatically if they don't already exist.
+let s:localscriptsdir = expand($HOME . '/.vim')
+silent execute '!mkdir -p ' . s:localscriptsdir . '/tmp/{backup,view,tmp,undo}'
+
 " hide buffers when not displayed
 set hidden
-set backup                          " Enable creation of backup file.
-set noswapfile                      " No need for a swap file
-set backupdir=~/.vim/backup/        " Where backups will go.
-set directory=~/.vim/tmp/           " Where temporary files will go.
-
-" Make those folders automatically if they don't already exist.
-if !isdirectory(expand(&backupdir))
-    call mkdir(expand(&backupdir), "p")
-endif
-if !isdirectory(expand(&directory))
-    call mkdir(expand(&directory), "p")
-endif
+set backup                           " Enable creation of backup file.
+set noswapfile                       " No need for a swap file
+set backupdir=$HOME/.vim/backup/     " Where backups will go.
+set directory=$HOME/.vim/tmp/        " Where temporary files will go.
+set viewdir=$HOME/.vim/tmp/view/
 
 if version >= 730
-    set undodir=~/.vim/tmp/undo//       " undo files
+    set undodir=$HOME/.vim/tmp/undo/ " undo files
     set undofile
-    set undolevels = 1000               " maximum number of changes that can be undone
-    set undoreload = 10000              " maximum number lines to save for undo on a buffer reload
-
-    if !isdirectory(expand(&undodir))
-        call mkdir(expand(&undodir), "p")
-    endif
+    set undolevels = 1000            " maximum number of changes that can be undone
+    set undoreload = 10000           " maximum number lines to save for undo on a buffer reload
 endif
 
 "Autoread a file when it has been changed
@@ -837,6 +830,7 @@ fun! SetupVAM()
               \   "repeat",
               \   "rfc5424",
               \   "github:joninvski/simplelatex",
+              \   "github:szw/vim-smartclose",
               \   "showmarks",
               \   "Solarized",
               \   "SuperTab%1643",
