@@ -614,24 +614,6 @@ let g:gundo_tree_statusline = "Gundo"
 let g:gundo_preview_statusline = "Gundo Preview"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" Win Manager {{{
-""""""""""""""""""""""""""""""
-"Split vertically
-let g:explVertical=1
-
-let g:winManagerWidth=30
-let g:defaultExplorer=0
-let g:winManagerWindowLayout = 'FileExplorer,TagsExplorer'
-
-"Hide some files
-let g:explHideFiles='^\.,\.gz$,\.exe$,\.zip$'
-
-"Hide the help thing..
-let g:explDetailedHelp=0
-
-"map <F10> :WMToggle<cr>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-
 " Latex related {{{
 """"""""""""""""""""""""""""""""""""""
 "Ignore some warnings
@@ -898,7 +880,6 @@ nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 "Whenever i forget to use sudo vim... Now just write with 'w!!'
 cmap w!! w !sudo tee >/dev/null %
 
-
 nmap <leader>stack :ConqueTermVSplit python /home/jtrindade/.vim/stackoverflow_cli_search.py
 
 " ControlP related
@@ -913,7 +894,6 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll|jpg|png|gif|zip)$',
   \ 'link': 'syntastic_lib'}
 let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from current directory
-
 
 hi BufferSelected term=reverse ctermfg=white ctermbg=red cterm=bold
 hi BufferNormal term=NONE ctermfg=grey ctermbg=black cterm=NONE
