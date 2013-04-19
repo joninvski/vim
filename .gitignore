@@ -1,1 +1,7 @@
 *.pyc
+.netrwhist
+TAGS
+backup/
+eclim/
+plugin/
+vim-addons/
