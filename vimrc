@@ -34,6 +34,8 @@ nmap <silent> <F8> :call BufferList()<CR>
 " Buffer - "hide" :hide)
 map <F9> mzggVGg?'z
 
+nmap <F10> :SmartClose
+
 " Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
 set pastetoggle=<F12>
 """""""""""""""
