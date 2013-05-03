@@ -1,6 +1,7 @@
 *.pyc
 .netrwhist
 autoload/
+TAGS
 backup/
 eclim/
 plugin/
