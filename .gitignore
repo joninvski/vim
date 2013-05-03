@@ -1,1 +1,7 @@
 *.pyc
+.netrwhist
+autoload/
+backup/
+eclim/
+plugin/
+vim-addons/
