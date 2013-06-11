@@ -810,7 +810,6 @@ fun! SetupVAM()
               \   "bundler%3207",
               \   "ctrlp",
               \   "commentary",
-              \   "Conque_Shell",
               \   "Dart",
               \   "delimitMate",
               \   "DoxygenToolkit",
@@ -821,7 +820,6 @@ fun! SetupVAM()
               \   "Gundo",
               \   "html5",
               \   "hybrid",
-              \   "Indent_Guides",
               \   "javascript%1747",
               \   "lua%4344",
               \   "markdown@tpope",
@@ -875,8 +873,6 @@ nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
 "Whenever i forget to use sudo vim... Now just write with 'w!!'
 cmap w!! w !sudo tee >/dev/null %
-
-nmap <leader>stack :ConqueTermVSplit python /home/jtrindade/.vim/stackoverflow_cli_search.py
 
 " ControlP related
 let g:ctrlp_map = '<leader>o'
