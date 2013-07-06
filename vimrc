@@ -151,7 +151,6 @@ match WhitespaceEOL /\s\+$/
 "This file is a python and django filetype needed to activate django
 "snippets
 autocmd BufNewFile,BufRead *.py setlocal ft=python
-autocmd BufNewFile,BufRead *.html setlocal ft=html.django
 autocmd BufNewFile,BufRead *.tex setlocal ft=tex
 
 
@@ -272,7 +271,7 @@ set mat=2
 set hlsearch
 
 " Set files to ignore in searches
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.class,*/doc/*,*/target/*
+set wildignore+=*/tmp/*,*.so,*.swp,*.pyc,*.class,*/doc/*,*/target/*
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Statusline (the bar at the bottom){{{
@@ -884,7 +883,6 @@ nnoremap <leader>p :CtrlPTag<cr>
 let g:ctrlp_extensions = ['tag']
 
 let g:ctrlp_by_filename = 1 " Set to 1 to search by filename (as opposed to full path) Change with Control-D
-set wildignore+=*/tmp/*,*.so,*.swp,*.pyc,*.class,*/target/*
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn|doc)$',
   \ 'file': '\v\.(exe|so|dll|jpg|png|gif|zip)$',
