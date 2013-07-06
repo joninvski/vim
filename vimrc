@@ -353,7 +353,6 @@ iab wich which
 set complete=.,w,b,u,t
 set completeopt=longest,menuone,preview
 
-
 "" supertab
 let g:SuperTabCrMapping = 0
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
@@ -782,10 +781,8 @@ fun! SetupVAM()
               \   "bufferlist",
               \   "buffet",
               \   "buftabs",
-              \   "bundler%3207",
               \   "ctrlp",
               \   "commentary",
-              \   "Dart",
               \   "delimitMate",
               \   "DoxygenToolkit",
               \   "fugitive",
@@ -796,7 +793,6 @@ fun! SetupVAM()
               \   "html5",
               \   "hybrid",
               \   "javascript%1747",
-              \   "lua%4344",
               \   "markdown@tpope",
               \   "Nazca",
               \   "pathogen",
@@ -804,7 +800,6 @@ fun! SetupVAM()
               \   "ragtag",
               \   "repeat",
               \   "rfc5424",
-              \   "github:szw/vim-smartclose",
               \   "showmarks",
               \   "Solarized",
               \   "SuperTab%1643",
@@ -812,7 +807,6 @@ fun! SetupVAM()
               \   "Syntastic",
               \   "Tabular",
               \   "taglist-plus",
-              \   "Tail_Bundle",
               \   "The_NERD_tree",
               \   "UltiSnips",
               \   "vim-addon-mw-utils",
