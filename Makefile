@@ -1,3 +1,3 @@
 all:
-	ln -fs vim .vim
-	ln -fs vim/vimrc .vimrc
+	ln -fs ${HOME}/vim .vim
+	ln -fs ${HOME}/vim/vimrc .vimrc
