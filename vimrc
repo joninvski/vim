@@ -20,25 +20,6 @@
 " but does not automatically use 256 colors by default.
 set t_Co=256
 
-"""""""""""""""
-" F# keys (top keyboard keys)
-"""""""""""""""
-nmap <silent> <F2> :NERDTreeToggle<CR>
-nmap <silent> <F3> :GundoToggle<CR>
-nmap <silent> <F4> :TlistToggle<CR>
-nmap <silent> <F5> :set invlist<CR>:set list?<CR>
-nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
-nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
-nmap <silent> <F8> :call BufferList()<CR>
-
-" Buffer - "hide" :hide)
-map <F9> mzggVGg?'z
-
-nmap <F10> :SmartClose
-
-" Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
-set pastetoggle=<F12>
-"""""""""""""""
 
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -50,8 +31,13 @@ set nocompatible
 " http://vimcasts.org/episodes/show-invisibles/
 set listchars=tab:▸\ ,eol:¬
 
-"Sets how many lines of history VIM to remember
+" Sets how many lines of history VIM to remember
 set history=500
+
+" Auto indent - Automatically set the indent of a new line
+set ai
+" Smart indent (not used when cident is on)
+set si
 
 "Enable filetype plugin. Required for lots of plugins
 filetype indent on
@@ -84,6 +70,10 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=\ -\ %{v:progname}      " program name
 endif
 
+"set the right enconding
+"set encoding=latin1 # Usefull for starting latex files
+set encoding=utf-8
+
 "restore your cursor position in a file over several editing sessions.
 set viminfo=!,'10,\"100,:20,%,n~/.viminfo
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
@@ -92,20 +82,35 @@ au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|
 set visualbell
 """""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+" F# keys (top keyboard keys){{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap <silent> <F2> :NERDTreeToggle<CR>
+nmap <silent> <F3> :GundoToggle<CR>
+nmap <silent> <F4> :TlistToggle<CR>
+nmap <silent> <F5> :set invlist<CR>:set list?<CR>
+nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
+nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
+nmap <silent> <F8> :call BufferList()<CR>
+
+" Buffer - "hide" :hide)
+map <F9> mzggVGg?'z
+
+" Paste toggle - when pasting something in, don't indent. Only use it when in insert mode
+set pastetoggle=<F12>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
 " Colors and Fonts{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Enable syntax hl
 syntax enable
 
-"Set bg to dark
-" set background=dark
-
 "By far my favourite in the old days
 "color desert
+
 "Trying something new
-"color bluegreen
-"Good option
 colorscheme xoria256
+
+" Other good options
 "color molokai
 "color hemisu
 "color badwolf
@@ -113,23 +118,16 @@ colorscheme xoria256
 
 
 "Font type and size
-"set gfn=Bitstream\ Vera\ Sans\ Mono\ 10
 "set guifont=Terminus\ 8
 set guifont=Monospace\ 8
-
-"set the right enconding
-"set encoding=latin1 # Usefull for starting latex files
-set encoding=utf-8
 
 "set Pattern matching highlight
 hi MatchParen guifg=#000000 guibg=#D0D090
 
 if has("gui_running")
-"    set guioptions=m
-"    set guioptions-=m " turn off menu bar
-"    set guioptions-=T " turn off toolbar
     set guioptions=a
-    set guioptions+=m
+    set guioptions-=m " turn off menu bar
+    set guioptions-=T " turn off toolbar
     set guicursor=a:blinkon0
 endif
 
@@ -140,7 +138,7 @@ if has("gui_running")
     hi cursorline guibg=black
 endif
 
-"Highlight spaces at the end of lines
+"Highlight spaces at the end of lines TODO - Not working
 let c_space_errors=1
 highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
@@ -148,11 +146,6 @@ match WhitespaceEOL /\s\+$/
 
 " FileTypes{{{1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"This file is a python and django filetype needed to activate django
-"snippets
-autocmd BufNewFile,BufRead *.py setlocal ft=python
-autocmd BufNewFile,BufRead *.tex setlocal ft=tex
-
 
 " More specific for c and cpp{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -176,53 +169,17 @@ au FileType c,cpp set comments=sl:/*,mb:\ *,elx:\ */
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Nothing for now
 """""""""""""""""""""""""""""""""""""""""""}}}
+
 " More specific for python{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Set the python tags
-autocmd BufNewFile,BufRead *.py set tags+=$HOME/.vim/tags/python.ctags
-"Changes the error format
-autocmd BufNewFile,BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-"Compiles the python code looking for syntax error
-autocmd BufNewFile,BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
-
-python << EOF
-import vim
-
-def EvaluateCurrentRange():
-    eval(compile('\n'.join(vim.current.range),'','exec'),globals())
-
-#Set breakpoints with F6
-def SetBreakpoint():
-    import re
-    nLine = int( vim.eval( 'line(".")'))
-
-    strLine = vim.current.line
-    strWhite = re.search( '^(\s*)', strLine).group(1)
-
-    vim.current.buffer.append(
-       "%(space)spdb.set_trace() %(mark)s Breakpoint %(mark)s" %
-         {'space':strWhite, 'mark': '#' * 30}, nLine - 1)
-
-    for strLine in vim.current.buffer:
-        if strLine == "import pdb":
-            break
-    else:
-        vim.current.buffer.append( 'import pdb', 0)
-        vim.command( 'normal j1')
-
-        #vim.command( 'map <F6> :py SetBreakpoint()<cr>')
-
-EOF
-
-"Evaluate selected lines with control-h
-autocmd BufNewFile,BufRead *.py map <C-h> :py EvaluateCurrentRange()<cr>
+" Nothing for now
 """""""""""""""""""""""""""""""""""""""""""}}}
 """""""""""""""""""""""""""""""""""""""""""1}}}
 
 " VIM userinterface{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"When moving vertical, start scrolling 7 lines before reaching the extremity"
-set so=15
+"When moving vertical, start scrolling 10 lines before reaching the extremity"
+set so=10
 
 "Turn on WiLd menu - command-line completion operates in an enhanced mode.
 set wildmenu
@@ -294,12 +251,6 @@ nnoremap <leader><right> :bnext<cr>
 nnoremap <leader><left>  :bprev<cr>
 nnoremap <leader>l :bnext<cr>
 nnoremap <leader>h  :bprev<cr>
-
-"Move a line of text using control
-nmap <C-down> mz:m+<cr>`z
-nmap <C-up> mz:m-2<cr>`z
-vmap <C-down> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <C-up> :m'<-2<cr>`>my`<mzgv`yo`z
 
 "Me being brave
 " disable arrow keys
@@ -374,16 +325,11 @@ cnoremap <C-K>    <C-U>
 "Indent all lines
 nnoremap <leader>ia gg=G``
 
-nnoremap <leader>io gggq`z<esc>
-
 "Switch to current dir
 nnoremap <leader>CD :cd %:p:h<cr>
 
 "Select all and copy to + buffer
 nnoremap <leader>sa :%y +<cr>
-
-"Explore Fast
-noremap <leader>ee :Explore <cr>
 
 "Quit fast
 noremap <leader>q :qa <cr>
@@ -491,17 +437,6 @@ endif
 "Autoread a file when it has been changed
 set ar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-
-" Indent {{{
-"""""""""""""""""""""""""""""""
-set ai "Auto indent - Automatically set the indent of a new line
-set si "Smart indent
-
-" "C-style indenting
-" set cindent
-"Wrap lines
-"set wrap
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Grep {{{
 """"""""""""""""""""""""""""""""""""""
@@ -831,9 +766,6 @@ call pathogen#infect()
 "Invisible character colors
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
-
-set guioptions-=m " turn off menu bar
-set guioptions-=T " turn off toolbar
 
 " strip all trailing whitespace in the current file
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
