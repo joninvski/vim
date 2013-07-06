@@ -53,7 +53,7 @@ set listchars=tab:▸\ ,eol:¬
 "Sets how many lines of history VIM to remember
 set history=500
 
-"Enable filetype plugin. Required for latex.
+"Enable filetype plugin. Required for lots of plugins
 filetype indent on
 filetype plugin on
 
@@ -611,34 +611,10 @@ let g:gundo_preview_statusline = "Gundo Preview"
 
 " Latex related {{{
 """"""""""""""""""""""""""""""""""""""
-"Ignore some warnings
-let g:Tex_IgnoredWarnings="Font""\n"
-
 "Shortcut to Begin{itemize}
 map <leader>bi o\begin{itemize}<Esc>
 "shortcut to End {itemize}
 map <leader>ei o\end{itemize}<Esc>
-
-" Create PDFs
-let g:Tex_DefaultTargetFormat = "pdf"
-
-let g:Tex_ViewerCwindowHeight = 6
-
-" View pdfs
-let g:Tex_ViewRule_pdf = "xpdf"
-
-" Make it possible to write the é á ã (change the keys for the commands
-" mapped to these keys)
-" imap <buffer> <silent> <M-C> <Plug>Tex_MathCal
-" imap <buffer> <silent> <M-B> <Plug>Tex_MathBF
-" imap <buffer> <silent> <M-A>  <Plug>Tex_InsertItem
-" inoremap <buffer> <silent> \c \cite{
-" map <buffer> <silent> é é
-" map <buffer> <silent> á á
-" map <buffer> <silent> ã ã
-
-"Use \ll to create the pdf
-"Use \lv to see the pdf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " NERD Tree Explorer{{{
@@ -810,7 +786,6 @@ fun! SetupVAM()
               \   "bundler%3207",
               \   "ctrlp",
               \   "commentary",
-              \   "Conque_Shell",
               \   "Dart",
               \   "delimitMate",
               \   "DoxygenToolkit",
@@ -821,7 +796,6 @@ fun! SetupVAM()
               \   "Gundo",
               \   "html5",
               \   "hybrid",
-              \   "Indent_Guides",
               \   "javascript%1747",
               \   "lua%4344",
               \   "markdown@tpope",
@@ -831,7 +805,6 @@ fun! SetupVAM()
               \   "ragtag",
               \   "repeat",
               \   "rfc5424",
-              \   "github:joninvski/simplelatex",
               \   "github:szw/vim-smartclose",
               \   "showmarks",
               \   "Solarized",
@@ -844,7 +817,6 @@ fun! SetupVAM()
               \   "The_NERD_tree",
               \   "UltiSnips",
               \   "vim-addon-mw-utils",
-              \   "vimlatex",
               \   "github:joninvski/vim-scala",
               \   "YankRing"
               \], {'auto_install' : 1})
@@ -875,8 +847,6 @@ nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
 "Whenever i forget to use sudo vim... Now just write with 'w!!'
 cmap w!! w !sudo tee >/dev/null %
-
-nmap <leader>stack :ConqueTermVSplit python /home/jtrindade/.vim/stackoverflow_cli_search.py
 
 " ControlP related
 let g:ctrlp_map = '<leader>o'
