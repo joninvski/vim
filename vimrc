@@ -99,51 +99,6 @@ map <F9> mzggVGg?'z
 set pastetoggle=<F12>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" Colors and Fonts{{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Enable syntax hl
-syntax enable
-
-"By far my favourite in the old days
-"color desert
-
-"Trying something new
-colorscheme xoria256
-
-" Other good options
-"color molokai
-"color hemisu
-"color badwolf
-"color nazca
-
-
-"Font type and size
-"set guifont=Terminus\ 8
-set guifont=Monospace\ 8
-
-"set Pattern matching highlight
-hi MatchParen guifg=#000000 guibg=#D0D090
-
-if has("gui_running")
-    set guioptions=a
-    set guioptions-=m " turn off menu bar
-    set guioptions-=T " turn off toolbar
-    set guicursor=a:blinkon0
-endif
-
-"Highlight current line
-set cursorline
-if has("gui_running")
-    set cursorline
-    hi cursorline guibg=black
-endif
-
-"Highlight spaces at the end of lines TODO - Not working
-let c_space_errors=1
-highlight WhitespaceEOL ctermbg=red guibg=red
-match WhitespaceEOL /\s\+$/
-"""""""""""""""""""""""""""""""""""""""""""}}}
-
 " FileTypes{{{1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -746,6 +701,9 @@ fun! SetupVAM()
               \   "UltiSnips",
               \   "vim-addon-mw-utils",
               \   "github:joninvski/vim-scala",
+              \   "xoria256",
+              \   "Xoria256m",
+              \   "JellyX",
               \   "YankRing"
               \], {'auto_install' : 1})
 endfun
@@ -753,6 +711,54 @@ endfun
 call SetupVAM()
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
+"
+"
+" Colors and Fonts{{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Enable syntax hl
+syntax enable
+
+"By far my favourite in the old days
+"color desert
+
+"Trying something new
+colorscheme xoria256m
+
+" Other good options
+"color xoria256
+"color molokai
+"color hemisu
+"color badwolf
+"color nazca
+"color jellyx
+
+"Font type and size
+"set guifont=Terminus\ 8
+set guifont=Monospace\ 8
+
+"set Pattern matching highlight
+hi MatchParen guifg=#000000 guibg=#D0D090
+
+if has("gui_running")
+    set guioptions=a
+    set guioptions-=m " turn off menu bar
+    set guioptions-=T " turn off toolbar
+    set guicursor=a:blinkon0
+endif
+
+"Highlight current line
+set cursorline
+if has("gui_running")
+    set cursorline
+    hi cursorline guibg=black
+endif
+
+"Highlight spaces at the end of lines TODO - Not working
+let c_space_errors=1
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
+"""""""""""""""""""""""""""""""""""""""""""}}}
+
 
 " Experimental {{{1
 "#########################################
