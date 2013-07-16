@@ -234,7 +234,7 @@ set mat=2
 set hlsearch
 
 " Set files to ignore in searches
-set wildignore+=*/tmp/*,*.so,*.swp,*.pyc,*.class,*/doc/*,*/target/*
+set wildignore+=*/tmp/*,*.so,*.swp,*.pyc,*.class,*/target/*
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Statusline (the bar at the bottom){{{
