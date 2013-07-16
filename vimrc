@@ -764,5 +764,11 @@ let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from c
 
 
 "######################################### End of Experimental 1}}}
+
+" IndentLine plugin
+let g:indentLine_enabled = 1
+let g:indentLine_fileType = ['html']
+let g:indentLine_fileTypeExclude = ['tex']
+
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
