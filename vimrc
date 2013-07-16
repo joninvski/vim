@@ -20,6 +20,57 @@
 " but does not automatically use 256 colors by default.
 set t_Co=256
 
+" First install plugins via {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set nocompatible               " be iMproved
+filetype off                   " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required!
+Bundle 'gmarik/vundle'
+Bundle 'tpope/vim-fugitive'
+Bundle 'a.vim'
+Bundle 'xoria256.vim'
+Bundle 'Xoria256m'
+Bundle 'ack.vim'
+Bundle 'badwolf'
+Bundle 'kien/ctrlp.vim'
+Bundle 'tpope/vim-commentary'
+Bundle 'Raimondi/delimitMate'
+Bundle 'DoxygenToolkit.vim'
+Bundle 'tpope/vim-fugitive'
+Bundle 'sjl/gundo.vim'
+Bundle 'Nazca'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'tpope/vim-repeat'
+Bundle 'ervandew/supertab'
+Bundle 'tpope/vim-surround'
+Bundle 'scrooloose/syntastic'
+Bundle 'tpope/syntastic'
+Bundle 'godlygeek/tabular'
+Bundle 'joninvski/vim-scala',
+Bundle 'majutsushi/tagbar'
+Bundle 'scrooloose/nerdtree'
+Bundle 'guns/jellyx.vim'
+Bundle 'YankRing.vim'
+
+filetype plugin indent on     " required!
+"
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of
+" unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+
 
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -622,94 +673,6 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 "Use :call UltiSnips_ListSnippets() to list available snippets
 "Should be control+tab but isn't working
 """"""""""""""""""""""""""""""}}}
-
-" Vim Addon Manager (VAM) {{{
-"#########################################
-" To remove follow these steps:
-" Remove the plugin name from the call to |vam#ActivateAddons()| in your vimrc.
-" Restart Vim and remove plugin directory using >
-"   :UninstallNotLoadedAddons {pluginname}
-" or rm -fr those directories manually.
-
-" set runtimepath+=~/.vim/vim-addon-manager
-" put this line first in ~/.vimrc
-set nocompatible | filetype indent plugin on | syn on
-
-fun! EnsureVamIsOnDisk(plugin_root_dir)
-  let vam_autoload_dir = a:plugin_root_dir.'/vim-addon-manager/autoload'
-  if isdirectory(vam_autoload_dir)
-    return 1
-  else
-    if 1 == confirm("Clone VAM into ".a:plugin_root_dir."?","&Y\n&N")
-      call mkdir(a:plugin_root_dir, 'p')
-      execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '.
-                  \       shellescape(a:plugin_root_dir, 1).'/vim-addon-manager'
-      " VAM runs helptags automatically when you install or update
-      " plugins
-      exec 'helptags '.fnameescape(a:plugin_root_dir.'/vim-addon-manager/doc')
-    endif
-    return isdirectory(vam_autoload_dir)
-  endif
-endfun
-
-fun! SetupVAM()
-  " VAM install location:
-  let c = get(g:, 'vim_addon_manager', {})
-  let g:vim_addon_manager = c
-  let c.plugin_root_dir = expand('$HOME/.vim/vim-addons')
-  if !EnsureVamIsOnDisk(c.plugin_root_dir)
-    echohl ErrorMsg | echomsg "No VAM found!" | echohl NONE
-    return
-  endif
-  let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
-
-  " Tell VAM which plugins to fetch & load:
-  call vam#ActivateAddons([
-              \   "a",
-              \   "ack",
-              \   "badwolf",
-              \   "bufferlist",
-              \   "buffet",
-              \   "buftabs",
-              \   "ctrlp",
-              \   "commentary",
-              \   "delimitMate",
-              \   "DoxygenToolkit",
-              \   "fugitive",
-              \   "git-vim",
-              \   "gitv",
-              \   "grep",
-              \   "Gundo",
-              \   "html5",
-              \   "hybrid",
-              \   "javascript%1747",
-              \   "markdown@tpope",
-              \   "Nazca",
-              \   "pathogen",
-              \   "powerline",
-              \   "ragtag",
-              \   "repeat",
-              \   "rfc5424",
-              \   "showmarks",
-              \   "Solarized",
-              \   "SuperTab%1643",
-              \   "surround",
-              \   "Syntastic",
-              \   "Tabular",
-              \   "taglist-plus",
-              \   "The_NERD_tree",
-              \   "UltiSnips",
-              \   "vim-addon-mw-utils",
-              \   "github:joninvski/vim-scala",
-              \   "xoria256",
-              \   "Xoria256m",
-              \   "JellyX",
-              \   "YankRing"
-              \], {'auto_install' : 1})
-endfun
-
-call SetupVAM()
-""""""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
 "
 "
@@ -766,9 +729,6 @@ match WhitespaceEOL /\s\+$/
 " Type @h and the character u want to use for the heading: '=', '-', etc...
 let @h = "yypVr"
 
-" Not sure if I need it
-call pathogen#infect()
-
 "Invisible character colors
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
@@ -793,6 +753,7 @@ let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from c
 
 hi BufferSelected term=reverse ctermfg=white ctermbg=red cterm=bold
 hi BufferNormal term=NONE ctermfg=grey ctermbg=black cterm=NONE
+
 
 "######################################### End of Experimental 1}}}
 "-----------------------------------------------------------------------
