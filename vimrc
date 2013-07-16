@@ -35,8 +35,10 @@ Bundle 'gmarik/vundle'
 " Now for the remainging pluggins
 Bundle 'tpope/vim-fugitive'
 Bundle 'a.vim'
+Bundle 'matchit.zip'
 Bundle 'xoria256.vim'
 Bundle 'Xoria256m'
+Bundle 'Yggdroot/indentLine'
 Bundle 'ack.vim'
 Bundle 'badwolf'
 Bundle 'kien/ctrlp.vim'
@@ -773,9 +775,6 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll|jpg|png|gif|zip)$',
   \ 'link': 'syntastic_lib'}
 let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from current directory
-
-hi BufferSelected term=reverse ctermfg=white ctermbg=red cterm=bold
-hi BufferNormal term=NONE ctermfg=grey ctermbg=black cterm=NONE
 
 
 "######################################### End of Experimental 1}}}
