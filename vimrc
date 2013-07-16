@@ -58,6 +58,7 @@ Bundle 'majutsushi/tagbar'
 Bundle 'scrooloose/nerdtree'
 Bundle 'guns/jellyx.vim'
 Bundle 'YankRing.vim'
+Bundle 'altercation/vim-colors-solarized'
 
 filetype plugin indent on     " required!
 "
@@ -129,7 +130,7 @@ set encoding=utf-8
 set viminfo=!,'10,\"100,:20,%,n~/.viminfo
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 
-"Set visual bell (instead of the audible)
+"Not use visual or audio bell
 set visualbell
 """""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
@@ -674,8 +675,7 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 "Should be control+tab but isn't working
 """"""""""""""""""""""""""""""}}}
 "######################################### End of Plug-in related 1}}}
-"
-"
+
 " Colors and Fonts{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Enable syntax hl
@@ -685,7 +685,7 @@ syntax enable
 "color desert
 
 "Trying something new
-colorscheme xoria256m
+colorscheme xoria256
 
 " Other good options
 "color xoria256
@@ -695,14 +695,14 @@ colorscheme xoria256m
 "color nazca
 "color jellyx
 
-"Font type and size
-"set guifont=Terminus\ 8
-set guifont=Monospace\ 8
 
 "set Pattern matching highlight
 hi MatchParen guifg=#000000 guibg=#D0D090
 
 if has("gui_running")
+    "Font type and size
+    "set guifont=Terminus\ 8
+    set guifont=Inconsolata\ Medium\ 10
     set guioptions=a
     set guioptions-=m " turn off menu bar
     set guioptions-=T " turn off toolbar
@@ -716,12 +716,35 @@ if has("gui_running")
     hi cursorline guibg=black
 endif
 
+
+" Set colorscheme to solarized if using gui
+if has("gui_running")
+    colorscheme solarized
+
+    " Change the Solarized background to dark or light depending upon
+    " the time of day. Change the background only if it is not already
+    " set to the value we want.
+    function! SetSolarizedBackground()
+        if strftime("%H") >= 11 && strftime("%H") < 17
+            if &background != 'light'
+                set background=light
+            endif
+        else
+            if &background != 'dark'
+                set background=dark
+            endif
+        endif
+    endfunction
+
+    " Set background on launch
+    call SetSolarizedBackground()
+endif
+
 "Highlight spaces at the end of lines TODO - Not working
 let c_space_errors=1
 highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
 """""""""""""""""""""""""""""""""""""""""""}}}
-
 
 " Experimental {{{1
 "#########################################
