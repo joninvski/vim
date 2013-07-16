@@ -20,7 +20,7 @@
 " but does not automatically use 256 colors by default.
 set t_Co=256
 
-" First install plugins via {{{
+" First install plugins via Vundle {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible               " be iMproved
 filetype off                   " required!
@@ -31,6 +31,8 @@ call vundle#rc()
 " let Vundle manage Vundle
 " required!
 Bundle 'gmarik/vundle'
+
+" Now for the remainging pluggins
 Bundle 'tpope/vim-fugitive'
 Bundle 'a.vim'
 Bundle 'xoria256.vim'
@@ -69,8 +71,6 @@ filetype plugin indent on     " required!
 " see :h vundle for more details or wiki for FAQ
 " NOTE: comments after Bundle command are not allowed..
 """""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-
-
 
 " General{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
