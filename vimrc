@@ -140,7 +140,7 @@ set visualbell
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap <silent> <F2> :NERDTreeToggle<CR>
 nmap <silent> <F3> :GundoToggle<CR>
-nmap <silent> <F4> :TlistToggle<CR>
+nmap <silent> <F4> :TagbarToggle<CR>
 nmap <silent> <F5> :set invlist<CR>:set list?<CR>
 nmap <silent> <F6> :set invwrap<CR>:set wrap?<CR>
 nmap <silent> <F7> :set invhls<CR>:set hls?<CR>
@@ -586,20 +586,6 @@ let NERDTreeMapJumpFirstChild = 'gK'
 "
 let g:yankring_zap_keys = 'f F / ?'
 "
-""""""""""""""""""""""""""""""}}}
-
-" Taglist{{{
-""""""""""""""""""""""""""""""
-let Tlist_Show_Menu=0
-nnoremap <C-]> g<C-]>
-
-let Tlist_Use_Right_Window = 1
-
-set tags+=tags;/
-set showfulltag  "Show more information while completing tags
-
-"If it is a latex file
-let s:tlist_def_tex_settings = 'tex;s:section;c:chapter;l:label;r:ref'
 """"""""""""""""""""""""""""""}}}
 
 " Commentary {{{
