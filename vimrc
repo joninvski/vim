@@ -417,7 +417,7 @@ if version >= 700
     "Mark bad spelled words with red
     highlight SpellErrors gui=underline ctermfg=Red guifg=Red
 
-    setlocal spell spelllang=pt
+    setlocal spell spelllang=en
     setlocal nospell
 endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
