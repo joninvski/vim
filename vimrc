@@ -765,6 +765,12 @@ let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from c
 
 "######################################### End of Experimental 1}}}
 
+" Enable powerline fonts in vim-airline
+" Check https://github.com/Lokaltog/powerline-fonts
+" and
+" https://powerline.readthedocs.org/en/latest/fontpatching.html
+let g:airline_powerline_fonts = 1
+
 " IndentLine plugin
 let g:indentLine_enabled = 1
 let g:indentLine_fileType = ['html']
