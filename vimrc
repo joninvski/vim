@@ -776,5 +776,10 @@ let g:indentLine_enabled = 1
 let g:indentLine_fileType = ['html']
 let g:indentLine_fileTypeExclude = ['tex']
 
+" Run in another terminal 'window' with Control+C Control+C
+" Then default :,1 to select the pane one of current window
+Bundle 'jpalardy/vim-slime'
+let g:slime_target = "tmux"
+
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
