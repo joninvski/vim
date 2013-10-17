@@ -36,30 +36,35 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-fugitive'
 Bundle 'a.vim'
 Bundle 'matchit.zip'
-Bundle 'xoria256.vim'
-Bundle 'Xoria256m'
-Bundle 'Yggdroot/indentLine'
 Bundle 'ack.vim'
-Bundle 'badwolf'
 Bundle 'kien/ctrlp.vim'
 Bundle 'tpope/vim-commentary'
 Bundle 'Raimondi/delimitMate'
 Bundle 'DoxygenToolkit.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'sjl/gundo.vim'
-Bundle 'Nazca'
-Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-repeat'
 Bundle 'ervandew/supertab'
 Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/syntastic'
-Bundle 'tpope/syntastic'
 Bundle 'godlygeek/tabular'
 Bundle 'joninvski/vim-scala',
 Bundle 'majutsushi/tagbar'
 Bundle 'scrooloose/nerdtree'
-Bundle 'guns/jellyx.vim'
 Bundle 'YankRing.vim'
+
+" Displays thin vertical lines at each indentation level
+Bundle 'Yggdroot/indentLine'
+
+" New statusbar plugin
+Bundle 'bling/vim-airline'
+
+" Themes
+Bundle 'guns/jellyx.vim'
+Bundle 'xoria256.vim'
+Bundle 'Xoria256m'
+Bundle 'badwolf'
+Bundle 'Nazca'
 Bundle 'altercation/vim-colors-solarized'
 
 filetype plugin indent on     " required!
