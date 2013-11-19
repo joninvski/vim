@@ -337,7 +337,7 @@ cnoremap <C-K>    <C-U>
 " Useful shortcuts{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Indent all lines
-nnoremap <leader>ia gg=G``
+nnoremap <leader>ia mzgg=G`z
 
 "Switch to current dir
 nnoremap <leader>CD :cd %:p:h<cr>
