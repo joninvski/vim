@@ -32,7 +32,7 @@ call vundle#rc()
 " required!
 Bundle 'gmarik/vundle'
 
-" Now for the remainging pluggins
+" Now for the remainging plugins
 Bundle 'tpope/vim-fugitive'
 Bundle 'a.vim'
 Bundle 'matchit.zip'
@@ -58,6 +58,16 @@ Bundle 'Yggdroot/indentLine'
 
 " New statusbar plugin
 Bundle 'bling/vim-airline'
+
+" Helps moving in file. Just hit s + two characters. Does multiline
+Bundle 'justinmk/vim-sneak'
+
+Bundle 'Lokaltog/vim-easymotion'
+let g:EasyMotion_leader_key = ',,'
+let g:EasyMotion_mapping_f = ',f'
+let g:EasyMotion_mapping_F = ',F'
+let g:EasyMotion_mapping_w = ',w'
+let g:EasyMotion_mapping_b = ',b'
 
 " Themes
 Bundle 'guns/jellyx.vim'
