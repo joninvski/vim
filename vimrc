@@ -403,25 +403,25 @@ au FileType py,python set foldmethod=indent
 if version >= 700
 
     "Portuguese dictionary
-    map <leader>lpt <Esc>:setlocal spell spelllang=pt<CR>
+    map <leader>kpt <Esc>:setlocal spell spelllang=pt<CR>
 
     "English dictionary
-    map <leader>len <Esc>:setlocal spell spelllang=en_gb<CR>
+    map <leader>ken <Esc>:setlocal spell spelllang=en_gb<CR>
 
     " toggle spelling with <leader>lon
-    map <leader>lon :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
+    map <leader>kon :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
 
     "Turn off spelling
-    map <leader>loff :setlocal nospell<CR>
+    map <leader>koff :setlocal nospell<CR>
 
     "Goto the next word with an error
-    map <leader>ln <Esc>]s
+    map <leader>kn <Esc>]s
 
     "Correct the work under the cursor
-    map <leader>lm <Esc>z=
+    map <leader>km <Esc>z=
 
     "Add the current word to the dictionary
-    map <leader>la <Esc>zg
+    map <leader>ka <Esc>zg
 
     " limit it to just the top 10 items
     set sps=best,10
