@@ -16,6 +16,6 @@ spell:
 	@echo "############################################################"
 	@echo "Creating pt spell file. This may take a few minutes!"
 	cd hunspell_temp/hunspell*; vim -c "silent mkspell! pt pt_PT" -c q >&- 2>&-
-	mv hunspell_temp/hunspell-pt_PT-20130622/pt.utf-8.spl spell/pt.utf-8.spl
+	mv hunspell_temp/hunspell-*/pt.utf-8.spl spell/pt.utf-8.spl
 	rm -rf hunspell_temp hunspell-pt_PT-latest.tar.gz
 	echo "Finished creating the spell file"
