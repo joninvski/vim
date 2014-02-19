@@ -326,14 +326,13 @@ iab wich which
 
 " Better Completion
 set complete=.,w,b,u,t
-set completeopt=longest,menuone,preview
+set completeopt=longest,menuone
 
 "" supertab
 let g:SuperTabCrMapping = 0
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
 let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
 let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Command-line config{{{
@@ -779,6 +778,11 @@ let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from c
 
 
 "######################################### End of Experimental 1}}}
+"
+
+Bundle 'mattn/webapi-vim'
+Bundle 'mattn/gist-vim'
+
 
 " Enable powerline fonts in vim-airline
 " Check https://github.com/Lokaltog/powerline-fonts
@@ -787,7 +791,7 @@ let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from c
 let g:airline_powerline_fonts = 1
 
 " IndentLine plugin
-let g:indentLine_enabled = 1
+let g:indentLine_enabled = 1  " 1 does not enable the plugin by default
 let g:indentLine_fileType = ['html']
 let g:indentLine_fileTypeExclude = ['tex']
 
