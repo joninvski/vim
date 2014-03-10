@@ -56,6 +56,10 @@ Bundle 'YankRing.vim'
 " Displays thin vertical lines at each indentation level
 Bundle 'Yggdroot/indentLine'
 
+" Support gist interaction
+Bundle 'mattn/gist-vim'
+Bundle 'mattn/webapi-vim'
+
 " New statusbar plugin
 Bundle 'bling/vim-airline'
 
@@ -130,6 +134,12 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 
 "Fast editing of .vimrc
 map <leader>e :e! ~/.vimrc<cr>
+
+" strip all trailing whitespace in the current file
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+"Whenever i forget to use sudo vim... Now just write with 'w!!'
+cmap w!! w !sudo tee >/dev/null %
 
 " Nice window title
 if has('title') && (has('gui_running') || &title)
@@ -326,14 +336,13 @@ iab wich which
 
 " Better Completion
 set complete=.,w,b,u,t
-set completeopt=longest,menuone,preview
+set completeopt=longest,menuone
 
 "" supertab
 let g:SuperTabCrMapping = 0
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
 let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
 let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 " Command-line config{{{
@@ -677,10 +686,46 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 "Use :call UltiSnips_ListSnippets() to list available snippets
 "Should be control+tab but isn't working
 """"""""""""""""""""""""""""""}}}
+
+" For gist (usefull move to stable)
+" Gist{{{
+""""""""""""""""""""""""""""""
+" Requires first time authentication
+" Github username should be stored in gitconfig
+" Just select code and do :gist
+"
+"   :Gist -l  - showl all my public gists
+"   :Gist XXXX - Gets gits XXXX
+""""""""""""""""""""""""""""""}}}
+
+" Run lines in another terminal
+" Slime{{{
+""""""""""""""""""""""""""""""
+" Run in another terminal 'window' with Control+C Control+C
+" Then default :,1 to select the pane one of current window
+" Bundle 'jpalardy/vim-slime'
+let g:slime_target = "tmux"
+""""""""""""""""""""""""""""""}}}
+
+" Marks indentation, makes it easier to read xml (slow as hell)
+" Yggdroot/indentLine{{{
+" Use IdentLinesToggle to show/hide
+let g:indentLine_enabled = 1  " 1 does not enable the plugin by default
+let g:indentLine_fileType = ['html', 'xml'] " Automatically start the plugin for these files
+let g:indentLine_fileTypeExclude = ['tex']
+""""""""""""""""""""""""""""""}}}
+
+" Enable powerline fonts in vim-airline
+" vim-airline{{{
+" Check https://github.com/Lokaltog/powerline-fonts
+" and
+" https://powerline.readthedocs.org/en/latest/fontpatching.html
+let g:airline_powerline_fonts = 1
+""""""""""""""""""""""""""""""}}}
+
 "######################################### End of Plug-in related 1}}}
 
-" Colors and Fonts{{{
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Colors and Fonts{{{ """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Enable syntax hl
 syntax enable
 
@@ -751,24 +796,15 @@ match WhitespaceEOL /\s\+$/
 
 " Experimental {{{1
 "#########################################
-" Seen in http://www.programmerq.net/rsttricks.html"
-" Type @h and the character u want to use for the heading: '=', '-', etc...
-let @h = "yypVr"
 
 "Invisible character colors
 highlight NonText guifg=#4a4a59
 highlight SpecialKey guifg=#4a4a59
 
-" strip all trailing whitespace in the current file
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
-
-"Whenever i forget to use sudo vim... Now just write with 'w!!'
-cmap w!! w !sudo tee >/dev/null %
-
 " ControlP related
 let g:ctrlp_map = '<leader>o'
 nnoremap <leader>p :CtrlPTag<cr>
-let g:ctrlp_extensions = ['tag']
+let g:ctrlp_extensions = ['tag'] " TODO - What does this option do
 
 let g:ctrlp_by_filename = 1 " Set to 1 to search by filename (as opposed to full path) Change with Control-D
 let g:ctrlp_custom_ignore = {
@@ -777,24 +813,13 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'syntastic_lib'}
 let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from current directory
 
-
+" Java complete for android
+Bundle 'javacomplete'
+if has("autocmd")
+  autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+  setlocal completefunc=javacomplete#CompleteParamsInfo
+endif
 "######################################### End of Experimental 1}}}
-
-" Enable powerline fonts in vim-airline
-" Check https://github.com/Lokaltog/powerline-fonts
-" and
-" https://powerline.readthedocs.org/en/latest/fontpatching.html
-let g:airline_powerline_fonts = 1
-
-" IndentLine plugin
-let g:indentLine_enabled = 1
-let g:indentLine_fileType = ['html']
-let g:indentLine_fileTypeExclude = ['tex']
-
-" Run in another terminal 'window' with Control+C Control+C
-" Then default :,1 to select the pane one of current window
-Bundle 'jpalardy/vim-slime'
-let g:slime_target = "tmux"
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
