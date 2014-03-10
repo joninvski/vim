@@ -469,7 +469,7 @@ set ar
 " program to always generate a file-name.
 set grepprg=grep\ -inH\ $*
 let Grep_Skip_Dirs = 'CVS .svn .git build'
-let Grep_Skip_Files = '*.bak *~ *tags *TAGS *.orig syntastic_lib/*'
+let Grep_Skip_Files = '*.bak *~ *tags *TAGS *.orig */build/* syntastic_lib/*'
 map <C-f> :Rgrep<CR>
 au FileType qf nmap <buffer> <cr> <cr><c-w><c-p>
 
@@ -772,7 +772,7 @@ let g:ctrlp_extensions = ['tag']
 
 let g:ctrlp_by_filename = 1 " Set to 1 to search by filename (as opposed to full path) Change with Control-D
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn|doc)$',
+  \ 'dir':  '\v[\/]\.(git|hg|svn|doc)|build$',
   \ 'file': '\v\.(exe|so|dll|jpg|png|gif|zip)$',
   \ 'link': 'syntastic_lib'}
 let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from current directory
