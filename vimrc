@@ -481,7 +481,7 @@ set ar
 " program to always generate a file-name.
 set grepprg=grep\ -inH\ $*
 let Grep_Skip_Dirs = 'CVS .svn .git build'
-let Grep_Skip_Files = '*.bak *~ *tags *TAGS *.orig syntastic_lib/*'
+let Grep_Skip_Files = '*.bak *~ *tags *TAGS *.orig */build/* syntastic_lib/*'
 map <C-f> :Rgrep<CR>
 au FileType qf nmap <buffer> <cr> <cr><c-w><c-p>
 
