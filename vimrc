@@ -73,6 +73,9 @@ let g:EasyMotion_mapping_F = ',F'
 let g:EasyMotion_mapping_w = ',w'
 let g:EasyMotion_mapping_b = ',b'
 
+" Creates a buffer to be used as Scratch
+Bundle 'mtth/scratch.vim'
+
 " Themes
 Bundle 'guns/jellyx.vim'
 Bundle 'xoria256.vim'
@@ -567,6 +570,12 @@ nnoremap <leader>gitl :Shell git gl -18<cr>:wincmd \|<cr>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
+" Scratch {{{
+""""""""""""""""""""""""""""""
+" :Scratch
+g:scratch_autohide = 1
+""""""""""""""""""""""""""""""
+
 " Gundo{{{
 """"""""""""""""""""""""""""""
 let g:gundo_debug = 1
@@ -808,7 +817,7 @@ let g:ctrlp_extensions = ['tag'] " TODO - What does this option do
 
 let g:ctrlp_by_filename = 1 " Set to 1 to search by filename (as opposed to full path) Change with Control-D
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn|doc)$',
+  \ 'dir':  '\v[\/]\.(git|hg|svn|doc)|build$',
   \ 'file': '\v\.(exe|so|dll|jpg|png|gif|zip)$',
   \ 'link': 'syntastic_lib'}
 let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from current directory
@@ -817,9 +826,14 @@ let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from c
 Bundle 'javacomplete'
 if has("autocmd")
   autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-  setlocal completefunc=javacomplete#CompleteParamsInfo
 endif
+
 "######################################### End of Experimental 1}}}
+
+Bundle 'JavaImp.vim--Lee'
+let g:JavaImpPaths = "EnergyTimes/src/main/java,/home/workspace/android/sdk/platforms/android-19/android.jar"
+ let g:JavaImpDocPaths = "/home/workspace/setup_my_new_computer/android/android-sdk-linux/docs/reference"
+
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
