@@ -573,7 +573,7 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " Scratch {{{
 """"""""""""""""""""""""""""""
 " :Scratch
-g:scratch_autohide = 1
+let g:scratch_autohide = 1
 """"""""""""""""""""""""""""""
 
 " Gundo{{{
