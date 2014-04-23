@@ -378,9 +378,12 @@ map <leader>tag :!etags -R --exclude=syntastic_lib --c++-kinds=+p --fields=+iaS 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "In Insert mode: Use the appropriate number of spaces to insert a <Tab>
 set expandtab           " When expandtab is set, hitting Tab in insert mode will produce the appropriate number of spaces.
-set shiftwidth=4        " Set shiftwidth to control how many columns text is indented with the reindent operations (<< and >>) and automatic C-style indentation.
+set shiftwidth=4        " Set shiftwidth to control how many columns text is indented with the reindent operations and
+                        " automatic C-style indentation.
 set tabstop=4           " Set tabstop to tell vim how many columns a tab counts for.
-set softtabstop=4       " Set softtabstop to control how many columns vim uses when you hit Tab in insert mode. If softtabstop equals tabstop and expandtab is not set, vim will use tabs. When expandtab is set, vim will always use the appropriate number of spaces.
+set softtabstop=4       " Set softtabstop to control how many columns vim uses when you hit Tab in insert mode. If
+                        " softtabstop equals tabstop and expandtab is not set, vim will use tabs.
+                        " When expandtab is set, vim will always use the appropriate number of spaces.
 
 " A <Tab> in front of a line inserts blanks according to 'shiftwidth'.
 set smarttab
@@ -400,10 +403,13 @@ au FileType py,python set foldmethod=indent
 
 "Keys
 "  * za toggles current fold on/off
-"  * zf create the fold, useful for manual and marker methods. Select any piece of text, [press v or shift-v, then use arrow keys], and then press zf. It will place the markers around the fold for you in marker mode; in case of manual, it will store fold location in memory. Remember f by saying this command "forms" the fold, or just remember fold :-)
+"  * zf create the fold, useful for manual and marker methods. Select any piece of text, [press v or shift-v, then use
+" arrow keys], and then press zf. It will place the markers around the fold for you in marker mode; in case of manual,
+" it will store fold location in memory. Remember f by saying this command "forms" the fold, or just remember fold :-)
 "  * zc close the fold at the cursor.
 "  * zo open the fold at the cursor.
-"  * zr  increment the fold level by one, so if all classes are folded, they will opened, but function definitions will be kept folded.
+"  * zr  increment the fold level by one, so if all classes are folded, they will opened, but function definitions will
+" be kept folded.
 "  * zm reverse of the above, if one or more function folds are open, they will be closed, but classes will be kept open.
 "  * zR open all folds.
 "  * zM close all folds.
@@ -573,7 +579,7 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " Scratch {{{
 """"""""""""""""""""""""""""""
 " :Scratch
-g:scratch_autohide = 1
+let g:scratch_autohide = 1
 """"""""""""""""""""""""""""""
 
 " Gundo{{{
@@ -826,13 +832,35 @@ let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from c
 Bundle 'javacomplete'
 if has("autocmd")
   autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+  let g:java_classpath="/home/workspace/setup_my_new_computer/android/android-sdk-linux/platforms/android-19/android.jar"
 endif
 
 "######################################### End of Experimental 1}}}
 
 Bundle 'JavaImp.vim--Lee'
 let g:JavaImpPaths = "EnergyTimes/src/main/java,/home/workspace/android/sdk/platforms/android-19/android.jar"
- let g:JavaImpDocPaths = "/home/workspace/setup_my_new_computer/android/android-sdk-linux/docs/reference"
+let g:JavaImpDocPaths = "/home/workspace/setup_my_new_computer/android/android-sdk-linux/docs/reference"
+
+" set cc=120
+hi ColorColumn ctermbg=lightblue guibg=lightblue
+
+" Protect large files from sourcing and other overhead.
+" Files become read only
+if !exists("my_auto_commands_loaded")
+  let my_auto_commands_loaded = 1
+  " Large files are > 10M
+  " Set options:
+  " eventignore+=FileType (no syntax highlighting etc
+  " assumes FileType always on)
+  " noswapfile (save copy of file)
+  " bufhidden=unload (save memory when other file is viewed)
+  " buftype=nowritefile (is read-only)
+  " undolevels=-1 (no undo possible)
+  let g:LargeFile = 1024 * 1024 * 10
+  augroup LargeFile
+    autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
+    augroup END
+  endif
 
 
 "-----------------------------------------------------------------------
