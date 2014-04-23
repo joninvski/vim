@@ -833,14 +833,9 @@ let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from c
 Bundle 'javacomplete'
 if has("autocmd")
   autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-  let g:java_classpath="/home/workspace/setup_my_new_computer/android/android-sdk-linux/platforms/android-19/android.jar"
 endif
 
 "######################################### End of Experimental 1}}}
-
-Bundle 'JavaImp.vim--Lee'
-let g:JavaImpPaths = "EnergyTimes/src/main/java,/home/workspace/android/sdk/platforms/android-19/android.jar"
-let g:JavaImpDocPaths = "/home/workspace/setup_my_new_computer/android/android-sdk-linux/docs/reference"
 
 " set cc=120
 hi ColorColumn ctermbg=lightblue guibg=lightblue
@@ -863,6 +858,11 @@ if !exists("my_auto_commands_loaded")
     augroup END
   endif
 
+Bundle 'JavaImp.vim--Lee'
+let g:JavaImpPaths = $CLASSPATH
+
+" For external indent format (usefull for java)
+Bundle "Chiel92/vim-autoformat"
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
