@@ -463,9 +463,10 @@ silent execute '!mkdir -p ' . s:localscriptsdir . '/tmp/{backup,view,tmp,undo}'
 
 " hide buffers when not displayed
 set hidden
-set backup                            " Enable creation of backup file.
+" set backup                            " Enable creation of backup file.
+set nowritebackup
 set noswapfile                        " No need for a swap file
-set backupdir=$HOME/.vim/tmp/backup// " Where backups will go.
+" set backupdir=$HOME/.vim/tmp/backup// " Where backups will go.
 set directory=$HOME/.vim/tmp//        " Where temporary files will go.
 set viewdir=$HOME/.vim/tmp/view//
 
