@@ -831,8 +831,10 @@ endif
 "######################################### End of Experimental 1}}}
 
 Bundle 'JavaImp.vim--Lee'
-let g:JavaImpPaths = "EnergyTimes/src/main/java,/home/workspace/android/sdk/platforms/android-19/android.jar"
- let g:JavaImpDocPaths = "/home/workspace/setup_my_new_computer/android/android-sdk-linux/docs/reference"
+let g:JavaImpPaths = $CLASSPATH
+
+" For external indent format (usefull for java)
+Bundle "Chiel92/vim-autoformat"
 
 
 "-----------------------------------------------------------------------
