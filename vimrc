@@ -36,7 +36,7 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-fugitive'
 Bundle 'a.vim'
 Bundle 'matchit.zip'
-Bundle 'ack.vim'
+Bundle 'mileszs/ack.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'tpope/vim-commentary'
 Bundle 'Raimondi/delimitMate'
@@ -51,6 +51,7 @@ Bundle 'joninvski/vim-scala',
 Bundle 'majutsushi/tagbar'
 Bundle 'scrooloose/nerdtree'
 Bundle 'YankRing.vim'
+Bundle 'elzr/vim-json'
 
 " Displays thin vertical lines at each indentation level
 Bundle 'Yggdroot/indentLine'
@@ -156,7 +157,7 @@ endif
 set encoding=utf-8
 
 "restore your cursor position in a file over several editing sessions.
-set viminfo=!,'10,\"100,:20,%,n~/.viminfo
+set viminfo=!,'10,\"100,:20,n~/.viminfo
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 
 "Not use visual or audio bell
@@ -601,7 +602,9 @@ map <leader>ei o\end{itemize}<Esc>
 " NERD Tree Explorer{{{
 """"""""""""""""""""""""""""""
 " Lets ignore some file from showing in the NERDTree
-let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$']
+let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$', 'build$[[dir]]', '.class$', '.jar$', '.o$', '.pid$']
+
+let NERDTreeWinSize=54
 
 "The_NERD_tree
 augroup ps_nerdtree
@@ -611,7 +614,6 @@ augroup ps_nerdtree
 augroup END
 
 let NERDTreeHighlightCursorline = 1
-let NERDTreeIgnore = ['.vim$', '\~$', '.*\.pyc$', '.*.pid', '.*\.o$']
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let NERDChristmasTree = 1
@@ -736,6 +738,18 @@ let g:indentLine_fileTypeExclude = ['tex']
 " and
 " https://powerline.readthedocs.org/en/latest/fontpatching.html
 let g:airline_powerline_fonts = 1
+
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+"
+" " Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+" Only show line when 3 buffers or tabs are openend
+let g:airline#extensions#tabline#tab_min_count = 3
+let g:airline#extensions#tabline#buffer_min_count = 3
+
+
 """"""""""""""""""""""""""""""}}}
 
 "######################################### End of Plug-in related 1}}}
@@ -821,7 +835,7 @@ let g:ctrlp_map = '<leader>o'
 nnoremap <leader>p :CtrlPTag<cr>
 let g:ctrlp_extensions = ['tag'] " TODO - What does this option do
 
-let g:ctrlp_by_filename = 1 " Set to 1 to search by filename (as opposed to full path) Change with Control-D
+let g:ctrlp_by_filename = 0 " Set to 1 to search by filename (as opposed to full path) Change with Control-D
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn|doc)|build$',
   \ 'file': '\v\.(exe|so|dll|jpg|png|gif|zip)$',
@@ -859,9 +873,11 @@ if !exists("my_auto_commands_loaded")
 
 Bundle 'JavaImp.vim--Lee'
 let g:JavaImpPaths = $CLASSPATH
+let g:JavaImpPathSep = ':'
 
 " For external indent format (usefull for java)
 Bundle "Chiel92/vim-autoformat"
+
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
