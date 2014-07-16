@@ -874,10 +874,10 @@ if !exists("my_auto_commands_loaded")
 Bundle 'JavaImp.vim--Lee'
 let g:JavaImpPaths = $CLASSPATH
 let g:JavaImpPathSep = ':'
+let g:JavaImpSortPkgSep = 1
 
 " For external indent format (usefull for java)
 Bundle "Chiel92/vim-autoformat"
-
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
