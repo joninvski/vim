@@ -43,7 +43,6 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'DoxygenToolkit.vim'
 Bundle 'sjl/gundo.vim'
 Bundle 'tpope/vim-repeat'
-Bundle 'ervandew/supertab'
 Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/syntastic'
 Bundle 'godlygeek/tabular'
@@ -75,6 +74,9 @@ let g:EasyMotion_mapping_b = ',b'
 
 " Creates a buffer to be used as Scratch
 Bundle 'mtth/scratch.vim'
+
+" Treat build.gradle files as groovy files
+Bundle 'tfnico/vim-gradle'
 
 " Themes
 Bundle 'guns/jellyx.vim'
@@ -341,13 +343,6 @@ iab wich which
 set complete=.,w,b,u,t
 set completeopt=longest,menuone
 
-"" supertab
-let g:SuperTabCrMapping = 0
-let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
-let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
-let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-
 " Command-line config{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Bash like
@@ -358,10 +353,6 @@ cnoremap <C-K>    <C-U>
 
 " Useful shortcuts{{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Indent all lines
-nnoremap <leader>ia mzgg=G`z
-
-"Switch to current dir
 nnoremap <leader>CD :cd %:p:h<cr>
 
 "Select all and copy to + buffer
@@ -463,7 +454,7 @@ silent execute '!mkdir -p ' . s:localscriptsdir . '/tmp/{backup,view,tmp,undo}'
 
 " hide buffers when not displayed
 set hidden
-" set backup                            " Enable creation of backup file.
+set nobackup                            " Enable creation of backup file.
 set nowritebackup
 set noswapfile                        " No need for a swap file
 " set backupdir=$HOME/.vim/tmp/backup// " Where backups will go.
@@ -496,10 +487,6 @@ au FileType qf nmap <buffer> <cr> <cr><c-w><c-p>
 "  In visual mode when you press * or # to search for the current selection
 vnoremap <silent> * :call VisualSearch('f')<CR>
 vnoremap <silent> # :call VisualSearch('b')<CR>
-
-" When you press gv you vimgrep after the selected text
-vnoremap <leader>g :call VisualSearch('gv')<CR>
-map <leader>f :vimgrep // **/*<left><left><left><left><left><left>
 
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
@@ -604,8 +591,6 @@ map <leader>ei o\end{itemize}<Esc>
 " Lets ignore some file from showing in the NERDTree
 let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$', 'build$[[dir]]', '.class$', '.jar$', '.o$', '.pid$']
 
-let NERDTreeWinSize=54
-
 "The_NERD_tree
 augroup ps_nerdtree
     au!
@@ -619,6 +604,8 @@ let NERDTreeDirArrows = 1
 let NERDChristmasTree = 1
 let NERDTreeChDirMode = 2
 let NERDTreeMapJumpFirstChild = 'gK'
+let NERDTreeWinSize = 50
+
 """"""""""""""""""""""""""""""}}}
 
 " Yankring {{{
@@ -832,15 +819,14 @@ highlight SpecialKey guifg=#4a4a59
 
 " ControlP related
 let g:ctrlp_map = '<leader>o'
-nnoremap <leader>p :CtrlPTag<cr>
-let g:ctrlp_extensions = ['tag'] " TODO - What does this option do
+let g:ctrlp_extensions = ['tag']        " TODO - What does this option do
 
-let g:ctrlp_by_filename = 0 " Set to 1 to search by filename (as opposed to full path) Change with Control-D
+let g:ctrlp_by_filename = 0             " Set to 0 to search by path and filename (full path) Change with Control-D
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn|doc)|build$',
-  \ 'file': '\v\.(exe|so|dll|jpg|png|gif|zip)$',
+  \ 'file': '\v\.(exe|so|dll|jpg|png|gif|zip|o|aux|class)$',
   \ 'link': 'syntastic_lib'}
-let g:ctrlp_working_path_mode = '0'     "Disable because i like to search from current directory
+let g:ctrlp_working_path_mode = '0'     " Disable because i like to search from current directory
 
 " Java complete for android
 Bundle 'javacomplete'
@@ -878,6 +864,19 @@ let g:JavaImpSortPkgSep = 1
 
 " For external indent format (usefull for java)
 Bundle "Chiel92/vim-autoformat"
+"Indent all lines
+let g:formatprg_java = "astyle"
+let g:formatprg_args_java = "--style=java"
+nnoremap <leader>ia :Autoformat<CR><CR>
+
+Bundle 'flazz/vim-colorschemes'
+
+Bundle 'vim-scripts/groovyindent'
+
+" Todo automatically add snippets per filetype
+Bundle 'SirVer/ultisnips'
+Bundle 'honza/vim-snippets'
+Bundle 'jaxbot/vim-java-get-set'
 
 "-----------------------------------------------------------------------
-" vim: set shiftwidth=4 softtabstop=4 expandtab tw=72                  :
+" vim: set shiftwidth=4 softtabstop=4 expandtab tw=120                  :
