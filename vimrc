@@ -23,71 +23,86 @@ set t_Co=256
 " First install plugins via Vundle {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible               " be iMproved
-filetype off                   " required!
+filetype off                   " required! to be before bundle 
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " let Vundle manage Vundle
 " required!
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
+
+"""" IMPORTANT All Plugin commands should remain in a single block
+" with filetype off preceding and succeeding
 
 " Now for the remainging plugins
-Bundle 'tpope/vim-fugitive'
-Bundle 'a.vim'
-Bundle 'matchit.zip'
-Bundle 'mileszs/ack.vim'
-Bundle 'kien/ctrlp.vim'
-Bundle 'tpope/vim-commentary'
-Bundle 'Raimondi/delimitMate'
-Bundle 'DoxygenToolkit.vim'
-Bundle 'sjl/gundo.vim'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-surround'
-Bundle 'scrooloose/syntastic'
-Bundle 'godlygeek/tabular'
-Bundle 'joninvski/vim-scala',
-Bundle 'majutsushi/tagbar'
-Bundle 'scrooloose/nerdtree'
-Bundle 'YankRing.vim'
-Bundle 'elzr/vim-json'
+Plugin 'tpope/vim-fugitive'
+Plugin 'a.vim'
+Plugin 'matchit.zip'
+Plugin 'mileszs/ack.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tpope/vim-commentary'
+Plugin 'Raimondi/delimitMate'
+Plugin 'DoxygenToolkit.vim'
+Plugin 'sjl/gundo.vim'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-surround'
+Plugin 'scrooloose/syntastic'
+Plugin 'godlygeek/tabular'
+Plugin 'joninvski/vim-scala',
+Plugin 'majutsushi/tagbar'
+Plugin 'scrooloose/nerdtree'
+Plugin 'YankRing.vim'
+Plugin 'elzr/vim-json'
 
 " Displays thin vertical lines at each indentation level
-Bundle 'Yggdroot/indentLine'
+Plugin 'Yggdroot/indentLine'
 
 " Support gist interaction
-Bundle 'mattn/gist-vim'
-Bundle 'mattn/webapi-vim'
+Plugin 'mattn/gist-vim'
+Plugin 'mattn/webapi-vim'
 
 " New statusbar plugin
-Bundle 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 
 " Helps moving in file. Just hit s + two characters. Does multiline
-Bundle 'justinmk/vim-sneak'
+Plugin 'justinmk/vim-sneak'
 
-Bundle 'Lokaltog/vim-easymotion'
-let g:EasyMotion_leader_key = ',,'
-let g:EasyMotion_mapping_f = ',f'
-let g:EasyMotion_mapping_F = ',F'
-let g:EasyMotion_mapping_w = ',w'
-let g:EasyMotion_mapping_b = ',b'
+Plugin 'Lokaltog/vim-easymotion'
+
 
 " Creates a buffer to be used as Scratch
-Bundle 'mtth/scratch.vim'
+Plugin 'mtth/scratch.vim'
 
 " Treat build.gradle files as groovy files
-Bundle 'tfnico/vim-gradle'
+Plugin 'tfnico/vim-gradle'
 
 " Themes
-Bundle 'guns/jellyx.vim'
-Bundle 'xoria256.vim'
-Bundle 'Xoria256m'
-Bundle 'badwolf'
-Bundle 'Nazca'
-Bundle 'altercation/vim-colors-solarized'
+Plugin 'guns/jellyx.vim'
+Plugin 'xoria256.vim'
+Plugin 'Xoria256m'
+Plugin 'badwolf'
+Plugin 'Nazca'
+Plugin 'altercation/vim-colors-solarized'
 
-filetype plugin indent on     " required!
-"
+Plugin 'javacomplete'
+Plugin 'JavaImp.vim--Lee'
+
+Plugin 'Chiel92/vim-autoformat'
+
+Plugin 'flazz/vim-colorschemes'
+
+Plugin 'vim-scripts/groovyindent'
+
+" Todo automatically add snippets per filetype
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'jaxbot/vim-java-get-set'
+
+Plugin 'ervandew/supertab'
+
+filetype plugin indent on     " required! to be after the Plugin block
+
 " Brief help
 " :BundleList          - list configured bundles
 " :BundleInstall(!)    - install(update) bundles
@@ -118,8 +133,8 @@ set ai
 set si
 
 "Enable filetype plugin. Required for lots of plugins
-filetype indent on
-filetype plugin on
+" filetype indent on
+" filetype plugin on
 
 "Set to auto read when a file is changed from the outside
 set autoread
@@ -338,9 +353,8 @@ iab wich which
 
 " AutoComplete and omni completion{{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " Better Completion
-set complete=.,w,b,u,t
+set complete=.,w,b,u,U,t,i
 set completeopt=longest,menuone
 
 " Command-line config{{{
@@ -689,6 +703,11 @@ let g:syntastic_cpp_include_dirs = [ 'syntastic_lib', 'includes', 'headers', 'in
 """"""""""""""""""""""""""""""
 "Use :call UltiSnips_ListSnippets() to list available snippets
 "Should be control+tab but isn't working
+let g:UltiSnipsExpandTrigger = '<C-j>'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsListSnippets = "<leader><tab>"
 """"""""""""""""""""""""""""""}}}
 
 " For gist (usefull move to stable)
@@ -829,11 +848,9 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_working_path_mode = '0'     " Disable because i like to search from current directory
 
 " Java complete for android
-Bundle 'javacomplete'
-if has("autocmd")
-  autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-endif
-
+" autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+" setlocal completefunc=javacomplete#CompleteParamsInfo
+" inoremap <buffer> <C-X><C-U> <C-X><C-U><C-P> 
 "######################################### End of Experimental 1}}}
 
 " set cc=120
@@ -857,26 +874,22 @@ if !exists("my_auto_commands_loaded")
     augroup END
   endif
 
-Bundle 'JavaImp.vim--Lee'
 let g:JavaImpPaths = $CLASSPATH
 let g:JavaImpPathSep = ':'
 let g:JavaImpSortPkgSep = 1
 
-" For external indent format (usefull for java)
-Bundle "Chiel92/vim-autoformat"
 "Indent all lines
 let g:formatprg_java = "astyle"
 let g:formatprg_args_java = "--style=java"
 nnoremap <leader>ia :Autoformat<CR><CR>
 
-Bundle 'flazz/vim-colorschemes'
 
-Bundle 'vim-scripts/groovyindent'
+let g:EasyMotion_leader_key = ',,'
+let g:EasyMotion_mapping_f = ',f'
+let g:EasyMotion_mapping_F = ',F'
+let g:EasyMotion_mapping_w = ',w'
+let g:EasyMotion_mapping_b = ',b'
 
-" Todo automatically add snippets per filetype
-Bundle 'SirVer/ultisnips'
-Bundle 'honza/vim-snippets'
-Bundle 'jaxbot/vim-java-get-set'
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=120                  :
