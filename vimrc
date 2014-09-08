@@ -92,7 +92,7 @@ Plugin 'Chiel92/vim-autoformat'
 
 Plugin 'flazz/vim-colorschemes'
 
-Plugin 'vim-scripts/groovyindent'
+Plugin 'joninvski/groovyindent'
 
 " Todo automatically add snippets per filetype
 Plugin 'SirVer/ultisnips'
