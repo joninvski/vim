@@ -603,7 +603,7 @@ map <leader>ei o\end{itemize}<Esc>
 " NERD Tree Explorer{{{
 """"""""""""""""""""""""""""""
 " Lets ignore some file from showing in the NERDTree
-let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$', 'build$[[dir]]', '.class$', '.jar$', '.o$', '.pid$']
+let NERDTreeIgnore=['\.vim$', '\~$', '.pyc$', 'build$[[dir]]', '.class$', '\.jar$', '\.o$', '\.pid$']
 
 "The_NERD_tree
 augroup ps_nerdtree
