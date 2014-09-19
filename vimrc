@@ -321,11 +321,12 @@ inoremap jk <esc>
 " jk in command mode is now esc
 cnoremap jk <esc>
 
+nnoremap ss :
+
 " <esc> no longer escapes to normal mode
 " COMMENT AS TRAINING WHEELS NO LONGER REQUIRED
 " inoremap <esc> <nop>
 " vnoremap <esc> <nop> " Use shift+v to exit visual mode
-
 
 " Up and down (k and j) move through wrapped lines
 noremap j gj
@@ -875,7 +876,7 @@ if !exists("my_auto_commands_loaded")
   endif
 
 let g:JavaImpPaths = $CLASSPATH
-let g:JavaImpPathSep = ':'
+let g:JavaImpPathSep = ':'          " Classpath is divided by ':'
 let g:JavaImpSortPkgSep = 1
 
 "Indent all lines
