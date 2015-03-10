@@ -48,12 +48,12 @@ Plugin 'sjl/gundo.vim'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'scrooloose/syntastic'
-Plugin 'godlygeek/tabular'
 Plugin 'joninvski/vim-scala',
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdtree'
 Plugin 'YankRing.vim'
 Plugin 'elzr/vim-json'
+Plugin 'BufOnly.vim'
 
 " Displays thin vertical lines at each indentation level
 Plugin 'Yggdroot/indentLine'
@@ -70,9 +70,10 @@ Plugin 'justinmk/vim-sneak'
 
 Plugin 'Lokaltog/vim-easymotion'
 
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'fatih/vim-go'
 
-" Creates a buffer to be used as Scratch
-Plugin 'mtth/scratch.vim'
 
 " Treat build.gradle files as groovy files
 Plugin 'tfnico/vim-gradle'
@@ -84,6 +85,7 @@ Plugin 'Xoria256m'
 Plugin 'badwolf'
 Plugin 'Nazca'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'chase/vim-ansible-yaml'
 
 Plugin 'javacomplete'
 Plugin 'JavaImp.vim--Lee'
@@ -100,6 +102,12 @@ Plugin 'honza/vim-snippets'
 Plugin 'jaxbot/vim-java-get-set'
 
 Plugin 'ervandew/supertab'
+
+" Plugin for nerdtree to execute external commands
+Plugin 'nerdtree-execute'
+
+" Better diff algorithm (Run :PatienceDiff to use it next)
+Plugin 'chrisbra/vim-diff-enhanced'
 
 filetype plugin indent on     " required! to be after the Plugin block
 
@@ -469,10 +477,10 @@ silent execute '!mkdir -p ' . s:localscriptsdir . '/tmp/{backup,view,tmp,undo}'
 
 " hide buffers when not displayed
 set hidden
-set nobackup                            " Enable creation of backup file.
-set nowritebackup
-set noswapfile                        " No need for a swap file
-" set backupdir=$HOME/.vim/tmp/backup// " Where backups will go.
+set backup                            " Enable creation of backup file.
+set writebackup
+set swapfile                          " No need for a swap file
+set backupdir=$HOME/.vim/tmp/backup// " Where backups will go.
 set directory=$HOME/.vim/tmp//        " Where temporary files will go.
 set viewdir=$HOME/.vim/tmp/view//
 
@@ -579,11 +587,6 @@ nnoremap <leader>gitl :Shell git gl -18<cr>:wincmd \|<cr>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-" Scratch {{{
-""""""""""""""""""""""""""""""
-" :Scratch
-let g:scratch_autohide = 1
-""""""""""""""""""""""""""""""
 
 " Gundo{{{
 """"""""""""""""""""""""""""""
@@ -769,7 +772,9 @@ syntax enable
 "color desert
 
 "Trying something new
-colorscheme xoria256
+" colorscheme xoria256
+colorscheme solarized
+set background=dark
 
 " Other good options
 "color xoria256
@@ -779,19 +784,16 @@ colorscheme xoria256
 "color nazca
 "color jellyx
 
-
 "set Pattern matching highlight
 hi MatchParen guifg=#000000 guibg=#D0D090
 
-if has("gui_running")
-    "Font type and size
-    "set guifont=Terminus\ 8
-    set guifont=Inconsolata\ Medium\ 10
-    set guioptions=a
-    set guioptions-=m " turn off menu bar
-    set guioptions-=T " turn off toolbar
-    set guicursor=a:blinkon0
-endif
+"Font type and size
+"set guifont=Terminus\ 8
+set guifont=Inconsolata\ Medium\ 10
+set guioptions=a
+set guioptions-=m " turn off menu bar
+set guioptions-=T " turn off toolbar
+set guicursor=a:blinkon0
 
 "Highlight current line
 set cursorline
@@ -841,9 +843,9 @@ highlight SpecialKey guifg=#4a4a59
 let g:ctrlp_map = '<leader>o'
 let g:ctrlp_extensions = ['tag']        " TODO - What does this option do
 
-let g:ctrlp_by_filename = 0             " Set to 0 to search by path and filename (full path) Change with Control-D
+let g:ctrlp_by_filename = 1             " Set to 0 to search by path and filename (full path) Change with Control-D
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn|doc)|build$',
+  \ 'dir':  '\v[\/]\.(git|hg|svn|doc)$|build$|documentation$',
   \ 'file': '\v\.(exe|so|dll|jpg|png|gif|zip|o|aux|class)$',
   \ 'link': 'syntastic_lib'}
 let g:ctrlp_working_path_mode = '0'     " Disable because i like to search from current directory
@@ -875,22 +877,18 @@ if !exists("my_auto_commands_loaded")
     augroup END
   endif
 
+" Take care of java imports
 let g:JavaImpPaths = $CLASSPATH
 let g:JavaImpPathSep = ':'          " Classpath is divided by ':'
 let g:JavaImpSortPkgSep = 1
 
 "Indent all lines
 let g:formatprg_java = "astyle"
-let g:formatprg_args_java = "--style=java"
+" let g:formatprg_args_java = "--style=java"
+let g:formatprg_args_java = "--style=google --indent=spaces=2" "Only use this if astyle >= 2.04
 nnoremap <leader>ia :Autoformat<CR><CR>
 
-
 let g:EasyMotion_leader_key = ',,'
-let g:EasyMotion_mapping_f = ',f'
-let g:EasyMotion_mapping_F = ',F'
-let g:EasyMotion_mapping_w = ',w'
-let g:EasyMotion_mapping_b = ',b'
-
 
 "-----------------------------------------------------------------------
 " vim: set shiftwidth=4 softtabstop=4 expandtab tw=120                  :
