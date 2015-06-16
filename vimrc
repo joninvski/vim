@@ -773,11 +773,11 @@ let g:airline#extensions#tabline#buffer_min_count = 3
 syntax enable
 
 "By far my favourite in the old days
-"color desert
+colorscheme desert
 
 "Trying something new
 " colorscheme xoria256
-colorscheme solarized
+silent! colorscheme solarized
 set background=dark
 
 " Other good options
