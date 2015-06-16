@@ -74,7 +74,6 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'fatih/vim-go'
 
-
 " Treat build.gradle files as groovy files
 Plugin 'tfnico/vim-gradle'
 
@@ -97,7 +96,6 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'joninvski/groovyindent'
 
 " Todo automatically add snippets per filetype
-Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'jaxbot/vim-java-get-set'
 
@@ -108,6 +106,13 @@ Plugin 'nerdtree-execute'
 
 " Better diff algorithm (Run :PatienceDiff to use it next)
 Plugin 'chrisbra/vim-diff-enhanced'
+
+" Run in another terminal 'window' with Control+C Control+C
+" Then default :,1 to select the pane one of current window
+Plugin 'jpalardy/vim-slime'
+
+" Dockerfile syntax
+Plugin 'ekalinin/Dockerfile.vim'
 
 filetype plugin indent on     " required! to be after the Plugin block
 
@@ -477,9 +482,9 @@ silent execute '!mkdir -p ' . s:localscriptsdir . '/tmp/{backup,view,tmp,undo}'
 
 " hide buffers when not displayed
 set hidden
-set backup                            " Enable creation of backup file.
-set writebackup
-set swapfile                          " No need for a swap file
+set nobackup                            " Enable creation of backup file.
+" set writebackup
+set noswapfile                          " No need for a swap file
 set backupdir=$HOME/.vim/tmp/backup// " Where backups will go.
 set directory=$HOME/.vim/tmp//        " Where temporary files will go.
 set viewdir=$HOME/.vim/tmp/view//
@@ -730,7 +735,6 @@ let g:UltiSnipsListSnippets = "<leader><tab>"
 """"""""""""""""""""""""""""""
 " Run in another terminal 'window' with Control+C Control+C
 " Then default :,1 to select the pane one of current window
-" Bundle 'jpalardy/vim-slime'
 let g:slime_target = "tmux"
 """"""""""""""""""""""""""""""}}}
 
